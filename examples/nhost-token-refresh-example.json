@@ -1,0 +1,43 @@
+{
+  "title": "Nhost Refresh Token Exchange",
+  "description": "Example request and response for exchanging a refresh token for a new session with a fresh access token.",
+  "request": {
+    "method": "POST",
+    "url": "https://{subdomain}.auth.{region}.nhost.run/v1/token",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "refreshToken": "a6f6e5c4-d3b2-4a1e-9f8d-7c6b5a4e3d2c"
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "accessToken": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.newtoken.signature",
+      "accessTokenExpiresIn": 900,
+      "refreshToken": "c8h8g7e6-f5d4-6c3g-1b0f-9e8d7c6b5a4e",
+      "refreshTokenId": "d9i9h8f7-g6e5-7d4h-2c1g-0f9e8d7c6b5a",
+      "user": {
+        "id": "1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d",
+        "email": "user@example.com",
+        "displayName": "Jane Doe",
+        "avatarUrl": "",
+        "locale": "en",
+        "emailVerified": true,
+        "phoneNumber": null,
+        "phoneNumberVerified": false,
+        "defaultRole": "user",
+        "allowedRoles": ["user", "me"],
+        "isAnonymous": false,
+        "activeMfaType": null,
+        "createdAt": "2024-01-15T10:30:00Z",
+        "updatedAt": "2024-06-01T08:00:00Z",
+        "metadata": {}
+      }
+    }
+  }
+}

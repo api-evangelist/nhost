@@ -1,0 +1,95 @@
+{
+  "@context": {
+    "@vocab": "https://nhost.io/vocab#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "schema": "https://schema.org/",
+    "hydra": "http://www.w3.org/ns/hydra/core#",
+
+    "name": "schema:name",
+    "description": "schema:description",
+    "url": "schema:url",
+    "email": "schema:email",
+    "createdAt": {
+      "@id": "schema:dateCreated",
+      "@type": "xsd:dateTime"
+    },
+    "updatedAt": {
+      "@id": "schema:dateModified",
+      "@type": "xsd:dateTime"
+    },
+
+    "Project": "https://nhost.io/vocab#Project",
+    "subdomain": "https://nhost.io/vocab#subdomain",
+    "region": "https://nhost.io/vocab#region",
+
+    "User": "https://nhost.io/vocab#User",
+    "userId": "https://nhost.io/vocab#userId",
+    "displayName": "schema:name",
+    "avatarUrl": "schema:image",
+    "locale": "schema:inLanguage",
+    "emailVerified": "https://nhost.io/vocab#emailVerified",
+    "phoneNumber": "schema:telephone",
+    "phoneNumberVerified": "https://nhost.io/vocab#phoneNumberVerified",
+    "defaultRole": "https://nhost.io/vocab#defaultRole",
+    "allowedRoles": "https://nhost.io/vocab#allowedRoles",
+    "isAnonymous": "https://nhost.io/vocab#isAnonymous",
+    "metadata": "https://nhost.io/vocab#metadata",
+    "activeMfaType": "https://nhost.io/vocab#activeMfaType",
+
+    "Session": "https://nhost.io/vocab#Session",
+    "accessToken": "https://nhost.io/vocab#accessToken",
+    "accessTokenExpiresIn": "https://nhost.io/vocab#accessTokenExpiresIn",
+    "refreshToken": "https://nhost.io/vocab#refreshToken",
+    "refreshTokenId": "https://nhost.io/vocab#refreshTokenId",
+    "user": "https://nhost.io/vocab#user",
+
+    "PersonalAccessToken": "https://nhost.io/vocab#PersonalAccessToken",
+    "patId": "https://nhost.io/vocab#patId",
+    "expiresAt": {
+      "@id": "https://nhost.io/vocab#expiresAt",
+      "@type": "xsd:dateTime"
+    },
+
+    "FileMetadata": "https://nhost.io/vocab#FileMetadata",
+    "fileId": "https://nhost.io/vocab#fileId",
+    "bucketId": "https://nhost.io/vocab#bucketId",
+    "mimeType": "schema:encodingFormat",
+    "size": "schema:contentSize",
+    "etag": "https://nhost.io/vocab#etag",
+    "isUploaded": "https://nhost.io/vocab#isUploaded",
+
+    "FileSummary": "https://nhost.io/vocab#FileSummary",
+    "PresignedURL": "https://nhost.io/vocab#PresignedURL",
+    "presignedUrl": "https://nhost.io/vocab#presignedUrl",
+    "expiration": {
+      "@id": "https://nhost.io/vocab#expiration",
+      "@type": "xsd:integer"
+    },
+
+    "Bucket": "https://nhost.io/vocab#Bucket",
+
+    "GraphQLEndpoint": "https://nhost.io/vocab#GraphQLEndpoint",
+    "Assistant": "https://nhost.io/vocab#Assistant",
+    "assistantId": "https://nhost.io/vocab#assistantId",
+    "model": "https://nhost.io/vocab#model",
+    "systemPrompt": "https://nhost.io/vocab#systemPrompt",
+
+    "ServerlessFunction": "https://nhost.io/vocab#ServerlessFunction",
+    "EventTrigger": "https://nhost.io/vocab#EventTrigger",
+
+    "ErrorResponse": "https://nhost.io/vocab#ErrorResponse",
+    "status": "https://nhost.io/vocab#status",
+    "message": "schema:description",
+
+    "JWK": "https://nhost.io/vocab#JWK",
+    "JWKSet": "https://nhost.io/vocab#JWKSet",
+    "keys": "https://nhost.io/vocab#keys",
+
+    "OAuthProvider": "https://nhost.io/vocab#OAuthProvider",
+    "provider": "https://nhost.io/vocab#provider",
+
+    "hydra:Collection": "hydra:Collection",
+    "hydra:member": "hydra:member",
+    "hydra:totalItems": "hydra:totalItems"
+  }
+}

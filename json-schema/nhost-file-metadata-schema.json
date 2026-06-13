@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://nhost.io/schemas/file-metadata",
+  "title": "FileMetadata",
+  "description": "Metadata for a file stored in Nhost Storage, including identity, size, type, and bucket association.",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Unique identifier for the file.",
+      "example": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+    },
+    "name": {
+      "type": ["string", "null"],
+      "description": "Original file name as provided at upload time.",
+      "example": "profile-photo.jpg"
+    },
+    "size": {
+      "type": ["integer", "null"],
+      "description": "File size in bytes.",
+      "example": 204800
+    },
+    "mimeType": {
+      "type": ["string", "null"],
+      "description": "MIME type of the file content.",
+      "example": "image/jpeg"
+    },
+    "etag": {
+      "type": ["string", "null"],
+      "description": "ETag hash of the file content for cache validation.",
+      "example": "\"d41d8cd98f00b204e9800998ecf8427e\""
+    },
+    "createdAt": {
+      "type": ["string", "null"],
+      "format": "date-time",
+      "description": "ISO 8601 timestamp when the file was created in storage.",
+      "example": "2024-03-15T14:22:00Z"
+    },
+    "updatedAt": {
+      "type": ["string", "null"],
+      "format": "date-time",
+      "description": "ISO 8601 timestamp when the file metadata was last updated.",
+      "example": "2024-03-15T14:22:00Z"
+    },
+    "isUploaded": {
+      "type": ["boolean", "null"],
+      "description": "Whether the file upload has been completed successfully.",
+      "example": true
+    },
+    "bucketId": {
+      "type": ["string", "null"],
+      "description": "Identifier of the bucket containing this file.",
+      "example": "default"
+    },
+    "uploadedByUserId": {
+      "type": ["string", "null"],
+      "format": "uuid",
+      "description": "ID of the user who uploaded this file.",
+      "example": "1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d"
+    }
+  },
+  "required": ["id"]
+}

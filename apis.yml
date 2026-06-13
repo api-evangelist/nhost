@@ -64,6 +64,8 @@ apis:
     properties:
       - type: Documentation
         url: https://docs.nhost.io/products/auth/
+      - type: OpenAPI
+        url: openapi/nhost-authentication-openapi.yml
   - name: Nhost Storage API
     description: >-
       S3-compatible file storage service with GraphQL metadata management, CDN
@@ -81,6 +83,8 @@ apis:
     properties:
       - type: Documentation
         url: https://docs.nhost.io/products/storage/
+      - type: OpenAPI
+        url: openapi/nhost-storage-openapi.yml
   - name: Nhost Serverless Functions API
     description: >-
       Deploy JavaScript and TypeScript serverless functions as HTTP API
@@ -137,6 +141,10 @@ common:
     url: rate-limits/nhost-rate-limits.yml
   - type: FinOps
     url: finops/nhost-finops.yml
+  - type: Vocabulary
+    url: vocabulary/nhost-vocabulary.yml
+  - type: JSONLDContext
+    url: json-ld/nhost-context.jsonld
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com

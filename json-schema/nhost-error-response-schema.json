@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://nhost.io/schemas/error-response",
+  "title": "ErrorResponse",
+  "description": "Standard error envelope returned by Nhost REST services.",
+  "type": "object",
+  "properties": {
+    "status": {
+      "type": "integer",
+      "description": "HTTP status code of the error.",
+      "example": 401
+    },
+    "message": {
+      "type": "string",
+      "description": "Human-readable description of the error.",
+      "example": "Email and password are required"
+    },
+    "error": {
+      "type": "string",
+      "description": "Machine-readable error code.",
+      "example": "invalid-email-password"
+    }
+  },
+  "required": ["status", "message"]
+}

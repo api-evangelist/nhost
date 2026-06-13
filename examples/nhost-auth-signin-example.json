@@ -1,0 +1,46 @@
+{
+  "title": "Nhost Email/Password Sign-In",
+  "description": "Example request and response for signing in a user with email and password credentials.",
+  "request": {
+    "method": "POST",
+    "url": "https://{subdomain}.auth.{region}.nhost.run/v1/signin/email-password",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "email": "user@example.com",
+      "password": "supersecretpassword"
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "session": {
+        "accessToken": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxYTJiM2M0ZC01ZTZmLTdhOGItOWMwZC0xZTJmM2E0YjVjNmQiLCJodHRwczovL2hhc3VyYS5pby9qd3QvY2xhaW1zIjp7IngtaGFzdXJhLWFsbG93ZWQtcm9sZXMiOlsidXNlciIsIm1lIl0sIngtaGFzdXJhLWRlZmF1bHQtcm9sZSI6InVzZXIiLCJ4LWhhc3VyYS11c2VyLWlkIjoiMWEyYjNjNGQtNWU2Zi03YThiLTljMGQtMWUyZjNhNGI1YzZkIn0sImlhdCI6MTcwMDAwMDAwMCwiZXhwIjoxNzAwMDAwOTAwfQ.signature",
+        "accessTokenExpiresIn": 900,
+        "refreshToken": "a6f6e5c4-d3b2-4a1e-9f8d-7c6b5a4e3d2c",
+        "refreshTokenId": "b7g7f6d5-e4c3-5b2f-0a9e-8d7c6b5a4e3d",
+        "user": {
+          "id": "1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d",
+          "email": "user@example.com",
+          "displayName": "Jane Doe",
+          "avatarUrl": "",
+          "locale": "en",
+          "emailVerified": true,
+          "phoneNumber": null,
+          "phoneNumberVerified": false,
+          "defaultRole": "user",
+          "allowedRoles": ["user", "me"],
+          "isAnonymous": false,
+          "activeMfaType": null,
+          "createdAt": "2024-01-15T10:30:00Z",
+          "updatedAt": "2024-06-01T08:00:00Z",
+          "metadata": {}
+        }
+      }
+    }
+  }
+}

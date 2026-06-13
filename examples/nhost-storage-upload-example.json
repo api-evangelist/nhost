@@ -1,0 +1,51 @@
+{
+  "title": "Nhost Storage File Upload",
+  "description": "Example request and response for uploading a file to Nhost Storage using multipart form data.",
+  "request": {
+    "method": "POST",
+    "url": "https://{subdomain}.storage.{region}.nhost.run/v1/files",
+    "headers": {
+      "Authorization": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...",
+      "Content-Type": "multipart/form-data; boundary=----FormBoundary"
+    },
+    "body": {
+      "note": "multipart/form-data body with file field",
+      "fields": {
+        "file[]": {
+          "filename": "profile-photo.jpg",
+          "content_type": "image/jpeg",
+          "description": "Binary file content"
+        },
+        "metadata[]": {
+          "content_type": "application/json",
+          "value": {
+            "name": "profile-photo.jpg",
+            "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+          }
+        }
+      }
+    }
+  },
+  "response": {
+    "status": 201,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "processedFiles": [
+        {
+          "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+          "name": "profile-photo.jpg",
+          "size": 204800,
+          "mimeType": "image/jpeg",
+          "etag": "\"d41d8cd98f00b204e9800998ecf8427e\"",
+          "createdAt": "2024-06-12T09:15:00Z",
+          "updatedAt": "2024-06-12T09:15:00Z",
+          "isUploaded": true,
+          "bucketId": "default",
+          "uploadedByUserId": "1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d"
+        }
+      ]
+    }
+  }
+}

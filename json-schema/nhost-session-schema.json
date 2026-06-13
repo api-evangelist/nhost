@@ -1,0 +1,127 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://nhost.io/schemas/session",
+  "title": "Session",
+  "description": "An authenticated user session returned by Nhost Auth sign-in and sign-up operations.",
+  "type": "object",
+  "properties": {
+    "accessToken": {
+      "type": "string",
+      "description": "Short-lived JSON Web Token (JWT) for authorizing API requests.",
+      "example": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9..."
+    },
+    "accessTokenExpiresIn": {
+      "type": "integer",
+      "description": "Number of seconds until the access token expires.",
+      "example": 900
+    },
+    "refreshToken": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Long-lived refresh token used to obtain new access tokens.",
+      "example": "a6f6e5c4-d3b2-4a1e-9f8d-7c6b5a4e3d2c"
+    },
+    "refreshTokenId": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Unique identifier of the refresh token record.",
+      "example": "b7g7f6d5-e4c3-5b2f-0a9e-8d7c6b5a4e3d"
+    },
+    "user": {
+      "$ref": "#/$defs/User"
+    }
+  },
+  "required": ["accessToken", "accessTokenExpiresIn", "refreshToken", "user"],
+  "$defs": {
+    "User": {
+      "title": "User",
+      "description": "An authenticated Nhost user account.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uuid",
+          "description": "Unique user identifier.",
+          "example": "1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d"
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "Primary email address of the user.",
+          "example": "user@example.com"
+        },
+        "displayName": {
+          "type": "string",
+          "description": "Human-readable display name.",
+          "example": "Jane Doe"
+        },
+        "avatarUrl": {
+          "type": "string",
+          "format": "uri",
+          "description": "URL of the user's avatar image.",
+          "example": "https://example.com/avatar.jpg"
+        },
+        "locale": {
+          "type": "string",
+          "description": "Preferred locale of the user (BCP 47 language tag).",
+          "example": "en"
+        },
+        "emailVerified": {
+          "type": "boolean",
+          "description": "Whether the user's email address has been verified.",
+          "example": true
+        },
+        "phoneNumber": {
+          "type": ["string", "null"],
+          "description": "E.164-formatted phone number.",
+          "example": "+14155552671"
+        },
+        "phoneNumberVerified": {
+          "type": "boolean",
+          "description": "Whether the user's phone number has been verified.",
+          "example": false
+        },
+        "defaultRole": {
+          "type": "string",
+          "description": "The default Hasura role assigned to this user's JWT.",
+          "example": "user"
+        },
+        "allowedRoles": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "All Hasura roles the user is permitted to assume.",
+          "example": ["user", "me"]
+        },
+        "isAnonymous": {
+          "type": "boolean",
+          "description": "Whether the user signed in anonymously.",
+          "example": false
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO 8601 timestamp when the user account was created.",
+          "example": "2024-01-15T10:30:00Z"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO 8601 timestamp when the user account was last updated.",
+          "example": "2024-06-01T08:00:00Z"
+        },
+        "activeMfaType": {
+          "type": ["string", "null"],
+          "enum": ["totp", null],
+          "description": "Active multi-factor authentication type, or null if MFA is disabled.",
+          "example": null
+        },
+        "metadata": {
+          "type": "object",
+          "description": "Arbitrary JSON metadata attached to the user.",
+          "example": {}
+        }
+      },
+      "required": ["id", "email", "displayName", "locale", "emailVerified", "defaultRole", "allowedRoles", "isAnonymous"]
+    }
+  }
+}
