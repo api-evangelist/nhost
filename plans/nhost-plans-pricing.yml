@@ -1,0 +1,98 @@
+name: Nhost Plans and Pricing
+description: >-
+  Nhost offers four pricing tiers ranging from a free Starter plan for
+  prototyping through Pro and Team plans for growing products, to custom
+  Enterprise pricing for large-scale deployments. Compute resources are
+  billed separately per vCPU at dedicated or shared rates.
+specificationVersion: "0.1"
+url: https://nhost.io/pricing
+plans:
+  - name: Starter
+    description: >-
+      Free tier suitable for testing ideas, personal projects, and learning.
+      Projects pause after one week of inactivity and can be reactivated
+      instantly.
+    price:
+      amount: 0
+      currency: USD
+      period: month
+    limits:
+      projects: 1
+      database_storage_gb: 1
+      file_storage_gb: 1
+      egress_gb: 5
+    features:
+      - PostgreSQL database
+      - GraphQL API via Hasura
+      - Authentication service
+      - File storage
+      - Serverless functions
+      - Real-time subscriptions
+      - Infrastructure as Code
+      - Automated GitHub deployments
+      - Unlimited users
+      - OAuth providers
+      - Community support (Discord)
+    notes: Project pauses after 1 week of inactivity; reactivates instantly
+  - name: Pro
+    description: >-
+      Production-ready tier for professional projects. Includes $15/month in
+      compute credits, automated backups, point-in-time recovery, and email
+      support.
+    price:
+      amount: 25
+      currency: USD
+      period: month
+    compute_credits_included_usd: 15
+    limits:
+      database_storage_gb: 10
+      file_storage_gb: 50
+      egress_gb: 50
+    features:
+      - Everything in Starter
+      - Automated backups
+      - Point-in-time recovery
+      - Bring your own services
+      - Managed Grafana observability
+      - Email support
+      - Add-ons available
+    add_ons:
+      - name: Dedicated compute
+        price: "$50/vCPU/month ($0.0012/vCPU/min)"
+        memory: 2 GB per vCPU
+      - name: Shared compute
+        price: "$15/vCPU/month ($0.00034/vCPU/min)"
+        memory: 2 GB per vCPU
+  - name: Team
+    description: >-
+      Compliance-ready tier for teams needing SOC 2, email SLA, dedicated
+      Discord support channel, external database connections, and advanced
+      GraphQL features.
+    price:
+      amount: 599
+      currency: USD
+      period: month
+    compute_credits_included_usd: 15
+    features:
+      - Everything in Pro
+      - SOC 2 Type II compliance
+      - Email support with SLA
+      - Dedicated Discord support channel
+      - External database connections
+      - Advanced GraphQL features
+      - Dedicated clusters (add-on)
+  - name: Enterprise
+    description: >-
+      Custom pricing for large-scale deployments requiring dedicated
+      infrastructure, technical account managers, and custom SLAs.
+    price:
+      amount: custom
+      currency: USD
+      period: month
+    features:
+      - Everything in Team
+      - Custom SLAs
+      - Dedicated account manager
+      - Dedicated infrastructure clusters
+      - Custom contract terms
+    notes: Contact sales for pricing

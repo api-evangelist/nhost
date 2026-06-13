@@ -1,0 +1,106 @@
+name: Nhost FinOps Framework
+description: >-
+  FOCUS-aligned FinOps reference for Nhost cloud spending. Nhost uses a
+  hybrid pricing model combining flat subscription tiers with consumption-
+  based compute, storage, and egress charges. Compute credits included in
+  Pro and Team plans offset pay-as-you-go resource costs.
+specificationVersion: "1.0"
+url: https://nhost.io/pricing
+currency: USD
+billing_model: hybrid
+  # flat monthly subscription + consumption-based compute/storage/egress
+cost_dimensions:
+  - dimension: Subscription
+    description: >-
+      Flat monthly fee for the chosen plan tier. Determines included resource
+      quotas and access to features.
+    sku_examples:
+      - sku: starter
+        unit: month
+        price: 0.00
+      - sku: pro
+        unit: month
+        price: 25.00
+      - sku: team
+        unit: month
+        price: 599.00
+      - sku: enterprise
+        unit: month
+        price: custom
+  - dimension: Compute - Dedicated
+    description: >-
+      Dedicated vCPU resources with 2 GB RAM per vCPU. Billed per minute.
+    unit: vCPU-minute
+    price_per_unit: 0.0012
+    price_per_vcpu_month: 50.00
+    memory_per_vcpu_gb: 2
+  - dimension: Compute - Shared
+    description: >-
+      Shared vCPU resources with 2 GB RAM per vCPU. Billed per minute.
+      Lower cost than dedicated; suitable for variable workloads.
+    unit: vCPU-minute
+    price_per_unit: 0.00034
+    price_per_vcpu_month: 15.00
+    memory_per_vcpu_gb: 2
+  - dimension: Database Storage
+    description: >-
+      PostgreSQL storage measured in GB. Starter includes 1 GB; Pro includes
+      10 GB; Team inherits Pro limits. Overages billed as add-ons.
+    unit: GB
+    included_by_plan:
+      starter: 1
+      pro: 10
+      team: 10
+  - dimension: File Storage
+    description: >-
+      S3-compatible object storage for user-uploaded files. Starter includes
+      1 GB; Pro and Team include 50 GB.
+    unit: GB
+    included_by_plan:
+      starter: 1
+      pro: 50
+      team: 50
+  - dimension: Egress / Bandwidth
+    description: >-
+      Outbound bandwidth from CDN and API endpoints. Starter includes 5 GB;
+      Pro and Team include 50 GB.
+    unit: GB
+    included_by_plan:
+      starter: 5
+      pro: 50
+      team: 50
+  - dimension: Functions Compute
+    description: >-
+      Serverless function execution billed in GB-seconds (GB of RAM × runtime
+      seconds). 1 GB-hour = 3600 GB-seconds.
+    unit: GB-second
+    notes: Included compute credits ($15/month on Pro and Team) offset this cost.
+compute_credits:
+  description: >-
+    Pro and Team plans include $15/month in compute credits applied automatically
+    to shared or dedicated compute usage before additional charges apply.
+  amount_usd_per_month: 15
+  applicable_plans:
+    - pro
+    - team
+optimization_recommendations:
+  - recommendation: Use shared compute for dev/staging environments
+    rationale: >-
+      Shared vCPUs cost $15/vCPU/month vs $50 for dedicated, providing
+      significant savings for non-production workloads.
+  - recommendation: Monitor egress to avoid overages
+    rationale: >-
+      Egress allowances are capped per plan; CDN caching and image optimization
+      reduce downstream bandwidth costs.
+  - recommendation: Leverage included compute credits
+    rationale: >-
+      The $15 compute credit on Pro and Team plans fully covers one shared
+      vCPU per month; right-size instances to maximize credit utilization.
+  - recommendation: Use Starter for prototyping
+    rationale: >-
+      The free Starter plan is suitable for development and testing; projects
+      auto-pause after one week of inactivity, incurring no compute charges.
+  - recommendation: Evaluate Team plan for compliance workloads
+    rationale: >-
+      SOC 2 Type II coverage included in Team avoids separate audit and
+      compliance tooling costs for regulated industries.

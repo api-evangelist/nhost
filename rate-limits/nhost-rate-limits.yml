@@ -1,0 +1,85 @@
+name: Nhost Rate Limits
+description: >-
+  Nhost applies rate limits independently per service (GraphQL, Storage,
+  Functions, and Auth) based on client IP address. The token-bucket mechanism
+  allows burst requests up to the configured maximum, with gradual replenishment
+  over the recovery interval. Auth endpoints are further subdivided by operation
+  category.
+specificationVersion: "0.1"
+url: https://docs.nhost.io/platform/cloud/rate-limits
+mechanism: >-
+  Token-bucket model. Each IP gets a burst allowance; once exhausted, one
+  additional request is permitted per (recovery_interval / burst_limit) period.
+  Limits across services are independent — consuming GraphQL quota does not
+  affect Storage or Functions quotas.
+services:
+  - name: GraphQL API
+    description: >-
+      Rate limit applied to all Hasura GraphQL requests (queries, mutations,
+      and subscriptions).
+    default_limit:
+      requests: 100
+      interval: 15 minutes
+    basis: client IP address
+  - name: Storage API
+    description: >-
+      Rate limit applied to file upload, download, and metadata operations.
+    default_limit:
+      requests: 100
+      interval: 15 minutes
+    basis: client IP address
+  - name: Functions API
+    description: >-
+      Rate limit applied to serverless function HTTP endpoint invocations.
+    default_limit:
+      requests: 100
+      interval: 15 minutes
+    basis: client IP address
+  - name: Auth API
+    description: >-
+      Auth rate limits are tiered by endpoint category. Requests across
+      grouped endpoints (e.g. sign-in + OTP verify) share the same bucket.
+    basis: client IP address
+    endpoint_categories:
+      - category: Email operations
+        limit: 10
+        interval: 1 hour
+        examples:
+          - Email sign-in
+          - Email verification
+          - Password reset
+      - category: SMS operations
+        limit: 10
+        interval: 1 hour
+        examples:
+          - SMS OTP send
+          - SMS OTP verify
+      - category: Brute-force prone endpoints
+        limit: 10
+        interval: 5 minutes
+        examples:
+          - Sign-in attempts
+          - OTP verification
+      - category: Signup endpoints
+        limit: 10
+        interval: 5 minutes
+        examples:
+          - New user registration
+      - category: OAuth2 server-to-server
+        limit: 100
+        interval: 5 minutes
+        examples:
+          - OAuth2 token exchange
+          - Provider callbacks
+      - category: Global (all auth endpoints)
+        limit: 100
+        interval: 1 minute
+        notes: >-
+          Applies as an overall cap across all Auth API endpoints regardless
+          of category.
+notes:
+  - Rate limits are configurable per project on Pro and higher plans.
+  - The platform independently rate-limits GraphQL, Storage, and Functions
+    so traffic to one service does not consume quota for another.
+  - For custom rate-limit configurations contact Nhost support or configure
+    via the project dashboard.
