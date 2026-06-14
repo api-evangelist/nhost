@@ -1,0 +1,944 @@
+"""
+Nhost GraphQL Schema
+Derived from: nhost/hasura-auth SQL schema, nhost/nhost dashboard GQL operations,
+and nhost/nhost packages/nhost-js SDK source.
+
+Every Nhost project gets a Hasura GraphQL Engine endpoint at:
+  https://{subdomain}.hasura.{region}.nhost.run/v1/graphql
+
+The schema below covers:
+  1. Built-in auth schema types (auth.users, auth.user_roles, etc.)
+  2. Built-in storage schema types (storage.files, storage.buckets)
+  3. Nhost management/platform API types (apps, organizations, deployments, etc.)
+
+Authentication:
+  - User requests: Authorization: Bearer <jwt_access_token>
+  - Server-side:   x-hasura-admin-secret: <admin_secret>
+
+Real-time subscriptions are supported over WebSocket (graphql-ws protocol).
+"""
+
+schema {
+  query: Query
+  mutation: Mutation
+  subscription: Subscription
+}
+
+# ---------------------------------------------------------------------------
+# Scalars
+# ---------------------------------------------------------------------------
+
+scalar uuid
+scalar timestamptz
+scalar jsonb
+scalar citext
+
+# ---------------------------------------------------------------------------
+# Enums
+# ---------------------------------------------------------------------------
+
+"""Valid refresh token types."""
+enum RefreshTokenType {
+  regular
+  pat
+}
+
+"""Possible states for a managed Nhost application."""
+enum AppState {
+  RUNNING
+  PAUSED
+  MIGRATING
+  ERROR
+}
+
+"""Deployment status values."""
+enum DeploymentStatus {
+  SCHEDULED
+  PENDING
+  DEPLOYING
+  DEPLOYED
+  FAILED
+}
+
+"""Pipeline run status values."""
+enum PipelineRunStatus {
+  pending
+  running
+  succeeded
+  failed
+  cancelled
+}
+
+"""Organization member roles."""
+enum OrganizationMemberRole {
+  owner
+  member
+}
+
+# ---------------------------------------------------------------------------
+# Auth schema — built into every Nhost project
+# ---------------------------------------------------------------------------
+
+"""
+User account. Managed by Hasura Auth. Every authenticated user has a row here.
+Source: auth.users (PostgreSQL), nhost/hasura-auth go/sql/models.go
+"""
+type users {
+  id: uuid!
+  createdAt: timestamptz!
+  updatedAt: timestamptz!
+  lastSeen: timestamptz
+  disabled: Boolean!
+  displayName: String!
+  avatarUrl: String!
+  locale: String!
+  email: citext
+  emailVerified: Boolean!
+  phoneNumber: String
+  phoneNumberVerified: Boolean!
+  defaultRole: String!
+  isAnonymous: Boolean!
+  metadata: jsonb
+  activeMfaType: String
+  newEmail: citext
+  otpMethodLastUsed: String
+  otpHashExpiresAt: timestamptz
+  ticketExpiresAt: timestamptz
+  webauthnCurrentChallenge: String
+
+  """Roles assigned to this user."""
+  roles(
+    where: authUserRoles_bool_exp
+    order_by: [authUserRoles_order_by!]
+    limit: Int
+    offset: Int
+  ): [authUserRoles!]!
+
+  """OAuth providers linked to this user."""
+  userProviders(
+    where: authUserProviders_bool_exp
+    order_by: [authUserProviders_order_by!]
+    limit: Int
+    offset: Int
+  ): [authUserProviders!]!
+
+  """Security keys (WebAuthn) registered by this user."""
+  securityKeys(
+    where: authUserSecurityKeys_bool_exp
+    limit: Int
+    offset: Int
+  ): [authUserSecurityKeys!]!
+
+  """Refresh tokens active for this user."""
+  refreshTokens(
+    where: authRefreshTokens_bool_exp
+    limit: Int
+    offset: Int
+  ): [authRefreshTokens!]!
+}
+
+"""Aggregate wrapper for users queries."""
+type users_aggregate {
+  aggregate: users_aggregate_fields
+  nodes: [users!]!
+}
+
+type users_aggregate_fields {
+  count: Int
+}
+
+"""Role assigned to a user. Source: auth.user_roles."""
+type authUserRoles {
+  id: uuid!
+  createdAt: timestamptz!
+  userId: uuid!
+  role: String!
+  user: users
+}
+
+"""OAuth provider linked to a user. Source: auth.user_providers."""
+type authUserProviders {
+  id: uuid!
+  createdAt: timestamptz!
+  updatedAt: timestamptz!
+  userId: uuid!
+  accessToken: String!
+  refreshToken: String
+  providerId: String!
+  providerUserId: String!
+  user: users
+  provider: authProviders
+}
+
+"""Available OAuth provider. Source: auth.providers."""
+type authProviders {
+  id: String!
+  userProviders(limit: Int, offset: Int): [authUserProviders!]!
+}
+
+"""WebAuthn security key registered by a user. Source: auth.user_security_keys."""
+type authUserSecurityKeys {
+  id: uuid!
+  userId: uuid!
+  credentialId: String!
+  counter: Int!
+  transports: String!
+  nickname: String
+  user: users
+}
+
+"""Refresh token. Source: auth.refresh_tokens."""
+type authRefreshTokens {
+  id: uuid!
+  createdAt: timestamptz!
+  expiresAt: timestamptz!
+  userId: uuid!
+  type: RefreshTokenType!
+  metadata: jsonb
+  user: users
+}
+
+"""Aggregate wrapper for authRefreshTokens."""
+type authRefreshTokens_aggregate {
+  aggregate: authRefreshTokens_aggregate_fields
+}
+
+type authRefreshTokens_aggregate_fields {
+  count: Int
+}
+
+"""Available role. Source: auth.roles."""
+type authRoles {
+  role: String!
+}
+
+# ---------------------------------------------------------------------------
+# Storage schema — built into every Nhost project
+# ---------------------------------------------------------------------------
+
+"""
+File stored in Nhost Storage. Metadata backed by PostgreSQL; binary in S3.
+Source: nhost/nhost dashboard/src/gql/files/getFiles.graphql
+"""
+type files {
+  id: uuid!
+  createdAt: timestamptz!
+  updatedAt: timestamptz!
+  bucketId: String!
+  name: String
+  size: Int
+  mimeType: String
+  etag: String
+  isUploaded: Boolean
+  uploadedByUserId: uuid
+  bucket: buckets
+  uploadedByUser: users
+}
+
+"""Aggregate wrapper for files queries."""
+type files_aggregate {
+  aggregate: files_aggregate_fields
+}
+
+type files_aggregate_fields {
+  count: Int
+}
+
+"""
+Storage bucket. Groups files and controls upload/download policies.
+Source: nhost/nhost dashboard/src/gql/files/getBuckets.graphql
+"""
+type buckets {
+  id: String!
+  minUploadFileSize: Int!
+  maxUploadFileSize: Int!
+  presignedUrlsEnabled: Boolean!
+  downloadExpiration: Int!
+  cacheControl: String
+  files(
+    where: files_bool_exp
+    order_by: [files_order_by!]
+    limit: Int
+    offset: Int
+  ): [files!]!
+}
+
+"""Aggregate wrapper for buckets queries."""
+type buckets_aggregate {
+  aggregate: buckets_aggregate_fields
+}
+
+type buckets_aggregate_fields {
+  count: Int
+}
+
+# ---------------------------------------------------------------------------
+# Platform / management API types
+# ---------------------------------------------------------------------------
+
+"""
+Nhost project (application). Source: nhost/nhost dashboard fragments and GQL operations.
+"""
+type apps {
+  id: uuid!
+  name: String!
+  slug: String!
+  subdomain: String!
+  createdAt: timestamptz!
+  desiredState: Int
+  repositoryProductionBranch: String
+  nhostBaseFolder: String
+  automaticDeploys: Boolean
+  metadataFunctions: jsonb
+  config(resolve: Boolean): AppConfig
+  region: regions
+  organization: organizations
+  creator: users
+  featureFlags: [featureFlags!]!
+  githubRepository: githubRepositories
+  legacyPlan: plans
+
+  appStates(
+    order_by: [appStateHistory_order_by!]
+    limit: Int
+    offset: Int
+  ): [appStateHistory!]!
+
+  deployments(
+    order_by: [deployments_order_by!]
+    limit: Int
+    offset: Int
+  ): [deployments!]!
+
+  pipelineRuns(
+    order_by: [pipelineRuns_order_by!]
+    limit: Int
+    offset: Int
+  ): [pipelineRuns!]!
+}
+
+"""Hasura/service configuration for a project."""
+type AppConfig {
+  hasura: HasuraConfig
+  observability: ObservabilityConfig
+  ai: AiConfig
+}
+
+type HasuraConfig {
+  adminSecret: String
+  settings: HasuraSettings
+}
+
+type HasuraSettings {
+  enableConsole: Boolean
+}
+
+type ObservabilityConfig {
+  grafana: GrafanaConfig
+}
+
+type GrafanaConfig {
+  adminPassword: String
+}
+
+type AiConfig {
+  version: String
+}
+
+"""Application state history entry."""
+type appStateHistory {
+  id: uuid!
+  appId: uuid!
+  message: String
+  stateId: Int
+  createdAt: timestamptz!
+}
+
+"""Feature flag on a project."""
+type featureFlags {
+  id: uuid!
+  name: String!
+  value: String!
+  description: String
+}
+
+"""GitHub repository linked to a project."""
+type githubRepositories {
+  fullName: String!
+}
+
+"""
+Deployment of a project (Git-based, legacy path).
+Source: nhost/nhost dashboard/src/gql/deployments/deployments.graphql
+"""
+type deployments {
+  id: uuid!
+  appId: uuid!
+  commitSHA: String
+  commitMessage: String
+  commitUserName: String
+  commitUserAvatarUrl: String
+  deploymentStartedAt: timestamptz
+  deploymentEndedAt: timestamptz
+  deploymentStatus: String
+  metadataStartedAt: timestamptz
+  metadataEndedAt: timestamptz
+  metadataStatus: String
+  migrationsStartedAt: timestamptz
+  migrationsEndedAt: timestamptz
+  migrationsStatus: String
+  functionsStartedAt: timestamptz
+  functionsEndedAt: timestamptz
+  functionsStatus: String
+  deploymentLogs(order_by: [deploymentLogs_order_by!]): [deploymentLogs!]!
+}
+
+type deploymentLogs {
+  id: uuid!
+  createdAt: timestamptz!
+  message: String!
+}
+
+"""
+Pipeline run — the newer deployment mechanism replacing legacy deployments.
+Source: nhost/nhost dashboard/src/gql/deployments/deployments.graphql
+"""
+type pipelineRuns {
+  id: uuid!
+  appId: uuid!
+  name: String
+  startedAt: timestamptz
+  endedAt: timestamptz
+  status: PipelineRunStatus
+  substatus: String
+  input: jsonb
+  createdAt: timestamptz!
+}
+
+"""
+Unified deployment view — combines legacy deployments and pipeline runs.
+Source: nhost/nhost dashboard/src/gql/deployments/deployments.graphql
+"""
+type unifiedDeployments {
+  id: uuid!
+  appId: uuid!
+  source: String
+  commitSHA: String
+  commitMessage: String
+  commitUserName: String
+  commitUserAvatarUrl: String
+  startedAt: timestamptz
+  endedAt: timestamptz
+  status: String
+  createdAt: timestamptz!
+}
+
+"""Nhost cloud region."""
+type regions {
+  id: uuid!
+  name: String!
+  city: String!
+  countryCode: String!
+  domain: String
+  active: Boolean
+  country: countries
+}
+
+type countries {
+  code: String!
+  name: String!
+}
+
+"""
+Nhost organization (workspace grouping multiple projects).
+Source: nhost/nhost dashboard/src/gql/organizations/getOrganization.gql
+"""
+type organizations {
+  id: uuid!
+  name: String!
+  slug: String!
+  status: String
+  plan: plans
+  members(limit: Int, offset: Int): [organizationMembers!]!
+  apps(
+    where: apps_bool_exp
+    order_by: [apps_order_by!]
+  ): [apps!]!
+}
+
+type organizationMembers {
+  id: uuid!
+  role: OrganizationMemberRole!
+  user: users
+}
+
+"""
+Subscription plan.
+Source: nhost/nhost dashboard/src/gql/organizations/prefetchNewApp.graphql
+"""
+type plans {
+  id: uuid!
+  name: String!
+  price: Int
+  isFree: Boolean!
+  isDefault: Boolean
+  deprecated: Boolean
+  individual: Boolean
+  isPublic: Boolean
+  featureBackupEnabled: Boolean
+  featureCustomDomainsEnabled: Boolean
+  featureMaxDbSize: Int
+}
+
+# ---------------------------------------------------------------------------
+# Input / filter types (abbreviated — Hasura generates these per table)
+# ---------------------------------------------------------------------------
+
+input users_bool_exp {
+  id: uuid_comparison_exp
+  email: String_comparison_exp
+  disabled: Boolean_comparison_exp
+  defaultRole: String_comparison_exp
+  createdAt: timestamptz_comparison_exp
+  isAnonymous: Boolean_comparison_exp
+  _and: [users_bool_exp!]
+  _or: [users_bool_exp!]
+  _not: users_bool_exp
+}
+
+input files_bool_exp {
+  id: uuid_comparison_exp
+  bucketId: String_comparison_exp
+  mimeType: String_comparison_exp
+  isUploaded: Boolean_comparison_exp
+  _and: [files_bool_exp!]
+  _or: [files_bool_exp!]
+  _not: files_bool_exp
+}
+
+input apps_bool_exp {
+  id: uuid_comparison_exp
+  slug: String_comparison_exp
+  _and: [apps_bool_exp!]
+  _or: [apps_bool_exp!]
+  _not: apps_bool_exp
+}
+
+input authUserRoles_bool_exp {
+  userId: uuid_comparison_exp
+  role: String_comparison_exp
+  _and: [authUserRoles_bool_exp!]
+  _or: [authUserRoles_bool_exp!]
+}
+
+input authUserProviders_bool_exp {
+  userId: uuid_comparison_exp
+  providerId: String_comparison_exp
+  _and: [authUserProviders_bool_exp!]
+}
+
+input authUserSecurityKeys_bool_exp {
+  userId: uuid_comparison_exp
+  _and: [authUserSecurityKeys_bool_exp!]
+}
+
+input authRefreshTokens_bool_exp {
+  userId: uuid_comparison_exp
+  type: String_comparison_exp
+  _and: [authRefreshTokens_bool_exp!]
+}
+
+input uuid_comparison_exp {
+  _eq: uuid
+  _neq: uuid
+  _in: [uuid!]
+  _nin: [uuid!]
+  _is_null: Boolean
+}
+
+input String_comparison_exp {
+  _eq: String
+  _neq: String
+  _ilike: String
+  _like: String
+  _in: [String!]
+  _is_null: Boolean
+}
+
+input Boolean_comparison_exp {
+  _eq: Boolean
+}
+
+input timestamptz_comparison_exp {
+  _eq: timestamptz
+  _gt: timestamptz
+  _gte: timestamptz
+  _lt: timestamptz
+  _lte: timestamptz
+}
+
+input users_order_by {
+  createdAt: order_by
+  email: order_by
+  displayName: order_by
+  lastSeen: order_by
+}
+
+input files_order_by {
+  createdAt: order_by
+  name: order_by
+  size: order_by
+  mimeType: order_by
+}
+
+input apps_order_by {
+  name: order_by
+  createdAt: order_by
+}
+
+input appStateHistory_order_by {
+  createdAt: order_by
+}
+
+input deployments_order_by {
+  deploymentStartedAt: order_by
+}
+
+input deploymentLogs_order_by {
+  createdAt: order_by
+}
+
+input pipelineRuns_order_by {
+  startedAt: order_by
+}
+
+input authUserRoles_order_by {
+  role: order_by
+}
+
+input authUserProviders_order_by {
+  providerId: order_by
+}
+
+enum order_by {
+  asc
+  desc
+  asc_nulls_first
+  asc_nulls_last
+  desc_nulls_first
+  desc_nulls_last
+}
+
+# Mutation input types
+input users_set_input {
+  displayName: String
+  avatarUrl: String
+  locale: String
+  email: citext
+  disabled: Boolean
+  defaultRole: String
+  metadata: jsonb
+  phoneNumber: String
+}
+
+input buckets_insert_input {
+  id: String
+  minUploadFileSize: Int
+  maxUploadFileSize: Int
+  presignedUrlsEnabled: Boolean
+  downloadExpiration: Int
+  cacheControl: String
+}
+
+input buckets_set_input {
+  minUploadFileSize: Int
+  maxUploadFileSize: Int
+  presignedUrlsEnabled: Boolean
+  downloadExpiration: Int
+  cacheControl: String
+}
+
+input authUserRoles_insert_input {
+  userId: uuid
+  role: String
+}
+
+input apps_set_input {
+  name: String
+  subdomain: String
+  slug: String
+  repositoryProductionBranch: String
+  automaticDeploys: Boolean
+  nhostBaseFolder: String
+}
+
+input pipelineRuns_insert_input {
+  appId: uuid
+  name: String
+  input: jsonb
+}
+
+# ---------------------------------------------------------------------------
+# Query root — includes both project-level and management API roots
+# ---------------------------------------------------------------------------
+
+type Query {
+  # --- Auth (built-in per project) ---
+
+  """Fetch a single user by primary key."""
+  user(id: uuid!): users
+
+  """Fetch a list of users with optional filters."""
+  users(
+    where: users_bool_exp
+    order_by: [users_order_by!]
+    limit: Int
+    offset: Int
+  ): [users!]!
+
+  """Aggregate over users."""
+  usersAggregate(where: users_bool_exp): users_aggregate!
+
+  """Fetch available auth roles."""
+  authRoles(order_by: [authUserRoles_order_by!]): [authRoles!]!
+
+  """Fetch a single auth refresh token by primary key."""
+  authRefreshToken(id: uuid!): authRefreshTokens
+
+  """Fetch refresh tokens with filters."""
+  authRefreshTokens(
+    where: authRefreshTokens_bool_exp
+    limit: Int
+    offset: Int
+  ): [authRefreshTokens!]!
+
+  # --- Storage (built-in per project) ---
+
+  """Fetch files with optional filters."""
+  files(
+    where: files_bool_exp
+    order_by: [files_order_by!]
+    limit: Int
+    offset: Int
+  ): [files!]!
+
+  """Aggregate over files."""
+  filesAggregate(where: files_bool_exp): files_aggregate!
+
+  """Fetch a single file by primary key."""
+  file(id: uuid!): files
+
+  """Fetch all storage buckets."""
+  buckets(order_by: [files_order_by!]): [buckets!]!
+
+  """Fetch a single bucket by primary key."""
+  bucket(id: String!): buckets
+
+  # --- Platform / management API ---
+
+  """Fetch a single app (project) by primary key."""
+  app(id: uuid!): apps
+
+  """Fetch apps with optional filters."""
+  apps(
+    where: apps_bool_exp
+    order_by: [apps_order_by!]
+    limit: Int
+    offset: Int
+  ): [apps!]!
+
+  """Fetch organizations with optional filters."""
+  organizations(
+    where: organizations_bool_exp
+    order_by: [organizations_order_by!]
+  ): [organizations!]!
+
+  """Fetch available cloud regions."""
+  regions(order_by: [regions_order_by!]): [regions!]!
+
+  """Fetch subscription plans."""
+  plans(
+    order_by: [plans_order_by!]
+    where: plans_bool_exp
+  ): [plans!]!
+
+  """Fetch deployments for a project."""
+  deployments(
+    where: deployments_bool_exp
+    order_by: [deployments_order_by!]
+    limit: Int
+    offset: Int
+  ): [deployments!]!
+
+  """Fetch a single deployment by primary key."""
+  deployment(id: uuid!): deployments
+
+  """Fetch pipeline runs."""
+  pipelineRuns(
+    where: pipelineRuns_bool_exp
+    order_by: [pipelineRuns_order_by!]
+    limit: Int
+    offset: Int
+  ): [pipelineRuns!]!
+
+  """Fetch a single pipeline run by primary key."""
+  pipelineRun(id: uuid!): pipelineRuns
+
+  """Unified deployments view (pipeline runs + legacy deployments)."""
+  unifiedDeployments(
+    where: unifiedDeployments_bool_exp
+    order_by: [unifiedDeployments_order_by!]
+    limit: Int
+    offset: Int
+  ): [unifiedDeployments!]!
+}
+
+# Additional filter/order stubs for management types
+input organizations_bool_exp {
+  slug: String_comparison_exp
+  _and: [organizations_bool_exp!]
+}
+
+input organizations_order_by {
+  name: order_by
+}
+
+input regions_order_by {
+  city: order_by
+}
+
+input plans_bool_exp {
+  deprecated: Boolean_comparison_exp
+  isPublic: Boolean_comparison_exp
+  isFree: Boolean_comparison_exp
+}
+
+input plans_order_by {
+  sort: order_by
+  price: order_by
+}
+
+input deployments_bool_exp {
+  appId: uuid_comparison_exp
+  deploymentStatus: String_comparison_exp
+  _and: [deployments_bool_exp!]
+}
+
+input pipelineRuns_bool_exp {
+  appId: uuid_comparison_exp
+  status: String_comparison_exp
+  _and: [pipelineRuns_bool_exp!]
+  _or: [pipelineRuns_bool_exp!]
+}
+
+input unifiedDeployments_bool_exp {
+  appId: uuid_comparison_exp
+  status: String_comparison_exp
+  commitSHA: String_comparison_exp
+  _and: [unifiedDeployments_bool_exp!]
+  _or: [unifiedDeployments_bool_exp!]
+}
+
+input unifiedDeployments_order_by {
+  startedAt: order_by
+}
+
+# ---------------------------------------------------------------------------
+# Mutation root
+# ---------------------------------------------------------------------------
+
+type Mutation {
+  # --- Auth mutations ---
+
+  """Update a user by primary key."""
+  updateUser(pk_columns: users_pk_columns_input!, _set: users_set_input!): users
+
+  """Delete a user by primary key."""
+  deleteUser(id: uuid!): users
+
+  """Insert user role(s)."""
+  insertAuthUserRoles(objects: [authUserRoles_insert_input!]!): authUserRoles_mutation_response
+
+  """Delete user roles by filter."""
+  deleteAuthUserRoles(where: authUserRoles_bool_exp!): authUserRoles_mutation_response
+
+  # --- Storage mutations ---
+
+  """Insert a new storage bucket."""
+  insertBucket(object: buckets_insert_input!): buckets
+
+  """Update a bucket by primary key."""
+  updateBucket(pk_columns: buckets_pk_columns_input!, _set: buckets_set_input!): buckets
+
+  """Delete a bucket by primary key."""
+  deleteBucket(id: String!): buckets
+
+  # --- Platform mutations ---
+
+  """Update an app (project) by primary key."""
+  updateApp(pk_columns: apps_pk_columns_input!, _set: apps_set_input!): apps
+
+  """Insert a pipeline run."""
+  insertPipelineRun(object: pipelineRuns_insert_input!): pipelineRuns
+
+  """Restore application database from backup."""
+  restoreApplicationDatabase(appID: String!, backupID: String!): Boolean
+}
+
+type authUserRoles_mutation_response {
+  affected_rows: Int!
+  returning: [authUserRoles!]!
+}
+
+input users_pk_columns_input {
+  id: uuid!
+}
+
+input buckets_pk_columns_input {
+  id: String!
+}
+
+input apps_pk_columns_input {
+  id: uuid!
+}
+
+# ---------------------------------------------------------------------------
+# Subscription root (real-time, delivered over WebSocket)
+# ---------------------------------------------------------------------------
+
+type Subscription {
+  """Subscribe to live user data."""
+  users(
+    where: users_bool_exp
+    order_by: [users_order_by!]
+    limit: Int
+    offset: Int
+  ): [users!]!
+
+  """Subscribe to live file metadata."""
+  files(
+    where: files_bool_exp
+    order_by: [files_order_by!]
+    limit: Int
+    offset: Int
+  ): [files!]!
+
+  """Subscribe to pending/running pipeline runs."""
+  pipelineRuns(
+    where: pipelineRuns_bool_exp
+    order_by: [pipelineRuns_order_by!]
+    limit: Int
+    offset: Int
+  ): [pipelineRuns!]!
+
+  """Subscribe to a single pipeline run by primary key."""
+  pipelineRun(id: uuid!): pipelineRuns
+
+  """Subscribe to unified deployments."""
+  unifiedDeployments(
+    where: unifiedDeployments_bool_exp
+    order_by: [unifiedDeployments_order_by!]
+    limit: Int
+    offset: Int
+  ): [unifiedDeployments!]!
+}

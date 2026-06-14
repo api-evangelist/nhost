@@ -1,150 +1,143 @@
 aid: nhost
 name: Nhost
-description: >-
-  Nhost is an open-source Firebase alternative that provides a fully managed
-  backend platform built on PostgreSQL, GraphQL, and modern open-source tools.
-  Developers get instant REST and GraphQL APIs auto-generated from their
-  database schema, along with authentication supporting email/password, OAuth,
-  magic links, WebAuthn, and one-time passwords. The platform includes S3-
-  compatible file storage with CDN delivery and image transformation, serverless
-  functions deployable as HTTP endpoints, and real-time GraphQL subscriptions.
-  Nhost also offers a local development CLI, GitHub-based automated deployments,
-  an AI toolkit with auto-embeddings and assistants, and managed container
-  services—enabling teams to launch production-ready backends without
-  infrastructure management.
+description: Nhost is an open-source Firebase alternative that provides a fully managed
+  backend platform built on PostgreSQL, GraphQL, and modern open-source tools. Developers
+  get instant REST and GraphQL APIs auto-generated from their database schema, along
+  with authentication supporting email/password, OAuth, magic links, WebAuthn, and
+  one-time passwords. The platform includes S3- compatible file storage with CDN delivery
+  and image transformation, serverless functions deployable as HTTP endpoints, and
+  real-time GraphQL subscriptions. Nhost also offers a local development CLI, GitHub-based
+  automated deployments, an AI toolkit with auto-embeddings and assistants, and managed
+  container services—enabling teams to launch production-ready backends without infrastructure
+  management.
 type: Index
 image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
-url: >-
-  https://raw.githubusercontent.com/api-evangelist/nhost/refs/heads/main/apis.yml
-created: "2026-06-12"
-modified: "2026-06-12"
-specificationVersion: "0.19"
+url: https://raw.githubusercontent.com/api-evangelist/nhost/refs/heads/main/apis.yml
+created: '2026-06-12'
+modified: '2026-06-12'
+specificationVersion: '0.19'
 tags:
-  - GraphQL
-  - PostgreSQL
-  - Authentication
-  - File Storage
-  - Serverless Functions
-  - Real-Time
-  - Open Source
-  - Firebase Alternative
-  - Backend as a Service
-  - BaaS
+- GraphQL
+- PostgreSQL
+- Authentication
+- File Storage
+- Serverless Functions
+- Real-Time
+- Open Source
+- Firebase Alternative
+- Backend as a Service
+- BaaS
 apis:
-  - name: Nhost GraphQL API
-    description: >-
-      Instant, real-time GraphQL API auto-generated from PostgreSQL database
-      schemas via Hasura. Supports queries, mutations, and live subscriptions
-      with row- and column-level role-based access control.
-    image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
-    humanURL: https://docs.nhost.io/products/graphql/
-    baseURL: https://{subdomain}.nhost.run/v1/graphql
-    tags:
-      - GraphQL
-      - Real-Time
-      - Subscriptions
-      - PostgreSQL
-    properties:
-      - type: Documentation
-        url: https://docs.nhost.io/products/graphql/
-  - name: Nhost Authentication API
-    description: >-
-      Full-featured authentication service supporting email/password, magic
-      links, one-time passwords, SMS, WebAuthn/security keys, and OAuth2
-      providers including Google, GitHub, Apple, and Discord. Issues JWT access
-      tokens and long-lived refresh tokens.
-    image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
-    humanURL: https://docs.nhost.io/products/auth/
-    baseURL: https://{subdomain}.nhost.run/v1/auth
-    tags:
-      - Authentication
-      - OAuth2
-      - JWT
-      - WebAuthn
-    properties:
-      - type: Documentation
-        url: https://docs.nhost.io/products/auth/
-      - type: OpenAPI
-        url: openapi/nhost-authentication-openapi.yml
-  - name: Nhost Storage API
-    description: >-
-      S3-compatible file storage service with GraphQL metadata management, CDN
-      delivery across 80+ locations, image transformation, antivirus scanning,
-      and pre-signed URL generation. Permissions enforced via Hasura's
-      role-based access control.
-    image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
-    humanURL: https://docs.nhost.io/products/storage/
-    baseURL: https://{subdomain}.nhost.run/v1/storage
-    tags:
-      - File Storage
-      - CDN
-      - S3
-      - Image Transformation
-    properties:
-      - type: Documentation
-        url: https://docs.nhost.io/products/storage/
-      - type: OpenAPI
-        url: openapi/nhost-storage-openapi.yml
-  - name: Nhost Serverless Functions API
-    description: >-
-      Deploy JavaScript and TypeScript serverless functions as HTTP API
-      endpoints for webhooks, event triggers, and custom backend logic. Each
-      file in the functions directory becomes an endpoint, auto-deployed via
-      GitHub integration.
-    image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
-    humanURL: https://docs.nhost.io/products/functions/
-    baseURL: https://{subdomain}.nhost.run/v1/functions
-    tags:
-      - Serverless
-      - Functions
-      - Webhooks
-      - HTTP Endpoints
-    properties:
-      - type: Documentation
-        url: https://docs.nhost.io/products/functions/
-  - name: Nhost AI API
-    description: >-
-      AI toolkit providing GraphQL-based assistant management, auto-embeddings,
-      session handling, and file stores. Enables developers to turn any Nhost
-      project into an agentic service with built-in vector search capabilities.
-    image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
-    humanURL: https://docs.nhost.io/products/ai/
-    baseURL: https://{subdomain}.nhost.run/v1/ai
-    tags:
-      - AI
-      - Embeddings
-      - Assistants
-      - Vector Search
-    properties:
-      - type: Documentation
-        url: https://docs.nhost.io/products/ai/
-common:
-  - type: Website
-    url: https://nhost.io/
+- name: Nhost GraphQL API
+  description: Instant, real-time GraphQL API auto-generated from PostgreSQL database
+    schemas via Hasura. Supports queries, mutations, and live subscriptions with row-
+    and column-level role-based access control.
+  image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.nhost.io/products/graphql/
+  baseURL: https://{subdomain}.nhost.run/v1/graphql
+  tags:
+  - GraphQL
+  - Real-Time
+  - Subscriptions
+  - PostgreSQL
+  properties:
   - type: Documentation
-    url: https://docs.nhost.io/
-  - type: GitHubOrg
-    url: https://github.com/nhost
-  - type: LinkedIn
-    url: https://www.linkedin.com/company/nhost
-  - type: Blog
-    url: https://nhost.io/blog
-  - type: Pricing
-    url: https://nhost.io/pricing
-  - type: StatusPage
-    url: https://status.nhost.io/
-  - type: X
-    url: https://twitter.com/nhost
-  - type: Plans
-    url: plans/nhost-plans-pricing.yml
-  - type: RateLimits
-    url: rate-limits/nhost-rate-limits.yml
-  - type: FinOps
-    url: finops/nhost-finops.yml
-  - type: Vocabulary
-    url: vocabulary/nhost-vocabulary.yml
-  - type: JSONLDContext
-    url: json-ld/nhost-context.jsonld
+    url: https://docs.nhost.io/products/graphql/
+  - url: graphql/nhost-graphql.md
+    type: GraphQL
+- name: Nhost Authentication API
+  description: Full-featured authentication service supporting email/password, magic
+    links, one-time passwords, SMS, WebAuthn/security keys, and OAuth2 providers including
+    Google, GitHub, Apple, and Discord. Issues JWT access tokens and long-lived refresh
+    tokens.
+  image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.nhost.io/products/auth/
+  baseURL: https://{subdomain}.nhost.run/v1/auth
+  tags:
+  - Authentication
+  - OAuth2
+  - JWT
+  - WebAuthn
+  properties:
+  - type: Documentation
+    url: https://docs.nhost.io/products/auth/
+  - type: OpenAPI
+    url: openapi/nhost-authentication-openapi.yml
+- name: Nhost Storage API
+  description: S3-compatible file storage service with GraphQL metadata management,
+    CDN delivery across 80+ locations, image transformation, antivirus scanning, and
+    pre-signed URL generation. Permissions enforced via Hasura's role-based access
+    control.
+  image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.nhost.io/products/storage/
+  baseURL: https://{subdomain}.nhost.run/v1/storage
+  tags:
+  - File Storage
+  - CDN
+  - S3
+  - Image Transformation
+  properties:
+  - type: Documentation
+    url: https://docs.nhost.io/products/storage/
+  - type: OpenAPI
+    url: openapi/nhost-storage-openapi.yml
+- name: Nhost Serverless Functions API
+  description: Deploy JavaScript and TypeScript serverless functions as HTTP API endpoints
+    for webhooks, event triggers, and custom backend logic. Each file in the functions
+    directory becomes an endpoint, auto-deployed via GitHub integration.
+  image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.nhost.io/products/functions/
+  baseURL: https://{subdomain}.nhost.run/v1/functions
+  tags:
+  - Serverless
+  - Functions
+  - Webhooks
+  - HTTP Endpoints
+  properties:
+  - type: Documentation
+    url: https://docs.nhost.io/products/functions/
+- name: Nhost AI API
+  description: AI toolkit providing GraphQL-based assistant management, auto-embeddings,
+    session handling, and file stores. Enables developers to turn any Nhost project
+    into an agentic service with built-in vector search capabilities.
+  image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.nhost.io/products/ai/
+  baseURL: https://{subdomain}.nhost.run/v1/ai
+  tags:
+  - AI
+  - Embeddings
+  - Assistants
+  - Vector Search
+  properties:
+  - type: Documentation
+    url: https://docs.nhost.io/products/ai/
+common:
+- type: Website
+  url: https://nhost.io/
+- type: Documentation
+  url: https://docs.nhost.io/
+- type: GitHubOrg
+  url: https://github.com/nhost
+- type: LinkedIn
+  url: https://www.linkedin.com/company/nhost
+- type: Blog
+  url: https://nhost.io/blog
+- type: Pricing
+  url: https://nhost.io/pricing
+- type: StatusPage
+  url: https://status.nhost.io/
+- type: X
+  url: https://twitter.com/nhost
+- type: Plans
+  url: plans/nhost-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/nhost-rate-limits.yml
+- type: FinOps
+  url: finops/nhost-finops.yml
+- type: Vocabulary
+  url: vocabulary/nhost-vocabulary.yml
+- type: JSONLDContext
+  url: json-ld/nhost-context.jsonld
 maintainers:
-  - FN: Kin Lane
-    email: kin@apievangelist.com
+- FN: Kin Lane
+  email: kin@apievangelist.com
