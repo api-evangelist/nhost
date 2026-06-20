@@ -11,7 +11,7 @@ description: Nhost is an open-source Firebase alternative that provides a fully 
   container services—enabling teams to launch production-ready backends without infrastructure
   management.
 type: Index
-image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
 url: https://raw.githubusercontent.com/api-evangelist/nhost/refs/heads/main/apis.yml
 created: '2026-06-12'
 modified: '2026-06-12'
@@ -32,7 +32,7 @@ apis:
   description: Instant, real-time GraphQL API auto-generated from PostgreSQL database
     schemas via Hasura. Supports queries, mutations, and live subscriptions with row-
     and column-level role-based access control.
-  image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
   humanURL: https://docs.nhost.io/products/graphql/
   baseURL: https://{subdomain}.nhost.run/v1/graphql
   tags:
@@ -50,7 +50,7 @@ apis:
     links, one-time passwords, SMS, WebAuthn/security keys, and OAuth2 providers including
     Google, GitHub, Apple, and Discord. Issues JWT access tokens and long-lived refresh
     tokens.
-  image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
   humanURL: https://docs.nhost.io/products/auth/
   baseURL: https://{subdomain}.nhost.run/v1/auth
   tags:
@@ -68,7 +68,7 @@ apis:
     CDN delivery across 80+ locations, image transformation, antivirus scanning, and
     pre-signed URL generation. Permissions enforced via Hasura's role-based access
     control.
-  image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
   humanURL: https://docs.nhost.io/products/storage/
   baseURL: https://{subdomain}.nhost.run/v1/storage
   tags:
@@ -85,7 +85,7 @@ apis:
   description: Deploy JavaScript and TypeScript serverless functions as HTTP API endpoints
     for webhooks, event triggers, and custom backend logic. Each file in the functions
     directory becomes an endpoint, auto-deployed via GitHub integration.
-  image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
   humanURL: https://docs.nhost.io/products/functions/
   baseURL: https://{subdomain}.nhost.run/v1/functions
   tags:
@@ -100,7 +100,7 @@ apis:
   description: AI toolkit providing GraphQL-based assistant management, auto-embeddings,
     session handling, and file stores. Enables developers to turn any Nhost project
     into an agentic service with built-in vector search capabilities.
-  image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
   humanURL: https://docs.nhost.io/products/ai/
   baseURL: https://{subdomain}.nhost.run/v1/ai
   tags:
