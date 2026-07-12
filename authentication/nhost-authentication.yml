@@ -1,0 +1,25 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/nhost-authentication-openapi.yml, openapi/nhost-storage-openapi.yml
+summary:
+  types:
+  - apiKey
+  - http
+  api_key_in:
+  - header
+schemes:
+- name: BearerAuth
+  type: http
+  scheme: bearer
+  description: Bearer authentication with JWT access token. Used to authenticate requests to
+    protected endpoints.
+  sources:
+  - openapi/nhost-authentication-openapi.yml
+  - openapi/nhost-storage-openapi.yml
+- name: X-Hasura-Admin-Secret
+  type: apiKey
+  in: header
+  parameter: X-Hasura-Admin-Secret
+  description: Hasura admin secret key for backend/administrative operations.
+  sources:
+  - openapi/nhost-storage-openapi.yml

@@ -112,6 +112,14 @@ apis:
   - type: Documentation
     url: https://docs.nhost.io/products/ai/
 common:
+- type: TrustCenter
+  url: security/nhost-trust-center.yml
+- type: VulnerabilityDisclosure
+  url: security/nhost-vulnerability-disclosure.yml
+- type: DomainSecurity
+  url: security/nhost-domain-security.yml
+- type: Authentication
+  url: authentication/nhost-authentication.yml
 - type: Website
   url: https://nhost.io/
 - type: Documentation
