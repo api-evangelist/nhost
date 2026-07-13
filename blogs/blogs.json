@@ -2,13 +2,14 @@
   "repo": "nhost",
   "feeds": [
     {
-      "source": "https://nhost.io/blog",
-      "feed_url": "",
+      "source": "https://www.linkedin.com/company/nhost",
+      "feed_url": "https://www.linkedin.com/company/nhost",
+      "title": "",
       "saved": 0,
-      "method": "agent-scrape"
+      "method": "none"
     }
   ],
   "post_count": 25,
-  "fetched": "2026-06-27T12:56:03Z",
-  "agent_pulled": "2026-06-27"
+  "fetched": "2026-07-11T11:50:51Z",
+  "agent_pulled": "2026-07-04"
 }
