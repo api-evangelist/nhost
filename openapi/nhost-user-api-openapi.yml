@@ -1,0 +1,409 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: Nhost authentication user API
+  description: Comprehensive authentication service for managing user identities, sessions, and authentication methods
+  license:
+    name: MIT License
+    url: https://opensource.org/licenses/MIT
+  contact:
+    name: Nhost Support
+    email: support@nhost.io
+    url: https://nhost.io
+servers:
+- url: https://{subdomain}.auth.{region}.nhost.run/v1
+  description: Nhost Authentication API Server
+tags:
+- name: user
+  description: User profile and account management operations including email/password changes, MFA configuration, and profile updates
+paths:
+  /mfa/totp/generate:
+    get:
+      summary: Generate TOTP secret
+      description: Generate a Time-based One-Time Password (TOTP) secret for setting up multi-factor authentication
+      operationId: changeUserMfa
+      tags:
+      - user
+      security:
+      - BearerAuth: []
+      responses:
+        '200':
+          description: TOTP secret successfully generated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TotpGenerateResponse'
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: An error occurred while processing the request
+  /user:
+    get:
+      summary: Get user information
+      description: Retrieve the authenticated user's profile information including roles, metadata, and account status.
+      operationId: getUser
+      tags:
+      - user
+      security:
+      - BearerAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: User information
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: An error occurred while processing the request
+  /user/email/change:
+    post:
+      summary: Change user email
+      description: Request to change the authenticated user's email address. A verification email will be sent to the new address to confirm the change. Requires elevated permissions.
+      operationId: changeUserEmail
+      tags:
+      - user
+      security:
+      - BearerAuthElevated: []
+      requestBody:
+        description: New email address and optional redirect URL for email change
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserEmailChangeRequest'
+        required: true
+      responses:
+        '200':
+          description: Email change requested. An email with a verification link has been sent to the new address
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OKResponse'
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: An error occurred while processing the request
+  /user/email/send-verification-email:
+    post:
+      summary: Send verification email
+      description: Send an email verification link to the specified email address. Used to verify email addresses for new accounts or email changes.
+      operationId: sendVerificationEmail
+      tags:
+      - user
+      requestBody:
+        description: Email address and optional redirect URL for verification email
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserEmailSendVerificationEmailRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OKResponse'
+          description: Email verification email sent successfully
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: An error occurred while processing the request
+  /user/password:
+    post:
+      summary: Change user password
+      description: Change the user's password. The user must be authenticated with elevated permissions or provide a valid password reset ticket.
+      operationId: changeUserPassword
+      tags:
+      - user
+      security:
+      - BearerAuthElevated: []
+      - {}
+      requestBody:
+        description: New password and optional password reset ticket for authentication
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserPasswordRequest'
+        required: true
+      responses:
+        '200':
+          description: Password changed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OKResponse'
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: An error occurred while processing the request
+  /user/password/reset:
+    post:
+      summary: Request password reset
+      description: Request a password reset for a user account. An email with a verification link will be sent to the user's email address to complete the password reset process.
+      operationId: sendPasswordResetEmail
+      tags:
+      - user
+      requestBody:
+        description: Email address and optional redirect URL for password reset
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserPasswordResetRequest'
+        required: true
+      responses:
+        '200':
+          description: Password reset requested
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OKResponse'
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: An error occurred while processing the request
+components:
+  schemas:
+    User:
+      type: object
+      description: User profile and account information
+      additionalProperties: false
+      properties:
+        avatarUrl:
+          type: string
+          description: URL to the user's profile picture
+          example: https://myapp.com/avatars/user123.jpg
+        createdAt:
+          format: date-time
+          type: string
+          description: Timestamp when the user account was created
+          example: '2023-01-15T12:34:56Z'
+        defaultRole:
+          example: user
+          type: string
+          description: Default authorization role for the user
+        displayName:
+          example: John Smith
+          type: string
+          description: User's display name
+        email:
+          description: User's email address
+          example: john.smith@nhost.io
+          format: email
+          type: string
+        emailVerified:
+          type: boolean
+          description: Whether the user's email has been verified
+          example: true
+        id:
+          description: Unique identifier for the user
+          example: 2c35b6f3-c4b9-48e3-978a-d4d0f1d42e24
+          pattern: \b[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}\b
+          type: string
+        isAnonymous:
+          type: boolean
+          description: Whether this is an anonymous user account
+          example: false
+        locale:
+          description: User's preferred locale (language code)
+          example: en
+          maxLength: 2
+          minLength: 2
+          type: string
+        metadata:
+          type: object
+          additionalProperties: true
+          description: Custom metadata associated with the user
+          example:
+            firstName: John
+            lastName: Smith
+          properties: {}
+        phoneNumber:
+          type: string
+          description: User's phone number
+          example: '+12025550123'
+        phoneNumberVerified:
+          type: boolean
+          description: Whether the user's phone number has been verified
+          example: false
+        roles:
+          example:
+          - user
+          - customer
+          type: array
+          description: List of roles assigned to the user
+          items:
+            type: string
+        activeMfaType:
+          type: string
+          description: Active MFA type for the user
+          nullable: true
+      required:
+      - avatarUrl
+      - createdAt
+      - defaultRole
+      - displayName
+      - emailVerified
+      - id
+      - isAnonymous
+      - locale
+      - metadata
+      - phoneNumberVerified
+      - roles
+    TotpGenerateResponse:
+      type: object
+      description: Response containing TOTP setup information for MFA
+      additionalProperties: false
+      properties:
+        imageUrl:
+          type: string
+          description: URL to QR code image for scanning with an authenticator app
+          example: data:image/png;base64,iVBORw0KGg...
+        totpSecret:
+          type: string
+          description: TOTP secret key for manual setup with an authenticator app
+          example: ABCDEFGHIJK23456
+      required:
+      - imageUrl
+      - totpSecret
+    ErrorResponse:
+      type: object
+      description: Standardized error response
+      additionalProperties: false
+      properties:
+        status:
+          description: HTTP status error code
+          type: integer
+          example: 400
+        message:
+          description: Human-friendly error message
+          type: string
+          example: Invalid email format
+        error:
+          description: Error code identifying the specific application error
+          type: string
+          enum:
+          - default-role-must-be-in-allowed-roles
+          - disabled-endpoint
+          - disabled-user
+          - email-already-in-use
+          - email-already-verified
+          - forbidden-anonymous
+          - internal-server-error
+          - invalid-email-password
+          - invalid-request
+          - locale-not-allowed
+          - password-too-short
+          - password-in-hibp-database
+          - redirectTo-not-allowed
+          - role-not-allowed
+          - signup-disabled
+          - unverified-user
+          - user-not-anonymous
+          - invalid-pat
+          - invalid-refresh-token
+          - invalid-ticket
+          - disabled-mfa-totp
+          - no-totp-secret
+          - invalid-totp
+          - mfa-type-not-found
+          - totp-already-active
+          - invalid-state
+          - oauth-token-echange-failed
+          - oauth-profile-fetch-failed
+          - oauth-provider-error
+          - invalid-otp
+          - cannot-send-sms
+      required:
+      - status
+      - message
+      - error
+    OptionsRedirectTo:
+      type: object
+      additionalProperties: false
+      properties:
+        redirectTo:
+          type: string
+          format: uri
+          example: https://my-app.com/catch-redirection
+    UserEmailChangeRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        newEmail:
+          description: A valid email
+          example: john.smith@nhost.io
+          format: email
+          type: string
+        options:
+          $ref: '#/components/schemas/OptionsRedirectTo'
+      required:
+      - newEmail
+    UserEmailSendVerificationEmailRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        email:
+          description: A valid email
+          example: john.smith@nhost.io
+          format: email
+          type: string
+        options:
+          $ref: '#/components/schemas/OptionsRedirectTo'
+      required:
+      - email
+    OKResponse:
+      type: string
+      additionalProperties: false
+      enum:
+      - OK
+    UserPasswordRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        newPassword:
+          description: A password of minimum 3 characters
+          example: Str0ngPassw#ord-94|%
+          minLength: 3
+          maxLength: 50
+          type: string
+        ticket:
+          type: string
+          pattern: ^passwordReset\:.*$
+          description: Ticket to reset the password, required if the user is not authenticated
+      required:
+      - newPassword
+    UserPasswordResetRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        email:
+          description: A valid email
+          example: john.smith@nhost.io
+          format: email
+          type: string
+        options:
+          $ref: '#/components/schemas/OptionsRedirectTo'
+      required:
+      - email
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: Bearer authentication with JWT access token. Used to authenticate requests to protected endpoints.
+    BearerAuthElevated:
+      type: http
+      scheme: bearer
+      description: Bearer authentication that requires elevated permissions. Used for sensitive operations that may require additional security measures such as recent authentication. For details see https://docs.nhost.io/guides/auth/elevated-permissions

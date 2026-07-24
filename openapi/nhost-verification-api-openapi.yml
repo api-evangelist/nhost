@@ -1,0 +1,425 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: Nhost authentication verification API
+  description: Comprehensive authentication service for managing user identities, sessions, and authentication methods
+  license:
+    name: MIT License
+    url: https://opensource.org/licenses/MIT
+  contact:
+    name: Nhost Support
+    email: support@nhost.io
+    url: https://nhost.io
+servers:
+- url: https://{subdomain}.auth.{region}.nhost.run/v1
+  description: Nhost Authentication API Server
+tags:
+- name: verification
+  description: Email and ticket verification operations for confirming user actions
+paths:
+  /signup/webauthn/verify:
+    post:
+      summary: Verify Webauthn sign-up
+      description: Complete the Webauthn sign-up process by verifying the response from the user's device. Returns a session if validation is successful.
+      operationId: verifySignUpWebauthn
+      requestBody:
+        description: WebAuthn credential creation response and optional user profile information
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignUpWebauthnVerifyRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SessionPayload'
+          description: Sign up successful
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: An error occurred while processing the request
+      tags:
+      - verification
+  /verify:
+    get:
+      summary: Verify email and authentication tickets
+      description: Verify tickets created by email verification, magic link authentication, or password reset processes. Redirects the user to the appropriate destination upon successful verification.
+      operationId: verifyTicket
+      tags:
+      - verification
+      parameters:
+      - $ref: '#/components/parameters/TicketQuery'
+      - $ref: '#/components/parameters/TicketTypeQuery'
+      - $ref: '#/components/parameters/RedirectToQuery'
+      responses:
+        '302':
+          description: Redirect response
+          headers:
+            Location:
+              $ref: '#/components/headers/RedirectLocation'
+          content: {}
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: An error occurred while processing the request
+components:
+  schemas:
+    User:
+      type: object
+      description: User profile and account information
+      additionalProperties: false
+      properties:
+        avatarUrl:
+          type: string
+          description: URL to the user's profile picture
+          example: https://myapp.com/avatars/user123.jpg
+        createdAt:
+          format: date-time
+          type: string
+          description: Timestamp when the user account was created
+          example: '2023-01-15T12:34:56Z'
+        defaultRole:
+          example: user
+          type: string
+          description: Default authorization role for the user
+        displayName:
+          example: John Smith
+          type: string
+          description: User's display name
+        email:
+          description: User's email address
+          example: john.smith@nhost.io
+          format: email
+          type: string
+        emailVerified:
+          type: boolean
+          description: Whether the user's email has been verified
+          example: true
+        id:
+          description: Unique identifier for the user
+          example: 2c35b6f3-c4b9-48e3-978a-d4d0f1d42e24
+          pattern: \b[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}\b
+          type: string
+        isAnonymous:
+          type: boolean
+          description: Whether this is an anonymous user account
+          example: false
+        locale:
+          description: User's preferred locale (language code)
+          example: en
+          maxLength: 2
+          minLength: 2
+          type: string
+        metadata:
+          type: object
+          additionalProperties: true
+          description: Custom metadata associated with the user
+          example:
+            firstName: John
+            lastName: Smith
+          properties: {}
+        phoneNumber:
+          type: string
+          description: User's phone number
+          example: '+12025550123'
+        phoneNumberVerified:
+          type: boolean
+          description: Whether the user's phone number has been verified
+          example: false
+        roles:
+          example:
+          - user
+          - customer
+          type: array
+          description: List of roles assigned to the user
+          items:
+            type: string
+        activeMfaType:
+          type: string
+          description: Active MFA type for the user
+          nullable: true
+      required:
+      - avatarUrl
+      - createdAt
+      - defaultRole
+      - displayName
+      - emailVerified
+      - id
+      - isAnonymous
+      - locale
+      - metadata
+      - phoneNumberVerified
+      - roles
+    SessionPayload:
+      type: object
+      description: Container for session information
+      additionalProperties: false
+      properties:
+        session:
+          $ref: '#/components/schemas/Session'
+    SignUpWebauthnVerifyRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        credential:
+          $ref: '#/components/schemas/CredentialCreationResponse'
+        options:
+          $ref: '#/components/schemas/SignUpOptions'
+        nickname:
+          description: Nickname for the security key
+          type: string
+      required:
+      - credential
+    ErrorResponse:
+      type: object
+      description: Standardized error response
+      additionalProperties: false
+      properties:
+        status:
+          description: HTTP status error code
+          type: integer
+          example: 400
+        message:
+          description: Human-friendly error message
+          type: string
+          example: Invalid email format
+        error:
+          description: Error code identifying the specific application error
+          type: string
+          enum:
+          - default-role-must-be-in-allowed-roles
+          - disabled-endpoint
+          - disabled-user
+          - email-already-in-use
+          - email-already-verified
+          - forbidden-anonymous
+          - internal-server-error
+          - invalid-email-password
+          - invalid-request
+          - locale-not-allowed
+          - password-too-short
+          - password-in-hibp-database
+          - redirectTo-not-allowed
+          - role-not-allowed
+          - signup-disabled
+          - unverified-user
+          - user-not-anonymous
+          - invalid-pat
+          - invalid-refresh-token
+          - invalid-ticket
+          - disabled-mfa-totp
+          - no-totp-secret
+          - invalid-totp
+          - mfa-type-not-found
+          - totp-already-active
+          - invalid-state
+          - oauth-token-echange-failed
+          - oauth-profile-fetch-failed
+          - oauth-provider-error
+          - invalid-otp
+          - cannot-send-sms
+      required:
+      - status
+      - message
+      - error
+    CredentialCreationResponse:
+      type: object
+      additionalProperties: false
+      x-go-type-import:
+        name: protocol
+        path: github.com/go-webauthn/webauthn/protocol
+      x-go-type: protocol.CredentialCreationResponse
+      properties:
+        id:
+          type: string
+          description: The credential's identifier
+        type:
+          type: string
+          description: The credential type represented by this object
+        rawId:
+          $ref: '#/components/schemas/URLEncodedBase64'
+        clientExtensionResults:
+          $ref: '#/components/schemas/AuthenticationExtensionsClientOutputs'
+        authenticatorAttachment:
+          type: string
+          description: The authenticator attachment
+        response:
+          $ref: '#/components/schemas/AuthenticatorAttestationResponse'
+      required:
+      - id
+      - type
+      - rawId
+      - response
+    Session:
+      type: object
+      description: User authentication session containing tokens and user information
+      additionalProperties: false
+      properties:
+        accessToken:
+          type: string
+          description: JWT token for authenticating API requests
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        accessTokenExpiresIn:
+          type: integer
+          format: int64
+          description: Expiration time of the access token in seconds
+          example: 900
+        refreshTokenId:
+          description: Identifier for the refresh token
+          example: 2c35b6f3-c4b9-48e3-978a-d4d0f1d42e24
+          pattern: \b[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}\b
+          type: string
+        refreshToken:
+          description: Token used to refresh the access token
+          example: 2c35b6f3-c4b9-48e3-978a-d4d0f1d42e24
+          pattern: \b[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}\b
+          type: string
+        user:
+          $ref: '#/components/schemas/User'
+      required:
+      - accessToken
+      - accessTokenExpiresIn
+      - refreshToken
+      - refreshTokenId
+    SignUpOptions:
+      type: object
+      additionalProperties: false
+      properties:
+        allowedRoles:
+          example:
+          - me
+          - user
+          type: array
+          items:
+            type: string
+        defaultRole:
+          example: user
+          type: string
+        displayName:
+          example: John Smith
+          type: string
+          pattern: ^[\p{L}\p{N}\p{S} ,.'-]+$
+          maxLength: 32
+        locale:
+          description: A two-characters locale
+          example: en
+          maxLength: 2
+          minLength: 2
+          type: string
+        metadata:
+          type: object
+          additionalProperties: true
+          example:
+            firstName: John
+            lastName: Smith
+          properties: {}
+        redirectTo:
+          type: string
+          format: uri
+          example: https://my-app.com/catch-redirection
+    URLEncodedBase64:
+      type: string
+      format: byte
+      description: Base64url-encoded binary data
+    CredentialPropertiesOutput:
+      type: object
+      additionalProperties: false
+      description: Credential properties extension output
+      properties:
+        rk:
+          type: boolean
+          description: Indicates if the credential is a resident key
+    AuthenticatorAttestationResponse:
+      type: object
+      additionalProperties: false
+      properties:
+        clientDataJSON:
+          $ref: '#/components/schemas/URLEncodedBase64'
+        transports:
+          type: array
+          items:
+            type: string
+          description: The authenticator transports
+        authenticatorData:
+          $ref: '#/components/schemas/URLEncodedBase64'
+        publicKey:
+          $ref: '#/components/schemas/URLEncodedBase64'
+        publicKeyAlgorithm:
+          type: integer
+          format: int64
+          description: The public key algorithm identifier
+        attestationObject:
+          $ref: '#/components/schemas/URLEncodedBase64'
+      required:
+      - clientDataJSON
+      - attestationObject
+    AuthenticationExtensionsClientOutputs:
+      type: object
+      additionalProperties: true
+      description: Map of extension outputs from the client
+      properties:
+        appid:
+          type: boolean
+          description: Application identifier extension output
+        credProps:
+          $ref: '#/components/schemas/CredentialPropertiesOutput'
+        hmacCreateSecret:
+          type: boolean
+          description: HMAC secret extension output
+  parameters:
+    RedirectToQuery:
+      in: query
+      name: redirectTo
+      description: Target URL for the redirect
+      required: true
+      schema:
+        description: Target URL for the redirect
+        type: string
+        format: uri
+        example: https://my-app.com/catch-redirection
+    TicketTypeQuery:
+      in: query
+      name: type
+      description: Type of the ticket. Deprecated, no longer used
+      required: false
+      schema:
+        type: string
+        enum:
+        - emailVerify
+        - emailConfirmChange
+        - signinPasswordless
+        - passwordReset
+        description: Type of the ticket
+        example: emailVerify
+      deprecated: true
+    TicketQuery:
+      in: query
+      name: ticket
+      description: Ticket
+      required: true
+      schema:
+        type: string
+        description: Ticket
+        example: verifyEmail:xxxxxxxx
+  headers:
+    RedirectLocation:
+      description: URL to redirect to
+      schema:
+        type: string
+        format: uri
+      required: true
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: Bearer authentication with JWT access token. Used to authenticate requests to protected endpoints.
+    BearerAuthElevated:
+      type: http
+      scheme: bearer
+      description: Bearer authentication that requires elevated permissions. Used for sensitive operations that may require additional security measures such as recent authentication. For details see https://docs.nhost.io/guides/auth/elevated-permissions

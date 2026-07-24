@@ -1,0 +1,320 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: Nhost authentication session API
+  description: Comprehensive authentication service for managing user identities, sessions, and authentication methods
+  license:
+    name: MIT License
+    url: https://opensource.org/licenses/MIT
+  contact:
+    name: Nhost Support
+    email: support@nhost.io
+    url: https://nhost.io
+servers:
+- url: https://{subdomain}.auth.{region}.nhost.run/v1
+  description: Nhost Authentication API Server
+tags:
+- name: session
+  description: Session management operations including token refresh, verification, and sign-out
+paths:
+  /signout:
+    post:
+      summary: Sign out
+      description: End the current user session by invalidating refresh tokens. Optionally sign out from all devices.
+      operationId: signOut
+      tags:
+      - session
+      security:
+      - BearerAuth: []
+      - {}
+      requestBody:
+        description: Sign-out options including refresh token and whether to sign out from all devices
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignOutRequest'
+      responses:
+        '200':
+          description: Successfully signed out
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OKResponse'
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: An error occurred while processing the request
+  /token:
+    post:
+      summary: Refresh access token
+      description: Generate a new JWT access token using a valid refresh token. The refresh token used will be revoked and a new one will be issued.
+      operationId: refreshToken
+      tags:
+      - session
+      requestBody:
+        description: Refresh token to exchange for a new access token
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RefreshTokenRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Session'
+          description: Access token successfully refreshed
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: An error occurred while processing the request
+  /token/verify:
+    post:
+      summary: Verify JWT token
+      description: Verify the validity of a JWT access token. If no request body is provided, the Authorization header will be used for verification.
+      operationId: verifyToken
+      tags:
+      - session
+      security:
+      - BearerAuth: []
+      - {}
+      requestBody:
+        description: Optional JWT token to verify (if not provided, Authorization header will be used)
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VerifyTokenRequest'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: string
+                example: OK
+          description: Valid JWT token
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: An error occurred while processing the request
+components:
+  schemas:
+    User:
+      type: object
+      description: User profile and account information
+      additionalProperties: false
+      properties:
+        avatarUrl:
+          type: string
+          description: URL to the user's profile picture
+          example: https://myapp.com/avatars/user123.jpg
+        createdAt:
+          format: date-time
+          type: string
+          description: Timestamp when the user account was created
+          example: '2023-01-15T12:34:56Z'
+        defaultRole:
+          example: user
+          type: string
+          description: Default authorization role for the user
+        displayName:
+          example: John Smith
+          type: string
+          description: User's display name
+        email:
+          description: User's email address
+          example: john.smith@nhost.io
+          format: email
+          type: string
+        emailVerified:
+          type: boolean
+          description: Whether the user's email has been verified
+          example: true
+        id:
+          description: Unique identifier for the user
+          example: 2c35b6f3-c4b9-48e3-978a-d4d0f1d42e24
+          pattern: \b[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}\b
+          type: string
+        isAnonymous:
+          type: boolean
+          description: Whether this is an anonymous user account
+          example: false
+        locale:
+          description: User's preferred locale (language code)
+          example: en
+          maxLength: 2
+          minLength: 2
+          type: string
+        metadata:
+          type: object
+          additionalProperties: true
+          description: Custom metadata associated with the user
+          example:
+            firstName: John
+            lastName: Smith
+          properties: {}
+        phoneNumber:
+          type: string
+          description: User's phone number
+          example: '+12025550123'
+        phoneNumberVerified:
+          type: boolean
+          description: Whether the user's phone number has been verified
+          example: false
+        roles:
+          example:
+          - user
+          - customer
+          type: array
+          description: List of roles assigned to the user
+          items:
+            type: string
+        activeMfaType:
+          type: string
+          description: Active MFA type for the user
+          nullable: true
+      required:
+      - avatarUrl
+      - createdAt
+      - defaultRole
+      - displayName
+      - emailVerified
+      - id
+      - isAnonymous
+      - locale
+      - metadata
+      - phoneNumberVerified
+      - roles
+    SignOutRequest:
+      type: object
+      properties:
+        refreshToken:
+          type: string
+          description: Refresh token for the current session
+        all:
+          type: boolean
+          default: false
+          description: Sign out from all connected devices
+    ErrorResponse:
+      type: object
+      description: Standardized error response
+      additionalProperties: false
+      properties:
+        status:
+          description: HTTP status error code
+          type: integer
+          example: 400
+        message:
+          description: Human-friendly error message
+          type: string
+          example: Invalid email format
+        error:
+          description: Error code identifying the specific application error
+          type: string
+          enum:
+          - default-role-must-be-in-allowed-roles
+          - disabled-endpoint
+          - disabled-user
+          - email-already-in-use
+          - email-already-verified
+          - forbidden-anonymous
+          - internal-server-error
+          - invalid-email-password
+          - invalid-request
+          - locale-not-allowed
+          - password-too-short
+          - password-in-hibp-database
+          - redirectTo-not-allowed
+          - role-not-allowed
+          - signup-disabled
+          - unverified-user
+          - user-not-anonymous
+          - invalid-pat
+          - invalid-refresh-token
+          - invalid-ticket
+          - disabled-mfa-totp
+          - no-totp-secret
+          - invalid-totp
+          - mfa-type-not-found
+          - totp-already-active
+          - invalid-state
+          - oauth-token-echange-failed
+          - oauth-profile-fetch-failed
+          - oauth-provider-error
+          - invalid-otp
+          - cannot-send-sms
+      required:
+      - status
+      - message
+      - error
+    Session:
+      type: object
+      description: User authentication session containing tokens and user information
+      additionalProperties: false
+      properties:
+        accessToken:
+          type: string
+          description: JWT token for authenticating API requests
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        accessTokenExpiresIn:
+          type: integer
+          format: int64
+          description: Expiration time of the access token in seconds
+          example: 900
+        refreshTokenId:
+          description: Identifier for the refresh token
+          example: 2c35b6f3-c4b9-48e3-978a-d4d0f1d42e24
+          pattern: \b[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}\b
+          type: string
+        refreshToken:
+          description: Token used to refresh the access token
+          example: 2c35b6f3-c4b9-48e3-978a-d4d0f1d42e24
+          pattern: \b[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}\b
+          type: string
+        user:
+          $ref: '#/components/schemas/User'
+      required:
+      - accessToken
+      - accessTokenExpiresIn
+      - refreshToken
+      - refreshTokenId
+    OKResponse:
+      type: string
+      additionalProperties: false
+      enum:
+      - OK
+    RefreshTokenRequest:
+      type: object
+      description: Request to refresh an access token
+      additionalProperties: false
+      properties:
+        refreshToken:
+          description: Refresh token used to generate a new access token
+          example: 2c35b6f3-c4b9-48e3-978a-d4d0f1d42e24
+          pattern: \b[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}\b
+          type: string
+      required:
+      - refreshToken
+    VerifyTokenRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        token:
+          type: string
+          description: JWT token to verify
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: Bearer authentication with JWT access token. Used to authenticate requests to protected endpoints.
+    BearerAuthElevated:
+      type: http
+      scheme: bearer
+      description: Bearer authentication that requires elevated permissions. Used for sensitive operations that may require additional security measures such as recent authentication. For details see https://docs.nhost.io/guides/auth/elevated-permissions

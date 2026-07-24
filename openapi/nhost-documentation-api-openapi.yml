@@ -1,0 +1,70 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: Nhost authentication documentation API
+  description: Comprehensive authentication service for managing user identities, sessions, and authentication methods
+  license:
+    name: MIT License
+    url: https://opensource.org/licenses/MIT
+  contact:
+    name: Nhost Support
+    email: support@nhost.io
+    url: https://nhost.io
+servers:
+- url: https://{subdomain}.auth.{region}.nhost.run/v1
+  description: Nhost Authentication API Server
+tags:
+- name: documentation
+  description: API documentation
+paths:
+  /openapi.yaml:
+    get:
+      summary: Get OpenAPI specification
+      description: Returns the OpenAPI schema definition for this API, allowing clients to understand the available endpoints and models.
+      operationId: getOpenAPISpec
+      tags:
+      - documentation
+      responses:
+        '200':
+          description: OpenAPI schema definition
+          content:
+            application/x-yaml:
+              schema:
+                type: object
+        default:
+          description: Error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  schemas:
+    ErrorResponse:
+      type: object
+      description: Error information returned by the API.
+      properties:
+        error:
+          type: object
+          additionalProperties: false
+          description: Error details.
+          properties:
+            message:
+              type: string
+              description: Human-readable error message.
+              example: File not found
+            data:
+              type: object
+              additionalProperties: true
+              description: Additional data related to the error, if any.
+          required:
+          - message
+      additionalProperties: false
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: Bearer authentication with JWT access token. Used to authenticate requests to protected endpoints.
+    BearerAuthElevated:
+      type: http
+      scheme: bearer
+      description: Bearer authentication that requires elevated permissions. Used for sensitive operations that may require additional security measures such as recent authentication. For details see https://docs.nhost.io/guides/auth/elevated-permissions

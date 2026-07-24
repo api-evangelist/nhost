@@ -1,0 +1,211 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: Nhost authentication operations API
+  description: Comprehensive authentication service for managing user identities, sessions, and authentication methods
+  license:
+    name: MIT License
+    url: https://opensource.org/licenses/MIT
+  contact:
+    name: Nhost Support
+    email: support@nhost.io
+    url: https://nhost.io
+servers:
+- url: https://{subdomain}.auth.{region}.nhost.run/v1
+  description: Nhost Authentication API Server
+tags:
+- name: operations
+  description: Administrative operations
+paths:
+  /ops/delete-broken-metadata:
+    post:
+      summary: Delete broken metadata
+      operationId: deleteBrokenMetadata
+      description: Broken metadata is defined as metadata that has isUploaded = true but there is no file in the storage matching it. This is an admin operation that requires the Hasura admin secret.
+      tags:
+      - operations
+      security:
+      - X-Hasura-Admin-Secret: []
+      responses:
+        '200':
+          description: Successfully deleted broken metadata
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  metadata:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/FileSummary'
+        default:
+          description: En error occured
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /ops/delete-orphans:
+    post:
+      summary: Deletes orphaned files
+      operationId: deleteOrphanedFiles
+      description: Orphaned files are files that are present in the storage but have no associated metadata. This is an admin operation that requires the Hasura admin secret.
+      tags:
+      - operations
+      security:
+      - X-Hasura-Admin-Secret: []
+      responses:
+        '200':
+          description: Successfully deleted orphaned files
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  files:
+                    type: array
+                    items:
+                      type: string
+        default:
+          description: En error occured
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /ops/list-broken-metadata:
+    post:
+      summary: Lists broken metadata
+      operationId: listBrokenMetadata
+      description: Broken metadata is defined as metadata that has isUploaded = true but there is no file in the storage matching it. This is an admin operation that requires the Hasura admin secret.
+      tags:
+      - operations
+      security:
+      - X-Hasura-Admin-Secret: []
+      responses:
+        '200':
+          description: Successfully computed broken metadata
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  metadata:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/FileSummary'
+        default:
+          description: En error occured
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /ops/list-not-uploaded:
+    post:
+      summary: Lists files that haven't been uploaded
+      operationId: listFilesNotUploaded
+      description: That is, metadata that has isUploaded = false. This is an admin operation that requires the Hasura admin secret.
+      tags:
+      - operations
+      security:
+      - X-Hasura-Admin-Secret: []
+      responses:
+        '200':
+          description: Successfully checked files not uploaded
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  metadata:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/FileSummary'
+        default:
+          description: En error occured
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /ops/list-orphans:
+    post:
+      summary: Lists orphaned files
+      operationId: listOrphanedFiles
+      description: Orphaned files are files that are present in the storage but have no associated metadata. This is an admin operation that requires the Hasura admin secret.
+      tags:
+      - operations
+      security:
+      - X-Hasura-Admin-Secret: []
+      responses:
+        '200':
+          description: Successfully computed orphaned files
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  files:
+                    type: array
+                    items:
+                      type: string
+        default:
+          description: En error occured
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  schemas:
+    ErrorResponse:
+      type: object
+      description: Error information returned by the API.
+      properties:
+        error:
+          type: object
+          additionalProperties: false
+          description: Error details.
+          properties:
+            message:
+              type: string
+              description: Human-readable error message.
+              example: File not found
+            data:
+              type: object
+              additionalProperties: true
+              description: Additional data related to the error, if any.
+          required:
+          - message
+      additionalProperties: false
+    FileSummary:
+      type: object
+      description: Basic information about a file in storage.
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the file.
+          example: d5e76ceb-77a2-4153-b7da-1f7c115b2ff2
+        name:
+          type: string
+          description: Name of the file including extension.
+          example: profile-picture.jpg
+        bucketId:
+          type: string
+          description: ID of the bucket containing the file.
+          example: users-bucket
+        isUploaded:
+          type: boolean
+          description: Whether the file has been successfully uploaded.
+          example: true
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - bucketId
+      - isUploaded
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: Bearer authentication with JWT access token. Used to authenticate requests to protected endpoints.
+    BearerAuthElevated:
+      type: http
+      scheme: bearer
+      description: Bearer authentication that requires elevated permissions. Used for sensitive operations that may require additional security measures such as recent authentication. For details see https://docs.nhost.io/guides/auth/elevated-permissions

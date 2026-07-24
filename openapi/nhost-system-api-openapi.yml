@@ -1,0 +1,218 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: Nhost authentication system API
+  description: Comprehensive authentication service for managing user identities, sessions, and authentication methods
+  license:
+    name: MIT License
+    url: https://opensource.org/licenses/MIT
+  contact:
+    name: Nhost Support
+    email: support@nhost.io
+    url: https://nhost.io
+servers:
+- url: https://{subdomain}.auth.{region}.nhost.run/v1
+  description: Nhost Authentication API Server
+tags:
+- name: system
+  description: System operations including health checks, service version, and public key endpoints
+paths:
+  /.well-known/jwks.json:
+    get:
+      summary: Get public keys for JWT verification in JWK Set format
+      description: Retrieve the JSON Web Key Set (JWKS) containing public keys used to verify JWT signatures. This endpoint is used by clients to validate access tokens.
+      operationId: getJWKs
+      tags:
+      - system
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JWKSet'
+          description: The public keys in JWK Set format
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: An error occurred while processing the request
+  /healthz:
+    get:
+      summary: Health check (GET)
+      description: Verify if the authentication service is operational using GET method
+      operationId: healthCheckGet
+      tags:
+      - system
+      responses:
+        '200':
+          description: Service is healthy and operational
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OKResponse'
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: An error occurred while processing the request
+    head:
+      summary: Health check (HEAD)
+      description: Verify if the authentication service is operational using HEAD method
+      operationId: healthCheckHead
+      tags:
+      - system
+      responses:
+        '200':
+          description: Service is healthy and operational
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: An error occurred while processing the request
+  /version:
+    get:
+      summary: Get service version
+      description: Retrieve version information about the authentication service
+      operationId: getVersion
+      tags:
+      - system
+      responses:
+        '200':
+          description: Version information successfully retrieved
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                properties:
+                  version:
+                    type: string
+                    description: The version of the authentication service
+                    example: 1.2.3
+                required:
+                - version
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: An error occurred while processing the request
+components:
+  schemas:
+    OKResponse:
+      type: string
+      additionalProperties: false
+      enum:
+      - OK
+    ErrorResponse:
+      type: object
+      description: Standardized error response
+      additionalProperties: false
+      properties:
+        status:
+          description: HTTP status error code
+          type: integer
+          example: 400
+        message:
+          description: Human-friendly error message
+          type: string
+          example: Invalid email format
+        error:
+          description: Error code identifying the specific application error
+          type: string
+          enum:
+          - default-role-must-be-in-allowed-roles
+          - disabled-endpoint
+          - disabled-user
+          - email-already-in-use
+          - email-already-verified
+          - forbidden-anonymous
+          - internal-server-error
+          - invalid-email-password
+          - invalid-request
+          - locale-not-allowed
+          - password-too-short
+          - password-in-hibp-database
+          - redirectTo-not-allowed
+          - role-not-allowed
+          - signup-disabled
+          - unverified-user
+          - user-not-anonymous
+          - invalid-pat
+          - invalid-refresh-token
+          - invalid-ticket
+          - disabled-mfa-totp
+          - no-totp-secret
+          - invalid-totp
+          - mfa-type-not-found
+          - totp-already-active
+          - invalid-state
+          - oauth-token-echange-failed
+          - oauth-profile-fetch-failed
+          - oauth-provider-error
+          - invalid-otp
+          - cannot-send-sms
+      required:
+      - status
+      - message
+      - error
+    JWKSet:
+      type: object
+      description: JSON Web Key Set for verifying JWT signatures
+      additionalProperties: false
+      properties:
+        keys:
+          type: array
+          description: Array of public keys
+          items:
+            $ref: '#/components/schemas/JWK'
+      required:
+      - keys
+    JWK:
+      type: object
+      description: JSON Web Key for JWT verification
+      additionalProperties: false
+      properties:
+        alg:
+          type: string
+          description: Algorithm used with this key
+          example: RS256
+        e:
+          type: string
+          description: RSA public exponent
+          example: AQAB
+        kid:
+          type: string
+          description: Key ID
+          example: key-id-1
+        kty:
+          type: string
+          description: Key type
+          example: RSA
+        n:
+          type: string
+          description: RSA modulus
+          example: abcd1234...
+        use:
+          type: string
+          description: Key usage
+          example: sig
+      required:
+      - alg
+      - e
+      - kid
+      - kty
+      - n
+      - use
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: Bearer authentication with JWT access token. Used to authenticate requests to protected endpoints.
+    BearerAuthElevated:
+      type: http
+      scheme: bearer
+      description: Bearer authentication that requires elevated permissions. Used for sensitive operations that may require additional security measures such as recent authentication. For details see https://docs.nhost.io/guides/auth/elevated-permissions

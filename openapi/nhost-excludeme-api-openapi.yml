@@ -1,0 +1,540 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: Nhost authentication excludeme API
+  description: Comprehensive authentication service for managing user identities, sessions, and authentication methods
+  license:
+    name: MIT License
+    url: https://opensource.org/licenses/MIT
+  contact:
+    name: Nhost Support
+    email: support@nhost.io
+    url: https://nhost.io
+servers:
+- url: https://{subdomain}.auth.{region}.nhost.run/v1
+  description: Nhost Authentication API Server
+tags:
+- name: excludeme
+  description: These operations are not intended to be used directly by clients and should be excluded from client SDKs
+paths:
+  /signin/provider/{provider}/callback:
+    get:
+      summary: OAuth2 provider callback endpoint
+      description: Handles the callback from OAuth2 providers after user authorization. Processes the authorization code and creates a user session.
+      operationId: signInProviderCallbackGet
+      tags:
+      - excludeme
+      parameters:
+      - $ref: '#/components/parameters/SignInProvider'
+      - name: code
+        in: query
+        description: Authorization code provided by the authentication provider
+        schema:
+          type: string
+      - name: id_token
+        in: query
+        description: ID token provided by the authentication provider
+        schema:
+          type: string
+      - name: state
+        in: query
+        required: true
+        description: State parameter to avoid CSRF attacks
+        schema:
+          type: string
+      - name: oauth_token
+        in: query
+        required: false
+        description: OAuth token for the provider (e.g., X)
+        schema:
+          type: string
+      - name: oauth_verifier
+        in: query
+        required: false
+        description: OAuth verifier for the provider (e.g., X)
+        schema:
+          type: string
+      - name: error
+        in: query
+        required: false
+        description: Error message if authentication failed
+        schema:
+          type: string
+      - name: error_description
+        in: query
+        required: false
+        description: Detailed error description if authentication failed
+        schema:
+          type: string
+      - name: error_uri
+        in: query
+        required: false
+        description: URI with more information about the error
+        schema:
+          type: string
+      responses:
+        '302':
+          description: Redirect to client application after successful authentication
+          headers:
+            Location:
+              $ref: '#/components/headers/RedirectLocation'
+          content: {}
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: An error occurred while processing the request
+    post:
+      summary: OAuth2 provider callback endpoint (form_post)
+      description: Handles OAuth2 provider callbacks using form_post response mode. Used by providers like Apple that send data via POST instead of query parameters.
+      operationId: signInProviderCallbackPost
+      tags:
+      - excludeme
+      parameters:
+      - $ref: '#/components/parameters/SignInProvider'
+      requestBody:
+        description: OAuth2 provider callback data including authorization code, ID token, and state
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                code:
+                  type: string
+                  nullable: true
+                  description: Authorization code provided by the authentication provider
+                id_token:
+                  type: string
+                  nullable: true
+                  description: ID token provided by the authentication provider
+                state:
+                  type: string
+                  description: State parameter to avoid CSRF attacks
+                user:
+                  type: string
+                  nullable: true
+                  description: JSON string containing user information (only provided on first authentication with Apple)
+                error:
+                  type: string
+                  nullable: true
+                  description: Error message if authentication failed
+                error_description:
+                  type: string
+                  nullable: true
+                  description: Detailed error description if authentication failed
+                error_uri:
+                  type: string
+                  nullable: true
+                  description: URI with more information about the error
+              required:
+              - state
+              additionalProperties: true
+      responses:
+        '302':
+          description: Redirect to client application after successful authentication
+          headers:
+            Location:
+              $ref: '#/components/headers/RedirectLocation'
+          content: {}
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: An error occurred while processing the request
+  /files/{id}/presignedurl/contents:
+    get:
+      summary: Retrieve contents of file
+      operationId: getFileWithPresignedURL
+      description: Retrieve contents of file
+      tags:
+      - excludeme
+      security:
+      - Authorization: []
+      parameters:
+      - name: id
+        required: true
+        in: path
+        description: Unique identifier of the file
+        schema:
+          type: string
+      - name: X-Amz-Algorithm
+        description: Use presignedurl endpoint to generate this automatically
+        required: true
+        in: query
+        schema:
+          type: string
+      - name: X-Amz-Credential
+        description: Use presignedurl endpoint to generate this automatically
+        required: true
+        in: query
+        schema:
+          type: string
+      - name: X-Amz-Date
+        description: Use presignedurl endpoint to generate this automatically
+        required: true
+        in: query
+        schema:
+          type: string
+      - name: X-Amz-Expires
+        description: Use presignedurl endpoint to generate this automatically
+        required: true
+        in: query
+        schema:
+          type: string
+      - name: X-Amz-Signature
+        description: Use presignedurl endpoint to generate this automatically
+        required: true
+        in: query
+        schema:
+          type: string
+      - name: X-Amz-SignedHeaders
+        description: Use presignedurl endpoint to generate this automatically
+        required: true
+        in: query
+        schema:
+          type: string
+      - name: X-Amz-Checksum-Mode
+        description: Use presignedurl endpoint to generate this automatically
+        required: true
+        in: query
+        schema:
+          type: string
+      - name: X-Amz-Security-Token
+        description: Use presignedurl endpoint to generate this automatically
+        required: false
+        in: query
+        schema:
+          type: string
+      - name: x-id
+        description: Use presignedurl endpoint to generate this automatically
+        required: true
+        in: query
+        schema:
+          type: string
+      - name: if-match
+        description: Only return the file if the current ETag matches one of the values provided
+        in: header
+        schema:
+          type: string
+      - name: if-none-match
+        description: Only return the file if the current ETag does not match any of the values provided
+        in: header
+        schema:
+          type: string
+      - name: if-modified-since
+        description: Only return the file if it has been modified after the given date
+        in: header
+        schema:
+          $ref: '#/components/schemas/RFC2822Date'
+      - name: if-unmodified-since
+        description: Only return the file if it has not been modified after the given date
+        in: header
+        schema:
+          $ref: '#/components/schemas/RFC2822Date'
+      - name: q
+        description: Image quality (1-100). Only applies to JPEG, WebP and PNG files
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 100
+      - name: h
+        description: Maximum height to resize image to while maintaining aspect ratio. Only applies to image files
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+      - name: w
+        description: Maximum width to resize image to while maintaining aspect ratio. Only applies to image files
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+      - name: b
+        description: Blur the image using this sigma value. Only applies to image files
+        in: query
+        schema:
+          type: number
+          minimum: 0
+      - name: f
+        description: Output format for image files. Use 'auto' for content negotiation based on Accept header
+        in: query
+        schema:
+          $ref: '#/components/schemas/OutputImageFormat'
+      - name: Range
+        description: 'Range of bytes to retrieve from the file. Format: bytes=start-end'
+        in: header
+        schema:
+          type: string
+          pattern: ^bytes=(\d+-\d*|\d*-\d+)(,(\d+-\d*|\d*-\d+))*$
+      responses:
+        '200':
+          description: File content retrieved successfully
+          headers:
+            Cache-Control:
+              description: Directives for caching mechanisms
+              schema:
+                type: string
+            Content-Type:
+              description: MIME type of the file
+              schema:
+                type: string
+            Etag:
+              description: Entity tag for cache validation
+              schema:
+                type: string
+            Content-Disposition:
+              description: Indicates if the content should be displayed inline or as an attachment
+              schema:
+                type: string
+            Last-Modified:
+              description: Date and time the file was last modified
+              schema:
+                type: string
+                format: date-time
+            Surrogate-Key:
+              description: Cache key for surrogate caching
+              schema:
+                type: string
+            Surrogate-Control:
+              description: Cache control directives for surrogate caching
+              schema:
+                type: string
+            Accept-Ranges:
+              description: Always set to bytes. https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept-Ranges
+              schema:
+                type: string
+          content:
+            application/octet-stream: {}
+        '206':
+          description: Partial file content retrieved successfully
+          headers:
+            Cache-Control:
+              description: Directives for caching mechanisms
+              schema:
+                type: string
+            Content-Type:
+              description: MIME type of the file
+              schema:
+                type: string
+            Content-Range:
+              description: Range of bytes returned in the response
+              schema:
+                type: string
+            Etag:
+              description: Entity tag for cache validation
+              schema:
+                type: string
+            Content-Disposition:
+              description: Indicates if the content should be displayed inline or as an attachment
+              schema:
+                type: string
+            Last-Modified:
+              description: Date and time the file was last modified
+              schema:
+                type: string
+                format: date-time
+            Surrogate-Key:
+              description: Cache key for surrogate caching
+              schema:
+                type: string
+            Surrogate-Control:
+              description: Cache control directives for surrogate caching
+              schema:
+                type: string
+          content:
+            application/octet-stream: {}
+        '304':
+          description: File not modified since the condition specified in If-Modified-Since or If-None-Match headers
+          headers:
+            Cache-Control:
+              description: Directives for caching mechanisms
+              schema:
+                type: string
+            Etag:
+              description: Entity tag for cache validation
+              schema:
+                type: string
+            Surrogate-Control:
+              description: Cache control directives for surrogate caching
+              schema:
+                type: string
+        '412':
+          description: Precondition failed for conditional request headers (If-Match, If-Unmodified-Since, If-None-Match)
+          headers:
+            Cache-Control:
+              description: Directives for caching mechanisms
+              schema:
+                type: string
+            Etag:
+              description: Entity tag for cache validation
+              schema:
+                type: string
+            Surrogate-Control:
+              description: Cache control directives for surrogate caching
+              schema:
+                type: string
+        default:
+          description: Error occurred
+          headers:
+            X-Error:
+              description: Error message details
+              schema:
+                type: string
+  /openapi.yaml:
+    get:
+      summary: Get OpenAPI specification
+      description: Returns the OpenAPI schema definition for this API, allowing clients to understand the available endpoints and models.
+      operationId: getOpenAPISpec
+      tags:
+      - excludeme
+      responses:
+        '200':
+          description: OpenAPI schema definition
+          content:
+            application/x-yaml:
+              schema:
+                type: object
+        default:
+          description: Error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse_2'
+components:
+  schemas:
+    OutputImageFormat:
+      type: string
+      description: Output format for image files. Use 'auto' for content negotiation based on Accept header
+      default: same
+      enum:
+      - auto
+      - same
+      - jpeg
+      - webp
+      - png
+      - avif
+      example: same
+    RFC2822Date:
+      type: string
+      description: Date in RFC 2822 format
+      pattern: ^(Mon|Tue|Wed|Thu|Fri|Sat|Sun), \d{1,2} (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) \d{4} \d{2}:\d{2}:\d{2} \w+$
+      example: Tue, 12 Aug 2025 12:03:50 GMT
+      x-go-type: Time
+    ErrorResponse:
+      type: object
+      description: Standardized error response
+      additionalProperties: false
+      properties:
+        status:
+          description: HTTP status error code
+          type: integer
+          example: 400
+        message:
+          description: Human-friendly error message
+          type: string
+          example: Invalid email format
+        error:
+          description: Error code identifying the specific application error
+          type: string
+          enum:
+          - default-role-must-be-in-allowed-roles
+          - disabled-endpoint
+          - disabled-user
+          - email-already-in-use
+          - email-already-verified
+          - forbidden-anonymous
+          - internal-server-error
+          - invalid-email-password
+          - invalid-request
+          - locale-not-allowed
+          - password-too-short
+          - password-in-hibp-database
+          - redirectTo-not-allowed
+          - role-not-allowed
+          - signup-disabled
+          - unverified-user
+          - user-not-anonymous
+          - invalid-pat
+          - invalid-refresh-token
+          - invalid-ticket
+          - disabled-mfa-totp
+          - no-totp-secret
+          - invalid-totp
+          - mfa-type-not-found
+          - totp-already-active
+          - invalid-state
+          - oauth-token-echange-failed
+          - oauth-profile-fetch-failed
+          - oauth-provider-error
+          - invalid-otp
+          - cannot-send-sms
+      required:
+      - status
+      - message
+      - error
+    ErrorResponse_2:
+      type: object
+      description: Error information returned by the API.
+      properties:
+        error:
+          type: object
+          additionalProperties: false
+          description: Error details.
+          properties:
+            message:
+              type: string
+              description: Human-readable error message.
+              example: File not found
+            data:
+              type: object
+              additionalProperties: true
+              description: Additional data related to the error, if any.
+          required:
+          - message
+      additionalProperties: false
+  parameters:
+    SignInProvider:
+      in: path
+      name: provider
+      required: true
+      description: The name of the social provider
+      schema:
+        type: string
+        enum:
+        - apple
+        - github
+        - google
+        - linkedin
+        - discord
+        - spotify
+        - twitch
+        - gitlab
+        - bitbucket
+        - workos
+        - azuread
+        - entraid
+        - strava
+        - facebook
+        - windowslive
+        - twitter
+      deprecated: true
+  headers:
+    RedirectLocation:
+      description: URL to redirect to
+      schema:
+        type: string
+        format: uri
+      required: true
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: Bearer authentication with JWT access token. Used to authenticate requests to protected endpoints.
+    BearerAuthElevated:
+      type: http
+      scheme: bearer
+      description: Bearer authentication that requires elevated permissions. Used for sensitive operations that may require additional security measures such as recent authentication. For details see https://docs.nhost.io/guides/auth/elevated-permissions

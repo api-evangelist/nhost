@@ -1,0 +1,357 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: Nhost authentication storage API
+  description: Comprehensive authentication service for managing user identities, sessions, and authentication methods
+  license:
+    name: MIT License
+    url: https://opensource.org/licenses/MIT
+  contact:
+    name: Nhost Support
+    email: support@nhost.io
+    url: https://nhost.io
+servers:
+- url: https://{subdomain}.auth.{region}.nhost.run/v1
+  description: Nhost Authentication API Server
+tags:
+- name: storage
+  description: Storage operations and presigned URLs
+paths:
+  /files/{id}/presignedurl:
+    get:
+      summary: Retrieve presigned URL to retrieve the file
+      operationId: getFilePresignedURL
+      description: 'Retrieve presigned URL to retrieve the file. Expiration of the URL is
+
+        determined by bucket configuration
+
+        '
+      tags:
+      - storage
+      security:
+      - Authorization: []
+      parameters:
+      - name: id
+        required: true
+        in: path
+        description: Unique identifier of the file
+        schema:
+          type: string
+      responses:
+        '200':
+          description: File gathered successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PresignedURLResponse'
+        default:
+          description: Some error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /files/{id}/presignedurl/contents:
+    get:
+      summary: Retrieve contents of file
+      operationId: getFileWithPresignedURL
+      description: Retrieve contents of file
+      tags:
+      - storage
+      security:
+      - Authorization: []
+      parameters:
+      - name: id
+        required: true
+        in: path
+        description: Unique identifier of the file
+        schema:
+          type: string
+      - name: X-Amz-Algorithm
+        description: Use presignedurl endpoint to generate this automatically
+        required: true
+        in: query
+        schema:
+          type: string
+      - name: X-Amz-Credential
+        description: Use presignedurl endpoint to generate this automatically
+        required: true
+        in: query
+        schema:
+          type: string
+      - name: X-Amz-Date
+        description: Use presignedurl endpoint to generate this automatically
+        required: true
+        in: query
+        schema:
+          type: string
+      - name: X-Amz-Expires
+        description: Use presignedurl endpoint to generate this automatically
+        required: true
+        in: query
+        schema:
+          type: string
+      - name: X-Amz-Signature
+        description: Use presignedurl endpoint to generate this automatically
+        required: true
+        in: query
+        schema:
+          type: string
+      - name: X-Amz-SignedHeaders
+        description: Use presignedurl endpoint to generate this automatically
+        required: true
+        in: query
+        schema:
+          type: string
+      - name: X-Amz-Checksum-Mode
+        description: Use presignedurl endpoint to generate this automatically
+        required: true
+        in: query
+        schema:
+          type: string
+      - name: X-Amz-Security-Token
+        description: Use presignedurl endpoint to generate this automatically
+        required: false
+        in: query
+        schema:
+          type: string
+      - name: x-id
+        description: Use presignedurl endpoint to generate this automatically
+        required: true
+        in: query
+        schema:
+          type: string
+      - name: if-match
+        description: Only return the file if the current ETag matches one of the values provided
+        in: header
+        schema:
+          type: string
+      - name: if-none-match
+        description: Only return the file if the current ETag does not match any of the values provided
+        in: header
+        schema:
+          type: string
+      - name: if-modified-since
+        description: Only return the file if it has been modified after the given date
+        in: header
+        schema:
+          $ref: '#/components/schemas/RFC2822Date'
+      - name: if-unmodified-since
+        description: Only return the file if it has not been modified after the given date
+        in: header
+        schema:
+          $ref: '#/components/schemas/RFC2822Date'
+      - name: q
+        description: Image quality (1-100). Only applies to JPEG, WebP and PNG files
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 100
+      - name: h
+        description: Maximum height to resize image to while maintaining aspect ratio. Only applies to image files
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+      - name: w
+        description: Maximum width to resize image to while maintaining aspect ratio. Only applies to image files
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+      - name: b
+        description: Blur the image using this sigma value. Only applies to image files
+        in: query
+        schema:
+          type: number
+          minimum: 0
+      - name: f
+        description: Output format for image files. Use 'auto' for content negotiation based on Accept header
+        in: query
+        schema:
+          $ref: '#/components/schemas/OutputImageFormat'
+      - name: Range
+        description: 'Range of bytes to retrieve from the file. Format: bytes=start-end'
+        in: header
+        schema:
+          type: string
+          pattern: ^bytes=(\d+-\d*|\d*-\d+)(,(\d+-\d*|\d*-\d+))*$
+      responses:
+        '200':
+          description: File content retrieved successfully
+          headers:
+            Cache-Control:
+              description: Directives for caching mechanisms
+              schema:
+                type: string
+            Content-Type:
+              description: MIME type of the file
+              schema:
+                type: string
+            Etag:
+              description: Entity tag for cache validation
+              schema:
+                type: string
+            Content-Disposition:
+              description: Indicates if the content should be displayed inline or as an attachment
+              schema:
+                type: string
+            Last-Modified:
+              description: Date and time the file was last modified
+              schema:
+                type: string
+                format: date-time
+            Surrogate-Key:
+              description: Cache key for surrogate caching
+              schema:
+                type: string
+            Surrogate-Control:
+              description: Cache control directives for surrogate caching
+              schema:
+                type: string
+            Accept-Ranges:
+              description: Always set to bytes. https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept-Ranges
+              schema:
+                type: string
+          content:
+            application/octet-stream: {}
+        '206':
+          description: Partial file content retrieved successfully
+          headers:
+            Cache-Control:
+              description: Directives for caching mechanisms
+              schema:
+                type: string
+            Content-Type:
+              description: MIME type of the file
+              schema:
+                type: string
+            Content-Range:
+              description: Range of bytes returned in the response
+              schema:
+                type: string
+            Etag:
+              description: Entity tag for cache validation
+              schema:
+                type: string
+            Content-Disposition:
+              description: Indicates if the content should be displayed inline or as an attachment
+              schema:
+                type: string
+            Last-Modified:
+              description: Date and time the file was last modified
+              schema:
+                type: string
+                format: date-time
+            Surrogate-Key:
+              description: Cache key for surrogate caching
+              schema:
+                type: string
+            Surrogate-Control:
+              description: Cache control directives for surrogate caching
+              schema:
+                type: string
+          content:
+            application/octet-stream: {}
+        '304':
+          description: File not modified since the condition specified in If-Modified-Since or If-None-Match headers
+          headers:
+            Cache-Control:
+              description: Directives for caching mechanisms
+              schema:
+                type: string
+            Etag:
+              description: Entity tag for cache validation
+              schema:
+                type: string
+            Surrogate-Control:
+              description: Cache control directives for surrogate caching
+              schema:
+                type: string
+        '412':
+          description: Precondition failed for conditional request headers (If-Match, If-Unmodified-Since, If-None-Match)
+          headers:
+            Cache-Control:
+              description: Directives for caching mechanisms
+              schema:
+                type: string
+            Etag:
+              description: Entity tag for cache validation
+              schema:
+                type: string
+            Surrogate-Control:
+              description: Cache control directives for surrogate caching
+              schema:
+                type: string
+        default:
+          description: Error occurred
+          headers:
+            X-Error:
+              description: Error message details
+              schema:
+                type: string
+components:
+  schemas:
+    ErrorResponse:
+      type: object
+      description: Error information returned by the API.
+      properties:
+        error:
+          type: object
+          additionalProperties: false
+          description: Error details.
+          properties:
+            message:
+              type: string
+              description: Human-readable error message.
+              example: File not found
+            data:
+              type: object
+              additionalProperties: true
+              description: Additional data related to the error, if any.
+          required:
+          - message
+      additionalProperties: false
+    OutputImageFormat:
+      type: string
+      description: Output format for image files. Use 'auto' for content negotiation based on Accept header
+      default: same
+      enum:
+      - auto
+      - same
+      - jpeg
+      - webp
+      - png
+      - avif
+      example: same
+    RFC2822Date:
+      type: string
+      description: Date in RFC 2822 format
+      pattern: ^(Mon|Tue|Wed|Thu|Fri|Sat|Sun), \d{1,2} (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) \d{4} \d{2}:\d{2}:\d{2} \w+$
+      example: Tue, 12 Aug 2025 12:03:50 GMT
+      x-go-type: Time
+    PresignedURLResponse:
+      type: object
+      description: Contains a presigned URL for direct file operations.
+      properties:
+        url:
+          type: string
+          description: The presigned URL for file operations.
+          example: https://storage.example.com/files/abc123?signature=xyz
+        expiration:
+          type: integer
+          description: The time in seconds until the URL expires.
+          example: 3600
+      required:
+      - url
+      - expiration
+      additionalProperties: false
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: Bearer authentication with JWT access token. Used to authenticate requests to protected endpoints.
+    BearerAuthElevated:
+      type: http
+      scheme: bearer
+      description: Bearer authentication that requires elevated permissions. Used for sensitive operations that may require additional security measures such as recent authentication. For details see https://docs.nhost.io/guides/auth/elevated-permissions
