@@ -11,7 +11,20 @@ description: Nhost is an open-source Firebase alternative that provides a fully 
   container services—enabling teams to launch production-ready backends without infrastructure
   management.
 type: Index
-image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+accessModel:
+  pricing: paid
+  onboarding: self-serve
+  trial: false
+  try_now: false
+  public: false
+  label: Paid · Self-serve signup
+  confidence: high
+  source:
+  - plans
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/nhost.png
 url: https://raw.githubusercontent.com/api-evangelist/nhost/refs/heads/main/apis.yml
 created: '2026-06-12'
 modified: '2026-06-12'
@@ -29,9 +42,9 @@ tags:
 - BaaS
 apis:
 - name: Nhost GraphQL API
-  description: Instant, real-time GraphQL API auto-generated from PostgreSQL database
-    schemas via Hasura. Supports queries, mutations, and live subscriptions with row-
-    and column-level role-based access control.
+  description: >-
+    Instant, real-time GraphQL API auto-generated from PostgreSQL database schemas via Hasura. Supports
+    queries, mutations, and live subscriptions with row- and column-level role-based access control.
   image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
   humanURL: https://docs.nhost.io/products/graphql/
   baseURL: https://{subdomain}.nhost.run/v1/graphql
@@ -45,46 +58,11 @@ apis:
     url: https://docs.nhost.io/products/graphql/
   - url: graphql/nhost-graphql.md
     type: GraphQL
-- name: Nhost Authentication API
-  description: Full-featured authentication service supporting email/password, magic
-    links, one-time passwords, SMS, WebAuthn/security keys, and OAuth2 providers including
-    Google, GitHub, Apple, and Discord. Issues JWT access tokens and long-lived refresh
-    tokens.
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-  humanURL: https://docs.nhost.io/products/auth/
-  baseURL: https://{subdomain}.nhost.run/v1/auth
-  tags:
-  - Authentication
-  - OAuth2
-  - JWT
-  - WebAuthn
-  properties:
-  - type: Documentation
-    url: https://docs.nhost.io/products/auth/
-  - type: OpenAPI
-    url: openapi/nhost-authentication-openapi.yml
-- name: Nhost Storage API
-  description: S3-compatible file storage service with GraphQL metadata management,
-    CDN delivery across 80+ locations, image transformation, antivirus scanning, and
-    pre-signed URL generation. Permissions enforced via Hasura's role-based access
-    control.
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-  humanURL: https://docs.nhost.io/products/storage/
-  baseURL: https://{subdomain}.nhost.run/v1/storage
-  tags:
-  - File Storage
-  - CDN
-  - S3
-  - Image Transformation
-  properties:
-  - type: Documentation
-    url: https://docs.nhost.io/products/storage/
-  - type: OpenAPI
-    url: openapi/nhost-storage-openapi.yml
 - name: Nhost Serverless Functions API
-  description: Deploy JavaScript and TypeScript serverless functions as HTTP API endpoints
-    for webhooks, event triggers, and custom backend logic. Each file in the functions
-    directory becomes an endpoint, auto-deployed via GitHub integration.
+  description: >-
+    Deploy JavaScript and TypeScript serverless functions as HTTP API endpoints for webhooks, event triggers,
+    and custom backend logic. Each file in the functions directory becomes an endpoint, auto-deployed
+    via GitHub integration.
   image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
   humanURL: https://docs.nhost.io/products/functions/
   baseURL: https://{subdomain}.nhost.run/v1/functions
@@ -97,9 +75,10 @@ apis:
   - type: Documentation
     url: https://docs.nhost.io/products/functions/
 - name: Nhost AI API
-  description: AI toolkit providing GraphQL-based assistant management, auto-embeddings,
-    session handling, and file stores. Enables developers to turn any Nhost project
-    into an agentic service with built-in vector search capabilities.
+  description: >-
+    AI toolkit providing GraphQL-based assistant management, auto-embeddings, session handling, and file
+    stores. Enables developers to turn any Nhost project into an agentic service with built-in vector
+    search capabilities.
   image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
   humanURL: https://docs.nhost.io/products/ai/
   baseURL: https://{subdomain}.nhost.run/v1/ai
@@ -111,6 +90,168 @@ apis:
   properties:
   - type: Documentation
     url: https://docs.nhost.io/products/ai/
+- aid: nhost:nhost-authentication-api
+  name: Nhost authentication API
+  description: >-
+    User authentication operations including sign-in, sign-up, and various authentication methods (email/password,
+    passwordless, OAuth, WebAuthn, MFA)
+  humanURL: https://docs.nhost.io/products/graphql/
+  baseURL: https://{subdomain}.nhost.run/v1/graphql
+  tags:
+  - authentication
+  properties:
+  - type: OpenAPI
+    url: openapi/nhost-authentication-api-openapi.yml
+  - type: Documentation
+    url: https://docs.nhost.io/products/auth/
+  - type: Documentation
+    url: https://docs.nhost.io/products/storage/
+- aid: nhost:nhost-documentation-api
+  name: Nhost documentation API
+  description: API documentation
+  humanURL: https://docs.nhost.io/products/graphql/
+  baseURL: https://{subdomain}.nhost.run/v1/graphql
+  tags:
+  - documentation
+  properties:
+  - type: OpenAPI
+    url: openapi/nhost-documentation-api-openapi.yml
+  - type: Documentation
+    url: https://docs.nhost.io/products/auth/
+  - type: Documentation
+    url: https://docs.nhost.io/products/storage/
+- aid: nhost:nhost-excludeme-api
+  name: Nhost excludeme API
+  description: >-
+    These operations are not intended to be used directly by clients and should be excluded from client
+    SDKs
+  humanURL: https://docs.nhost.io/products/graphql/
+  baseURL: https://{subdomain}.nhost.run/v1/graphql
+  tags:
+  - excludeme
+  properties:
+  - type: OpenAPI
+    url: openapi/nhost-excludeme-api-openapi.yml
+  - type: Documentation
+    url: https://docs.nhost.io/products/auth/
+  - type: Documentation
+    url: https://docs.nhost.io/products/storage/
+- aid: nhost:nhost-files-api
+  name: Nhost files API
+  description: File management operations
+  humanURL: https://docs.nhost.io/products/graphql/
+  baseURL: https://{subdomain}.nhost.run/v1/graphql
+  tags:
+  - files
+  properties:
+  - type: OpenAPI
+    url: openapi/nhost-files-api-openapi.yml
+  - type: Documentation
+    url: https://docs.nhost.io/products/auth/
+  - type: Documentation
+    url: https://docs.nhost.io/products/storage/
+- aid: nhost:nhost-operations-api
+  name: Nhost operations API
+  description: Administrative operations
+  humanURL: https://docs.nhost.io/products/graphql/
+  baseURL: https://{subdomain}.nhost.run/v1/graphql
+  tags:
+  - operations
+  properties:
+  - type: OpenAPI
+    url: openapi/nhost-operations-api-openapi.yml
+  - type: Documentation
+    url: https://docs.nhost.io/products/auth/
+  - type: Documentation
+    url: https://docs.nhost.io/products/storage/
+- aid: nhost:nhost-security-api
+  name: Nhost security API
+  description: >-
+    Security-related operations including Personal Access Tokens, WebAuthn management, account elevation,
+    and account linking
+  humanURL: https://docs.nhost.io/products/graphql/
+  baseURL: https://{subdomain}.nhost.run/v1/graphql
+  tags:
+  - security
+  properties:
+  - type: OpenAPI
+    url: openapi/nhost-security-api-openapi.yml
+  - type: Documentation
+    url: https://docs.nhost.io/products/auth/
+  - type: Documentation
+    url: https://docs.nhost.io/products/storage/
+- aid: nhost:nhost-session-api
+  name: Nhost session API
+  description: Session management operations including token refresh, verification, and sign-out
+  humanURL: https://docs.nhost.io/products/graphql/
+  baseURL: https://{subdomain}.nhost.run/v1/graphql
+  tags:
+  - session
+  properties:
+  - type: OpenAPI
+    url: openapi/nhost-session-api-openapi.yml
+  - type: Documentation
+    url: https://docs.nhost.io/products/auth/
+  - type: Documentation
+    url: https://docs.nhost.io/products/storage/
+- aid: nhost:nhost-storage-api
+  name: Nhost storage API
+  description: Storage operations and presigned URLs
+  humanURL: https://docs.nhost.io/products/graphql/
+  baseURL: https://{subdomain}.nhost.run/v1/graphql
+  tags:
+  - storage
+  properties:
+  - type: OpenAPI
+    url: openapi/nhost-storage-api-openapi.yml
+  - type: Documentation
+    url: https://docs.nhost.io/products/auth/
+  - type: Documentation
+    url: https://docs.nhost.io/products/storage/
+- aid: nhost:nhost-system-api
+  name: Nhost system API
+  description: System operations including health checks, service version, and public key endpoints
+  humanURL: https://docs.nhost.io/products/graphql/
+  baseURL: https://{subdomain}.nhost.run/v1/graphql
+  tags:
+  - system
+  properties:
+  - type: OpenAPI
+    url: openapi/nhost-system-api-openapi.yml
+  - type: Documentation
+    url: https://docs.nhost.io/products/auth/
+  - type: Documentation
+    url: https://docs.nhost.io/products/storage/
+- aid: nhost:nhost-user-api
+  name: Nhost user API
+  description: >-
+    User profile and account management operations including email/password changes, MFA configuration,
+    and profile updates
+  humanURL: https://docs.nhost.io/products/graphql/
+  baseURL: https://{subdomain}.nhost.run/v1/graphql
+  tags:
+  - user
+  properties:
+  - type: OpenAPI
+    url: openapi/nhost-user-api-openapi.yml
+  - type: Documentation
+    url: https://docs.nhost.io/products/auth/
+  - type: Documentation
+    url: https://docs.nhost.io/products/storage/
+- aid: nhost:nhost-verification-api
+  name: Nhost verification API
+  description: Email and ticket verification operations for confirming user actions
+  humanURL: https://docs.nhost.io/products/graphql/
+  baseURL: https://{subdomain}.nhost.run/v1/graphql
+  tags:
+  - verification
+  properties:
+  - type: OpenAPI
+    url: openapi/nhost-verification-api-openapi.yml
+  - type: Documentation
+    url: https://docs.nhost.io/products/auth/
+  - type: Documentation
+    url: https://docs.nhost.io/products/storage/
 common:
 - type: AgenticAccess
   url: agentic-access/nhost-agentic-access.yml
