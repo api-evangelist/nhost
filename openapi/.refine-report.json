@@ -1,0 +1,34 @@
+{
+  "provider": "nhost",
+  "sources": [
+    "nhost-authentication-api-openapi.yml",
+    "nhost-documentation-api-openapi.yml",
+    "nhost-excludeme-api-openapi.yml",
+    "nhost-files-api-openapi.yml",
+    "nhost-operations-api-openapi.yml",
+    "nhost-security-api-openapi.yml",
+    "nhost-session-api-openapi.yml",
+    "nhost-storage-api-openapi.yml",
+    "nhost-system-api-openapi.yml",
+    "nhost-user-api-openapi.yml",
+    "nhost-verification-api-openapi.yml"
+  ],
+  "outputs": [
+    "nhost-authentication-api-openapi.yml",
+    "nhost-documentation-api-openapi.yml",
+    "nhost-excludeme-api-openapi.yml",
+    "nhost-files-api-openapi.yml",
+    "nhost-operations-api-openapi.yml",
+    "nhost-security-api-openapi.yml",
+    "nhost-session-api-openapi.yml",
+    "nhost-storage-api-openapi.yml",
+    "nhost-system-api-openapi.yml",
+    "nhost-user-api-openapi.yml",
+    "nhost-verification-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
