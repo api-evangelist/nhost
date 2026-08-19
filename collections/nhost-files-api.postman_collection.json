@@ -1,0 +1,1762 @@
+{
+  "item": [
+    {
+      "id": "c85231b3-54a3-46b6-af61-7ade9e7cd6b0",
+      "name": "files",
+      "description": {
+        "content": "File management operations",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "aea717cd-e434-463d-b44e-c4be4d5c8452",
+          "name": "Upload files",
+          "request": {
+            "name": "Upload files",
+            "description": {
+              "content": "Upload one or more files to a specified bucket. Supports batch uploading with optional custom metadata for each file. If uploading multiple files, either provide metadata for all files or none.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "files"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "multipart/form-data"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file[]",
+                  "value": "[\"<binary>\",\"<binary>\"]",
+                  "type": "text",
+                  "description": "(Required) Array of files to upload."
+                },
+                {
+                  "key": "bucket-id",
+                  "value": "<string>",
+                  "type": "text",
+                  "description": "Target bucket identifier where files will be stored."
+                },
+                {
+                  "key": "metadata[]",
+                  "value": "[{\"id\":\"<string>\",\"name\":\"<string>\",\"metadata\":{\"key_0\":5409,\"key_1\":\"string\"}},{\"id\":\"<string>\",\"name\":\"<string>\",\"metadata\":{\"key_0\":true,\"key_1\":true}}]",
+                  "type": "text",
+                  "description": "Optional custom metadata for each uploaded file. Must match the order of the file[] array."
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "ad23da49-31e8-4fcd-9f76-26b66beabaa3",
+              "name": "Files successfully uploaded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "files"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "description": {
+                        "content": "(Required) Array of files to upload.",
+                        "type": "text/plain"
+                      },
+                      "key": "file[]",
+                      "value": "[\"<binary>\",\"<binary>\"]",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "Target bucket identifier where files will be stored.",
+                        "type": "text/plain"
+                      },
+                      "key": "bucket-id",
+                      "value": "user-uploads",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "Optional custom metadata for each uploaded file. Must match the order of the file[] array.",
+                        "type": "text/plain"
+                      },
+                      "key": "metadata[]",
+                      "value": "[{\"id\":\"custom-id-123\",\"name\":\"custom-filename.png\",\"metadata\":{\"alt\":\"Custom image\",\"category\":\"document\"}},{\"id\":\"custom-id-123\",\"name\":\"custom-filename.png\",\"metadata\":{\"alt\":\"Custom image\",\"category\":\"document\"}}]",
+                      "type": "text"
+                    }
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"processedFiles\": [\n    {\n      \"id\": \"d5e76ceb-77a2-4153-b7da-1f7c115b2ff2\",\n      \"name\": \"profile-picture.jpg\",\n      \"size\": 245678,\n      \"bucketId\": \"users-bucket\",\n      \"etag\": \"\\\"a1b2c3d4e5f6\\\"\",\n      \"createdAt\": \"2023-01-15T12:34:56Z\",\n      \"updatedAt\": \"2023-01-16T09:45:32Z\",\n      \"isUploaded\": true,\n      \"mimeType\": \"image/jpeg\",\n      \"uploadedByUserId\": \"abc123def456\",\n      \"metadata\": {\n        \"alt\": \"Profile picture\",\n        \"category\": \"avatar\"\n      }\n    },\n    {\n      \"id\": \"d5e76ceb-77a2-4153-b7da-1f7c115b2ff2\",\n      \"name\": \"profile-picture.jpg\",\n      \"size\": 245678,\n      \"bucketId\": \"users-bucket\",\n      \"etag\": \"\\\"a1b2c3d4e5f6\\\"\",\n      \"createdAt\": \"2023-01-15T12:34:56Z\",\n      \"updatedAt\": \"2023-01-16T09:45:32Z\",\n      \"isUploaded\": true,\n      \"mimeType\": \"image/jpeg\",\n      \"uploadedByUserId\": \"abc123def456\",\n      \"metadata\": {\n        \"alt\": \"Profile picture\",\n        \"category\": \"avatar\"\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2afdfdcc-cf03-489c-b97d-3e926ae32872",
+              "name": "Error occurred during upload",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "files"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "description": {
+                        "content": "(Required) Array of files to upload.",
+                        "type": "text/plain"
+                      },
+                      "key": "file[]",
+                      "value": "[\"<binary>\",\"<binary>\"]",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "Target bucket identifier where files will be stored.",
+                        "type": "text/plain"
+                      },
+                      "key": "bucket-id",
+                      "value": "user-uploads",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "Optional custom metadata for each uploaded file. Must match the order of the file[] array.",
+                        "type": "text/plain"
+                      },
+                      "key": "metadata[]",
+                      "value": "[{\"id\":\"custom-id-123\",\"name\":\"custom-filename.png\",\"metadata\":{\"alt\":\"Custom image\",\"category\":\"document\"}},{\"id\":\"custom-id-123\",\"name\":\"custom-filename.png\",\"metadata\":{\"alt\":\"Custom image\",\"category\":\"document\"}}]",
+                      "type": "text"
+                    }
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"processedFiles\": [\n    {\n      \"id\": \"d5e76ceb-77a2-4153-b7da-1f7c115b2ff2\",\n      \"name\": \"profile-picture.jpg\",\n      \"size\": 245678,\n      \"bucketId\": \"users-bucket\",\n      \"etag\": \"\\\"a1b2c3d4e5f6\\\"\",\n      \"createdAt\": \"2023-01-15T12:34:56Z\",\n      \"updatedAt\": \"2023-01-16T09:45:32Z\",\n      \"isUploaded\": true,\n      \"mimeType\": \"image/jpeg\",\n      \"uploadedByUserId\": \"abc123def456\",\n      \"metadata\": {\n        \"alt\": \"Profile picture\",\n        \"category\": \"avatar\"\n      }\n    },\n    {\n      \"id\": \"d5e76ceb-77a2-4153-b7da-1f7c115b2ff2\",\n      \"name\": \"profile-picture.jpg\",\n      \"size\": 245678,\n      \"bucketId\": \"users-bucket\",\n      \"etag\": \"\\\"a1b2c3d4e5f6\\\"\",\n      \"createdAt\": \"2023-01-15T12:34:56Z\",\n      \"updatedAt\": \"2023-01-16T09:45:32Z\",\n      \"isUploaded\": true,\n      \"mimeType\": \"image/jpeg\",\n      \"uploadedByUserId\": \"abc123def456\",\n      \"metadata\": {\n        \"alt\": \"Profile picture\",\n        \"category\": \"avatar\"\n      }\n    }\n  ],\n  \"error\": {\n    \"message\": \"File not found\",\n    \"data\": {\n      \"key_0\": \"string\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "2b78b93f-0d7c-4bac-bb07-de542b589bf9",
+          "name": "Delete file",
+          "request": {
+            "name": "Delete file",
+            "description": {
+              "content": "Permanently delete a file from storage. This removes both the file content and its associated metadata.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "files",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) Unique identifier of the file to delete"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE"
+          },
+          "response": [
+            {
+              "id": "fdf6c1ad-e38b-40f0-89b7-38d79875d7bb",
+              "name": "File successfully deleted",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "files",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Unique identifier of the file to delete"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "6b3f97e4-c37a-45a1-9967-986b2c678d11",
+              "name": "Error occurred during file deletion",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "files",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Unique identifier of the file to delete"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"message\": \"File not found\",\n    \"data\": {\n      \"key_0\": 8129\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "3e5ae2e2-d23d-478b-afaa-9962db711b56",
+          "name": "Download file",
+          "request": {
+            "name": "Download file",
+            "description": {
+              "content": "Retrieve and download the complete file content. Supports conditional requests, image transformations, and range requests for partial downloads.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "files",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "q",
+                  "value": "<integer>",
+                  "description": "Image quality (1-100). Only applies to JPEG, WebP and PNG files"
+                },
+                {
+                  "disabled": false,
+                  "key": "h",
+                  "value": "<integer>",
+                  "description": "Maximum height to resize image to while maintaining aspect ratio. Only applies to image files"
+                },
+                {
+                  "disabled": false,
+                  "key": "w",
+                  "value": "<integer>",
+                  "description": "Maximum width to resize image to while maintaining aspect ratio. Only applies to image files"
+                },
+                {
+                  "disabled": false,
+                  "key": "b",
+                  "value": "<number>",
+                  "description": "Blur the image using this sigma value. Only applies to image files"
+                },
+                {
+                  "disabled": false,
+                  "key": "f",
+                  "value": "same",
+                  "description": "Output format for image files. Use 'auto' for content negotiation based on Accept header"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) Unique identifier of the file to download"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "Only return the file if the current ETag matches one of the values provided",
+                "key": "if-match",
+                "value": "<string>"
+              },
+              {
+                "disabled": false,
+                "description": "Only return the file if the current ETag does not match any of the values provided",
+                "key": "if-none-match",
+                "value": "<string>"
+              },
+              {
+                "disabled": false,
+                "description": "Only return the file if it has been modified after the given date",
+                "key": "if-modified-since",
+                "value": "<string>"
+              },
+              {
+                "disabled": false,
+                "description": "Only return the file if it has not been modified after the given date",
+                "key": "if-unmodified-since",
+                "value": "<string>"
+              },
+              {
+                "disabled": false,
+                "description": "Range of bytes to retrieve from the file. Format: bytes=start-end",
+                "key": "Range",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/octet-stream"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [
+            {
+              "id": "f597dc81-8fd2-4610-b12d-3e75cbc27670",
+              "name": "File content retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "files",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "q",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "h",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "w",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "b",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "f",
+                      "value": "same"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Unique identifier of the file to download"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "Only return the file if the current ETag matches one of the values provided",
+                    "key": "if-match",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Only return the file if the current ETag does not match any of the values provided",
+                    "key": "if-none-match",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Only return the file if it has been modified after the given date",
+                    "key": "if-modified-since",
+                    "value": "Tue, 12 Aug 2025 12:03:50 GMT"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Only return the file if it has not been modified after the given date",
+                    "key": "if-unmodified-since",
+                    "value": "Tue, 12 Aug 2025 12:03:50 GMT"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Range of bytes to retrieve from the file. Format: bytes=start-end",
+                    "key": "Range",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/octet-stream"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "Directives for caching mechanisms",
+                  "key": "Cache-Control",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "Entity tag for cache validation",
+                  "key": "Etag",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "Indicates if the content should be displayed inline or as an attachment",
+                  "key": "Content-Disposition",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "Date and time the file was last modified",
+                  "key": "Last-Modified",
+                  "value": "1998-06-28T17:35:51.092Z"
+                },
+                {
+                  "disabled": false,
+                  "description": "Cache key for surrogate caching",
+                  "key": "Surrogate-Key",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "Cache control directives for surrogate caching",
+                  "key": "Surrogate-Control",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "Always set to bytes. https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept-Ranges",
+                  "key": "Accept-Ranges",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/octet-stream"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "08c8bbde-0cd1-48f5-b5cb-4855d7c139f6",
+              "name": "Partial file content retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "files",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "q",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "h",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "w",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "b",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "f",
+                      "value": "same"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Unique identifier of the file to download"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "Only return the file if the current ETag matches one of the values provided",
+                    "key": "if-match",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Only return the file if the current ETag does not match any of the values provided",
+                    "key": "if-none-match",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Only return the file if it has been modified after the given date",
+                    "key": "if-modified-since",
+                    "value": "Tue, 12 Aug 2025 12:03:50 GMT"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Only return the file if it has not been modified after the given date",
+                    "key": "if-unmodified-since",
+                    "value": "Tue, 12 Aug 2025 12:03:50 GMT"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Range of bytes to retrieve from the file. Format: bytes=start-end",
+                    "key": "Range",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/octet-stream"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Partial Content",
+              "code": 206,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "Directives for caching mechanisms",
+                  "key": "Cache-Control",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "Range of bytes returned in the response",
+                  "key": "Content-Range",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "Entity tag for cache validation",
+                  "key": "Etag",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "Indicates if the content should be displayed inline or as an attachment",
+                  "key": "Content-Disposition",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "Date and time the file was last modified",
+                  "key": "Last-Modified",
+                  "value": "1998-06-28T17:35:51.092Z"
+                },
+                {
+                  "disabled": false,
+                  "description": "Cache key for surrogate caching",
+                  "key": "Surrogate-Key",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "Cache control directives for surrogate caching",
+                  "key": "Surrogate-Control",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/octet-stream"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "5561f3de-94c9-4434-b5d6-f4e79ae1d7e7",
+              "name": "File not modified since the condition specified in If-Modified-Since or If-None-Match headers",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "files",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "q",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "h",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "w",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "b",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "f",
+                      "value": "same"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Unique identifier of the file to download"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "Only return the file if the current ETag matches one of the values provided",
+                    "key": "if-match",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Only return the file if the current ETag does not match any of the values provided",
+                    "key": "if-none-match",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Only return the file if it has been modified after the given date",
+                    "key": "if-modified-since",
+                    "value": "Tue, 12 Aug 2025 12:03:50 GMT"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Only return the file if it has not been modified after the given date",
+                    "key": "if-unmodified-since",
+                    "value": "Tue, 12 Aug 2025 12:03:50 GMT"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Range of bytes to retrieve from the file. Format: bytes=start-end",
+                    "key": "Range",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Modified",
+              "code": 304,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "Directives for caching mechanisms",
+                  "key": "Cache-Control",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "Entity tag for cache validation",
+                  "key": "Etag",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "Cache control directives for surrogate caching",
+                  "key": "Surrogate-Control",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "9ebf3981-a271-47bb-9689-3006d1311697",
+              "name": "Precondition failed for conditional request headers (If-Match, If-Unmodified-Since, If-None-Match)",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "files",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "q",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "h",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "w",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "b",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "f",
+                      "value": "same"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Unique identifier of the file to download"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "Only return the file if the current ETag matches one of the values provided",
+                    "key": "if-match",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Only return the file if the current ETag does not match any of the values provided",
+                    "key": "if-none-match",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Only return the file if it has been modified after the given date",
+                    "key": "if-modified-since",
+                    "value": "Tue, 12 Aug 2025 12:03:50 GMT"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Only return the file if it has not been modified after the given date",
+                    "key": "if-unmodified-since",
+                    "value": "Tue, 12 Aug 2025 12:03:50 GMT"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Range of bytes to retrieve from the file. Format: bytes=start-end",
+                    "key": "Range",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Precondition Failed",
+              "code": 412,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "Directives for caching mechanisms",
+                  "key": "Cache-Control",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "Entity tag for cache validation",
+                  "key": "Etag",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "Cache control directives for surrogate caching",
+                  "key": "Surrogate-Control",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "92364278-f02c-48a3-8ed9-d9c99c552fa8",
+              "name": "Error occurred",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "files",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "q",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "h",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "w",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "b",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "f",
+                      "value": "same"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Unique identifier of the file to download"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "Only return the file if the current ETag matches one of the values provided",
+                    "key": "if-match",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Only return the file if the current ETag does not match any of the values provided",
+                    "key": "if-none-match",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Only return the file if it has been modified after the given date",
+                    "key": "if-modified-since",
+                    "value": "Tue, 12 Aug 2025 12:03:50 GMT"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Only return the file if it has not been modified after the given date",
+                    "key": "if-unmodified-since",
+                    "value": "Tue, 12 Aug 2025 12:03:50 GMT"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Range of bytes to retrieve from the file. Format: bytes=start-end",
+                    "key": "Range",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "Error message details",
+                  "key": "X-Error",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "9e26aff6-6335-4f88-b92f-8e981c046a02",
+          "name": "Check file information",
+          "request": {
+            "name": "Check file information",
+            "description": {
+              "content": "Retrieve file metadata headers without downloading the file content. Supports conditional requests and provides caching information.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "files",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "q",
+                  "value": "<integer>",
+                  "description": "Image quality (1-100). Only applies to JPEG, WebP and PNG files"
+                },
+                {
+                  "disabled": false,
+                  "key": "h",
+                  "value": "<integer>",
+                  "description": "Maximum height to resize image to while maintaining aspect ratio. Only applies to image files"
+                },
+                {
+                  "disabled": false,
+                  "key": "w",
+                  "value": "<integer>",
+                  "description": "Maximum width to resize image to while maintaining aspect ratio. Only applies to image files"
+                },
+                {
+                  "disabled": false,
+                  "key": "b",
+                  "value": "<number>",
+                  "description": "Blur the image using this sigma value. Only applies to image files"
+                },
+                {
+                  "disabled": false,
+                  "key": "f",
+                  "value": "same",
+                  "description": "Output format for image files. Use 'auto' for content negotiation based on Accept header"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) Unique identifier of the file to check"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "Only return the file if the current ETag matches one of the values provided",
+                "key": "if-match",
+                "value": "<string>"
+              },
+              {
+                "disabled": false,
+                "description": "Only return the file if the current ETag does not match any of the values provided",
+                "key": "if-none-match",
+                "value": "<string>"
+              },
+              {
+                "disabled": false,
+                "description": "Only return the file if it has been modified after the given date",
+                "key": "if-modified-since",
+                "value": "<string>"
+              },
+              {
+                "disabled": false,
+                "description": "Only return the file if it has not been modified after the given date",
+                "key": "if-unmodified-since",
+                "value": "<string>"
+              }
+            ],
+            "method": "HEAD"
+          },
+          "response": [
+            {
+              "id": "269caa0a-b264-45d5-a144-dd5d2a6d91a6",
+              "name": "File information headers retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "files",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "q",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "h",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "w",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "b",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "f",
+                      "value": "same"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Unique identifier of the file to check"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "Only return the file if the current ETag matches one of the values provided",
+                    "key": "if-match",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Only return the file if the current ETag does not match any of the values provided",
+                    "key": "if-none-match",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Only return the file if it has been modified after the given date",
+                    "key": "if-modified-since",
+                    "value": "Tue, 12 Aug 2025 12:03:50 GMT"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Only return the file if it has not been modified after the given date",
+                    "key": "if-unmodified-since",
+                    "value": "Tue, 12 Aug 2025 12:03:50 GMT"
+                  }
+                ],
+                "method": "HEAD",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "Directives for caching mechanisms",
+                  "key": "Cache-Control",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "Size of the file in bytes",
+                  "key": "Content-Length",
+                  "value": "1815"
+                },
+                {
+                  "disabled": false,
+                  "description": "Entity tag for cache validation",
+                  "key": "Etag",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "Indicates if the content should be displayed inline or as an attachment",
+                  "key": "Content-Disposition",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "Date and time the file was last modified",
+                  "key": "Last-Modified",
+                  "value": "1998-06-28T17:35:51.092Z"
+                },
+                {
+                  "disabled": false,
+                  "description": "Always set to bytes. https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept-Ranges",
+                  "key": "Accept-Ranges",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "Cache key for surrogate caching",
+                  "key": "Surrogate-Key",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "Cache control directives for surrogate caching",
+                  "key": "Surrogate-Control",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "090378bc-2897-46be-90a7-ca70cd1695e4",
+              "name": "File not modified since the condition specified in If-Modified-Since or If-None-Match headers",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "files",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "q",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "h",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "w",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "b",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "f",
+                      "value": "same"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Unique identifier of the file to check"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "Only return the file if the current ETag matches one of the values provided",
+                    "key": "if-match",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Only return the file if the current ETag does not match any of the values provided",
+                    "key": "if-none-match",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Only return the file if it has been modified after the given date",
+                    "key": "if-modified-since",
+                    "value": "Tue, 12 Aug 2025 12:03:50 GMT"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Only return the file if it has not been modified after the given date",
+                    "key": "if-unmodified-since",
+                    "value": "Tue, 12 Aug 2025 12:03:50 GMT"
+                  }
+                ],
+                "method": "HEAD",
+                "body": {}
+              },
+              "status": "Not Modified",
+              "code": 304,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "Directives for caching mechanisms",
+                  "key": "Cache-Control",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "Entity tag for cache validation",
+                  "key": "Etag",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "Cache control directives for surrogate caching",
+                  "key": "Surrogate-Control",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "042737e7-b705-403c-8bbd-faaef61a43e9",
+              "name": "Precondition failed for conditional request headers (If-Match, If-Unmodified-Since)",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "files",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "q",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "h",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "w",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "b",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "f",
+                      "value": "same"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Unique identifier of the file to check"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "Only return the file if the current ETag matches one of the values provided",
+                    "key": "if-match",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Only return the file if the current ETag does not match any of the values provided",
+                    "key": "if-none-match",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Only return the file if it has been modified after the given date",
+                    "key": "if-modified-since",
+                    "value": "Tue, 12 Aug 2025 12:03:50 GMT"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Only return the file if it has not been modified after the given date",
+                    "key": "if-unmodified-since",
+                    "value": "Tue, 12 Aug 2025 12:03:50 GMT"
+                  }
+                ],
+                "method": "HEAD",
+                "body": {}
+              },
+              "status": "Precondition Failed",
+              "code": 412,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "Directives for caching mechanisms",
+                  "key": "Cache-Control",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "Entity tag for cache validation",
+                  "key": "Etag",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "Cache control directives for surrogate caching",
+                  "key": "Surrogate-Control",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "821c72b3-f7d3-439f-b83f-6a0ff8a5db28",
+              "name": "Error occurred",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "files",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "q",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "h",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "w",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "b",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "f",
+                      "value": "same"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Unique identifier of the file to check"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "Only return the file if the current ETag matches one of the values provided",
+                    "key": "if-match",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Only return the file if the current ETag does not match any of the values provided",
+                    "key": "if-none-match",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Only return the file if it has been modified after the given date",
+                    "key": "if-modified-since",
+                    "value": "Tue, 12 Aug 2025 12:03:50 GMT"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Only return the file if it has not been modified after the given date",
+                    "key": "if-unmodified-since",
+                    "value": "Tue, 12 Aug 2025 12:03:50 GMT"
+                  }
+                ],
+                "method": "HEAD",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "Error message details",
+                  "key": "X-Error",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "90eeb26d-2991-4a6c-937a-85b20c255a1b",
+          "name": "Replace file",
+          "request": {
+            "name": "Replace file",
+            "description": {
+              "content": "Replace an existing file with new content while preserving the file ID. The operation follows these steps:\n1. The isUploaded flag is set to false to mark the file as being updated\n2. The file content is replaced in the storage backend\n3. File metadata is updated (size, mime-type, isUploaded, etc.)\n\nEach step is atomic, but if a step fails, previous steps will not be automatically rolled back.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "files",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) Unique identifier of the file to replace"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "multipart/form-data"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "metadata",
+                  "value": "{\"name\":\"<string>\",\"metadata\":{\"key_0\":true,\"key_1\":\"string\",\"key_2\":\"string\"}}",
+                  "type": "text",
+                  "description": ""
+                },
+                {
+                  "key": "file",
+                  "type": "file",
+                  "description": "New file content to replace the existing file"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "176efa55-2256-4c4b-a1c2-b19b09d9c2f9",
+              "name": "File successfully replaced",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "files",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Unique identifier of the file to replace"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "metadata",
+                      "value": "{\"name\":\"renamed-file.jpg\",\"metadata\":{\"alt\":\"Updated image description\",\"category\":\"profile\"}}",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "New file content to replace the existing file",
+                        "type": "text/plain"
+                      },
+                      "key": "file",
+                      "value": "<binary>",
+                      "type": "text"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"d5e76ceb-77a2-4153-b7da-1f7c115b2ff2\",\n  \"name\": \"profile-picture.jpg\",\n  \"size\": 245678,\n  \"bucketId\": \"users-bucket\",\n  \"etag\": \"\\\"a1b2c3d4e5f6\\\"\",\n  \"createdAt\": \"2023-01-15T12:34:56Z\",\n  \"updatedAt\": \"2023-01-16T09:45:32Z\",\n  \"isUploaded\": true,\n  \"mimeType\": \"image/jpeg\",\n  \"uploadedByUserId\": \"abc123def456\",\n  \"metadata\": {\n    \"alt\": \"Profile picture\",\n    \"category\": \"avatar\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b1651cc6-db94-4246-b694-e3652e2a9044",
+              "name": "Error occurred during file replacement",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "files",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Unique identifier of the file to replace"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "metadata",
+                      "value": "{\"name\":\"renamed-file.jpg\",\"metadata\":{\"alt\":\"Updated image description\",\"category\":\"profile\"}}",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "New file content to replace the existing file",
+                        "type": "text/plain"
+                      },
+                      "key": "file",
+                      "value": "<binary>",
+                      "type": "text"
+                    }
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"message\": \"File not found\",\n    \"data\": {\n      \"key_0\": 8129\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://{{subdomain}}.auth.{{region}}.nhost.run/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "911392c1-961f-42eb-a3e7-065d52cc4e2a",
+    "name": "Nhost authentication files API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Comprehensive authentication service for managing user identities, sessions, and authentication methods\n\nContact Support:\n Name: Nhost Support\n Email: support@nhost.io",
+      "type": "text/plain"
+    }
+  }
+}

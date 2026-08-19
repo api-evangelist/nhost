@@ -1,0 +1,1105 @@
+{
+  "item": [
+    {
+      "id": "83c49554-ed61-4522-b442-3e5f335fc4c3",
+      "name": "storage",
+      "description": {
+        "content": "Storage operations and presigned URLs",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "4d05e6cc-a5d2-4c80-b251-403ebdb97046",
+          "name": "Retrieve presigned URL to retrieve the file",
+          "request": {
+            "name": "Retrieve presigned URL to retrieve the file",
+            "description": {
+              "content": "Retrieve presigned URL to retrieve the file. Expiration of the URL is\ndetermined by bucket configuration\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "files",
+                ":id",
+                "presignedurl"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) Unique identifier of the file"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [
+            {
+              "id": "9e030237-5cda-4658-be88-efe7a71d44ba",
+              "name": "File gathered successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "files",
+                    ":id",
+                    "presignedurl"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Unique identifier of the file"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"url\": \"https://storage.example.com/files/abc123?signature=xyz\",\n  \"expiration\": 3600\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "56d0da9d-1087-45b0-b718-6994b2cd6e75",
+              "name": "Some error occurred",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "files",
+                    ":id",
+                    "presignedurl"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Unique identifier of the file"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"message\": \"File not found\",\n    \"data\": {\n      \"key_0\": 4928\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a3c6f755-3dff-4367-b50b-6516102a482b",
+          "name": "Retrieve contents of file",
+          "request": {
+            "name": "Retrieve contents of file",
+            "description": {
+              "content": "Retrieve contents of file",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "files",
+                ":id",
+                "presignedurl",
+                "contents"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "X-Amz-Algorithm",
+                  "value": "<string>",
+                  "description": "(Required) Use presignedurl endpoint to generate this automatically"
+                },
+                {
+                  "disabled": false,
+                  "key": "X-Amz-Credential",
+                  "value": "<string>",
+                  "description": "(Required) Use presignedurl endpoint to generate this automatically"
+                },
+                {
+                  "disabled": false,
+                  "key": "X-Amz-Date",
+                  "value": "<string>",
+                  "description": "(Required) Use presignedurl endpoint to generate this automatically"
+                },
+                {
+                  "disabled": false,
+                  "key": "X-Amz-Expires",
+                  "value": "<string>",
+                  "description": "(Required) Use presignedurl endpoint to generate this automatically"
+                },
+                {
+                  "disabled": false,
+                  "key": "X-Amz-Signature",
+                  "value": "<string>",
+                  "description": "(Required) Use presignedurl endpoint to generate this automatically"
+                },
+                {
+                  "disabled": false,
+                  "key": "X-Amz-SignedHeaders",
+                  "value": "<string>",
+                  "description": "(Required) Use presignedurl endpoint to generate this automatically"
+                },
+                {
+                  "disabled": false,
+                  "key": "X-Amz-Checksum-Mode",
+                  "value": "<string>",
+                  "description": "(Required) Use presignedurl endpoint to generate this automatically"
+                },
+                {
+                  "disabled": false,
+                  "key": "X-Amz-Security-Token",
+                  "value": "<string>",
+                  "description": "Use presignedurl endpoint to generate this automatically"
+                },
+                {
+                  "disabled": false,
+                  "key": "x-id",
+                  "value": "<string>",
+                  "description": "(Required) Use presignedurl endpoint to generate this automatically"
+                },
+                {
+                  "disabled": false,
+                  "key": "q",
+                  "value": "<integer>",
+                  "description": "Image quality (1-100). Only applies to JPEG, WebP and PNG files"
+                },
+                {
+                  "disabled": false,
+                  "key": "h",
+                  "value": "<integer>",
+                  "description": "Maximum height to resize image to while maintaining aspect ratio. Only applies to image files"
+                },
+                {
+                  "disabled": false,
+                  "key": "w",
+                  "value": "<integer>",
+                  "description": "Maximum width to resize image to while maintaining aspect ratio. Only applies to image files"
+                },
+                {
+                  "disabled": false,
+                  "key": "b",
+                  "value": "<number>",
+                  "description": "Blur the image using this sigma value. Only applies to image files"
+                },
+                {
+                  "disabled": false,
+                  "key": "f",
+                  "value": "same",
+                  "description": "Output format for image files. Use 'auto' for content negotiation based on Accept header"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) Unique identifier of the file"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "Only return the file if the current ETag matches one of the values provided",
+                "key": "if-match",
+                "value": "<string>"
+              },
+              {
+                "disabled": false,
+                "description": "Only return the file if the current ETag does not match any of the values provided",
+                "key": "if-none-match",
+                "value": "<string>"
+              },
+              {
+                "disabled": false,
+                "description": "Only return the file if it has been modified after the given date",
+                "key": "if-modified-since",
+                "value": "<string>"
+              },
+              {
+                "disabled": false,
+                "description": "Only return the file if it has not been modified after the given date",
+                "key": "if-unmodified-since",
+                "value": "<string>"
+              },
+              {
+                "disabled": false,
+                "description": "Range of bytes to retrieve from the file. Format: bytes=start-end",
+                "key": "Range",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/octet-stream"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [
+            {
+              "id": "80839c1d-249a-4608-bc8e-54b7b0af6abc",
+              "name": "File content retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "files",
+                    ":id",
+                    "presignedurl",
+                    "contents"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "X-Amz-Algorithm",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "X-Amz-Credential",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "X-Amz-Date",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "X-Amz-Expires",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "X-Amz-Signature",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "X-Amz-SignedHeaders",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "X-Amz-Checksum-Mode",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "X-Amz-Security-Token",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "x-id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "q",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "h",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "w",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "b",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "f",
+                      "value": "same"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Unique identifier of the file"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "Only return the file if the current ETag matches one of the values provided",
+                    "key": "if-match",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Only return the file if the current ETag does not match any of the values provided",
+                    "key": "if-none-match",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Only return the file if it has been modified after the given date",
+                    "key": "if-modified-since",
+                    "value": "Tue, 12 Aug 2025 12:03:50 GMT"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Only return the file if it has not been modified after the given date",
+                    "key": "if-unmodified-since",
+                    "value": "Tue, 12 Aug 2025 12:03:50 GMT"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Range of bytes to retrieve from the file. Format: bytes=start-end",
+                    "key": "Range",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/octet-stream"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "Directives for caching mechanisms",
+                  "key": "Cache-Control",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "Entity tag for cache validation",
+                  "key": "Etag",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "Indicates if the content should be displayed inline or as an attachment",
+                  "key": "Content-Disposition",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "Date and time the file was last modified",
+                  "key": "Last-Modified",
+                  "value": "1976-10-21T18:09:46.118Z"
+                },
+                {
+                  "disabled": false,
+                  "description": "Cache key for surrogate caching",
+                  "key": "Surrogate-Key",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "Cache control directives for surrogate caching",
+                  "key": "Surrogate-Control",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "Always set to bytes. https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept-Ranges",
+                  "key": "Accept-Ranges",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/octet-stream"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "e9c9abae-fcb1-477a-a0e2-30ec5c54ac54",
+              "name": "Partial file content retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "files",
+                    ":id",
+                    "presignedurl",
+                    "contents"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "X-Amz-Algorithm",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "X-Amz-Credential",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "X-Amz-Date",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "X-Amz-Expires",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "X-Amz-Signature",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "X-Amz-SignedHeaders",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "X-Amz-Checksum-Mode",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "X-Amz-Security-Token",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "x-id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "q",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "h",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "w",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "b",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "f",
+                      "value": "same"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Unique identifier of the file"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "Only return the file if the current ETag matches one of the values provided",
+                    "key": "if-match",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Only return the file if the current ETag does not match any of the values provided",
+                    "key": "if-none-match",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Only return the file if it has been modified after the given date",
+                    "key": "if-modified-since",
+                    "value": "Tue, 12 Aug 2025 12:03:50 GMT"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Only return the file if it has not been modified after the given date",
+                    "key": "if-unmodified-since",
+                    "value": "Tue, 12 Aug 2025 12:03:50 GMT"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Range of bytes to retrieve from the file. Format: bytes=start-end",
+                    "key": "Range",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/octet-stream"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Partial Content",
+              "code": 206,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "Directives for caching mechanisms",
+                  "key": "Cache-Control",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "Range of bytes returned in the response",
+                  "key": "Content-Range",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "Entity tag for cache validation",
+                  "key": "Etag",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "Indicates if the content should be displayed inline or as an attachment",
+                  "key": "Content-Disposition",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "Date and time the file was last modified",
+                  "key": "Last-Modified",
+                  "value": "1976-10-21T18:09:46.118Z"
+                },
+                {
+                  "disabled": false,
+                  "description": "Cache key for surrogate caching",
+                  "key": "Surrogate-Key",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "Cache control directives for surrogate caching",
+                  "key": "Surrogate-Control",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/octet-stream"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "d947f1a5-7e7a-44ae-b32b-4944c10b0a24",
+              "name": "File not modified since the condition specified in If-Modified-Since or If-None-Match headers",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "files",
+                    ":id",
+                    "presignedurl",
+                    "contents"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "X-Amz-Algorithm",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "X-Amz-Credential",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "X-Amz-Date",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "X-Amz-Expires",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "X-Amz-Signature",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "X-Amz-SignedHeaders",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "X-Amz-Checksum-Mode",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "X-Amz-Security-Token",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "x-id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "q",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "h",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "w",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "b",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "f",
+                      "value": "same"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Unique identifier of the file"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "Only return the file if the current ETag matches one of the values provided",
+                    "key": "if-match",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Only return the file if the current ETag does not match any of the values provided",
+                    "key": "if-none-match",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Only return the file if it has been modified after the given date",
+                    "key": "if-modified-since",
+                    "value": "Tue, 12 Aug 2025 12:03:50 GMT"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Only return the file if it has not been modified after the given date",
+                    "key": "if-unmodified-since",
+                    "value": "Tue, 12 Aug 2025 12:03:50 GMT"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Range of bytes to retrieve from the file. Format: bytes=start-end",
+                    "key": "Range",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Modified",
+              "code": 304,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "Directives for caching mechanisms",
+                  "key": "Cache-Control",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "Entity tag for cache validation",
+                  "key": "Etag",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "Cache control directives for surrogate caching",
+                  "key": "Surrogate-Control",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "b94b7d16-3eba-479e-a680-af5d43946c6e",
+              "name": "Precondition failed for conditional request headers (If-Match, If-Unmodified-Since, If-None-Match)",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "files",
+                    ":id",
+                    "presignedurl",
+                    "contents"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "X-Amz-Algorithm",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "X-Amz-Credential",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "X-Amz-Date",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "X-Amz-Expires",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "X-Amz-Signature",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "X-Amz-SignedHeaders",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "X-Amz-Checksum-Mode",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "X-Amz-Security-Token",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "x-id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "q",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "h",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "w",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "b",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "f",
+                      "value": "same"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Unique identifier of the file"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "Only return the file if the current ETag matches one of the values provided",
+                    "key": "if-match",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Only return the file if the current ETag does not match any of the values provided",
+                    "key": "if-none-match",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Only return the file if it has been modified after the given date",
+                    "key": "if-modified-since",
+                    "value": "Tue, 12 Aug 2025 12:03:50 GMT"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Only return the file if it has not been modified after the given date",
+                    "key": "if-unmodified-since",
+                    "value": "Tue, 12 Aug 2025 12:03:50 GMT"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Range of bytes to retrieve from the file. Format: bytes=start-end",
+                    "key": "Range",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Precondition Failed",
+              "code": 412,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "Directives for caching mechanisms",
+                  "key": "Cache-Control",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "Entity tag for cache validation",
+                  "key": "Etag",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "Cache control directives for surrogate caching",
+                  "key": "Surrogate-Control",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "5882afc6-9c6b-4226-9cdc-6d33125adbe6",
+              "name": "Error occurred",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "files",
+                    ":id",
+                    "presignedurl",
+                    "contents"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "X-Amz-Algorithm",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "X-Amz-Credential",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "X-Amz-Date",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "X-Amz-Expires",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "X-Amz-Signature",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "X-Amz-SignedHeaders",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "X-Amz-Checksum-Mode",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "X-Amz-Security-Token",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "x-id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "q",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "h",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "w",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "b",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "f",
+                      "value": "same"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Unique identifier of the file"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "Only return the file if the current ETag matches one of the values provided",
+                    "key": "if-match",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Only return the file if the current ETag does not match any of the values provided",
+                    "key": "if-none-match",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Only return the file if it has been modified after the given date",
+                    "key": "if-modified-since",
+                    "value": "Tue, 12 Aug 2025 12:03:50 GMT"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Only return the file if it has not been modified after the given date",
+                    "key": "if-unmodified-since",
+                    "value": "Tue, 12 Aug 2025 12:03:50 GMT"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Range of bytes to retrieve from the file. Format: bytes=start-end",
+                    "key": "Range",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "Error message details",
+                  "key": "X-Error",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://{{subdomain}}.auth.{{region}}.nhost.run/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "828dc5e7-c697-49cb-a6a1-df6202a85847",
+    "name": "Nhost authentication storage API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Comprehensive authentication service for managing user identities, sessions, and authentication methods\n\nContact Support:\n Name: Nhost Support\n Email: support@nhost.io",
+      "type": "text/plain"
+    }
+  }
+}

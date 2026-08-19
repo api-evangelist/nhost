@@ -1,0 +1,116 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Nhost authentication user API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "user",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Generate TOTP secret",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{subdomain}.auth.{region}.nhost.run/v1/mfa/totp/generate",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Generate a Time-based One-Time Password (TOTP) secret for setting up multi-factor authentication"
+        },
+        {
+          "info": {
+            "name": "Get user information",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{subdomain}.auth.{region}.nhost.run/v1/user",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieve the authenticated user's profile information including roles, metadata, and account status."
+        },
+        {
+          "info": {
+            "name": "Change user email",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{subdomain}.auth.{region}.nhost.run/v1/user/email/change",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Request to change the authenticated user's email address. A verification email will be sent to the new address to confirm the change. Requires elevated permissions."
+        },
+        {
+          "info": {
+            "name": "Send verification email",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{subdomain}.auth.{region}.nhost.run/v1/user/email/send-verification-email",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Send an email verification link to the specified email address. Used to verify email addresses for new accounts or email changes."
+        },
+        {
+          "info": {
+            "name": "Change user password",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{subdomain}.auth.{region}.nhost.run/v1/user/password",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Change the user's password. The user must be authenticated with elevated permissions or provide a valid password reset ticket."
+        },
+        {
+          "info": {
+            "name": "Request password reset",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{subdomain}.auth.{region}.nhost.run/v1/user/password/reset",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Request a password reset for a user account. An email with a verification link will be sent to the user's email address to complete the password reset process."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,137 @@
+{
+  "item": [
+    {
+      "id": "68e81b88-4092-45c4-ad10-4bf96292c87b",
+      "name": "documentation",
+      "description": {
+        "content": "API documentation",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "44f6dce1-d993-4508-8128-6972d591e357",
+          "name": "Get OpenAPI specification",
+          "request": {
+            "name": "Get OpenAPI specification",
+            "description": {
+              "content": "Returns the OpenAPI schema definition for this API, allowing clients to understand the available endpoints and models.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "openapi.yaml"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/x-yaml"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "435a0e2d-1a9a-4961-8555-aa967b82cc19",
+              "name": "OpenAPI schema definition",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "openapi.yaml"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/x-yaml"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/x-yaml"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "17ef6bc7-9c23-403f-984f-fd5657ba2cdf",
+              "name": "Error occurred",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "openapi.yaml"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"message\": \"File not found\",\n    \"data\": {\n      \"key_0\": 8531.078883734357\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://{{subdomain}}.auth.{{region}}.nhost.run/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "04299f5d-bcca-4f5c-888a-08fc1d776c93",
+    "name": "Nhost authentication documentation API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Comprehensive authentication service for managing user identities, sessions, and authentication methods\n\nContact Support:\n Name: Nhost Support\n Email: support@nhost.io",
+      "type": "text/plain"
+    }
+  }
+}

@@ -1,0 +1,567 @@
+{
+  "item": [
+    {
+      "id": "3f794afd-1110-4370-bcd2-7b15064ff95a",
+      "name": "operations",
+      "description": {
+        "content": "Administrative operations",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "64277df6-b300-4ea7-97e0-a6e092176e96",
+          "name": "Delete broken metadata",
+          "request": {
+            "name": "Delete broken metadata",
+            "description": {
+              "content": "Broken metadata is defined as metadata that has isUploaded = true but there is no file in the storage matching it. This is an admin operation that requires the Hasura admin secret.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "ops",
+                "delete-broken-metadata"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST"
+          },
+          "response": [
+            {
+              "id": "f9dcb1ef-69bc-4647-9337-8e14741babb5",
+              "name": "Successfully deleted broken metadata",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ops",
+                    "delete-broken-metadata"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"metadata\": [\n    {\n      \"id\": \"d5e76ceb-77a2-4153-b7da-1f7c115b2ff2\",\n      \"name\": \"profile-picture.jpg\",\n      \"bucketId\": \"users-bucket\",\n      \"isUploaded\": true\n    },\n    {\n      \"id\": \"d5e76ceb-77a2-4153-b7da-1f7c115b2ff2\",\n      \"name\": \"profile-picture.jpg\",\n      \"bucketId\": \"users-bucket\",\n      \"isUploaded\": true\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "44713a3d-b38d-4515-8e84-d76c543c3a02",
+              "name": "En error occured",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ops",
+                    "delete-broken-metadata"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"message\": \"File not found\",\n    \"data\": {\n      \"key_0\": \"string\",\n      \"key_1\": 6239\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "2343ae7c-1ff3-4643-9eeb-b3bf6e864f5f",
+          "name": "Deletes orphaned files",
+          "request": {
+            "name": "Deletes orphaned files",
+            "description": {
+              "content": "Orphaned files are files that are present in the storage but have no associated metadata. This is an admin operation that requires the Hasura admin secret.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "ops",
+                "delete-orphans"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST"
+          },
+          "response": [
+            {
+              "id": "46ca37e4-4058-461a-9d7d-95978e433b08",
+              "name": "Successfully deleted orphaned files",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ops",
+                    "delete-orphans"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"files\": [\n    \"string\",\n    \"string\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "72a6195b-0119-4958-ba66-afaeaf0c0636",
+              "name": "En error occured",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ops",
+                    "delete-orphans"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"message\": \"File not found\",\n    \"data\": {\n      \"key_0\": \"string\",\n      \"key_1\": 6239\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "15ee5d98-bfab-4133-b905-fe4792417f54",
+          "name": "Lists broken metadata",
+          "request": {
+            "name": "Lists broken metadata",
+            "description": {
+              "content": "Broken metadata is defined as metadata that has isUploaded = true but there is no file in the storage matching it. This is an admin operation that requires the Hasura admin secret.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "ops",
+                "list-broken-metadata"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST"
+          },
+          "response": [
+            {
+              "id": "5fe02faa-a9e5-4556-98c4-36c6b8d29891",
+              "name": "Successfully computed broken metadata",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ops",
+                    "list-broken-metadata"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"metadata\": [\n    {\n      \"id\": \"d5e76ceb-77a2-4153-b7da-1f7c115b2ff2\",\n      \"name\": \"profile-picture.jpg\",\n      \"bucketId\": \"users-bucket\",\n      \"isUploaded\": true\n    },\n    {\n      \"id\": \"d5e76ceb-77a2-4153-b7da-1f7c115b2ff2\",\n      \"name\": \"profile-picture.jpg\",\n      \"bucketId\": \"users-bucket\",\n      \"isUploaded\": true\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "94b4da3d-ca83-4a99-8be3-9563a932a932",
+              "name": "En error occured",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ops",
+                    "list-broken-metadata"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"message\": \"File not found\",\n    \"data\": {\n      \"key_0\": \"string\",\n      \"key_1\": 6239\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e09060fd-080e-40d6-b692-a43581d12692",
+          "name": "Lists files that haven't been uploaded",
+          "request": {
+            "name": "Lists files that haven't been uploaded",
+            "description": {
+              "content": "That is, metadata that has isUploaded = false. This is an admin operation that requires the Hasura admin secret.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "ops",
+                "list-not-uploaded"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST"
+          },
+          "response": [
+            {
+              "id": "addfb3b7-a9a2-453e-88b7-c144bc63f2bc",
+              "name": "Successfully checked files not uploaded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ops",
+                    "list-not-uploaded"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"metadata\": [\n    {\n      \"id\": \"d5e76ceb-77a2-4153-b7da-1f7c115b2ff2\",\n      \"name\": \"profile-picture.jpg\",\n      \"bucketId\": \"users-bucket\",\n      \"isUploaded\": true\n    },\n    {\n      \"id\": \"d5e76ceb-77a2-4153-b7da-1f7c115b2ff2\",\n      \"name\": \"profile-picture.jpg\",\n      \"bucketId\": \"users-bucket\",\n      \"isUploaded\": true\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a68639e5-83df-4a5c-90c2-9b7fa29e7362",
+              "name": "En error occured",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ops",
+                    "list-not-uploaded"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"message\": \"File not found\",\n    \"data\": {\n      \"key_0\": \"string\",\n      \"key_1\": 6239\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "0dd011c4-f1d3-4c58-a2dc-1938a54adf3c",
+          "name": "Lists orphaned files",
+          "request": {
+            "name": "Lists orphaned files",
+            "description": {
+              "content": "Orphaned files are files that are present in the storage but have no associated metadata. This is an admin operation that requires the Hasura admin secret.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "ops",
+                "list-orphans"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST"
+          },
+          "response": [
+            {
+              "id": "5ac5cf51-0e37-477d-b67c-79d1c3ba408c",
+              "name": "Successfully computed orphaned files",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ops",
+                    "list-orphans"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"files\": [\n    \"string\",\n    \"string\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "50accbab-b242-46b5-846f-ed8f5c7ea178",
+              "name": "En error occured",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ops",
+                    "list-orphans"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"message\": \"File not found\",\n    \"data\": {\n      \"key_0\": \"string\",\n      \"key_1\": 6239\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://{{subdomain}}.auth.{{region}}.nhost.run/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "fb0491d1-54ef-4442-aaae-6da0fab27439",
+    "name": "Nhost authentication operations API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Comprehensive authentication service for managing user identities, sessions, and authentication methods\n\nContact Support:\n Name: Nhost Support\n Email: support@nhost.io",
+      "type": "text/plain"
+    }
+  }
+}

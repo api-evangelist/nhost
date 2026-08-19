@@ -1,0 +1,485 @@
+{
+  "item": [
+    {
+      "id": "86fa953d-fb0a-4a22-bab1-a626e97791e5",
+      "name": "session",
+      "description": {
+        "content": "Session management operations including token refresh, verification, and sign-out",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "859bf568-bb1f-47b9-9b71-3a06d9434648",
+          "name": "Sign out",
+          "request": {
+            "name": "Sign out",
+            "description": {
+              "content": "End the current user session by invalidating refresh tokens. Optionally sign out from all devices.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "signout"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refreshToken\": \"<string>\",\n  \"all\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "0f83f6a7-6acf-47f7-98c7-71f4fc3fed85",
+              "name": "Successfully signed out",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "signout"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"refreshToken\": \"<string>\",\n  \"all\": false\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"OK\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "929b1763-8f56-4a7b-a9d4-9d0e2d43362b",
+              "name": "An error occurred while processing the request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "signout"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"refreshToken\": \"<string>\",\n  \"all\": false\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": 400,\n  \"message\": \"Invalid email format\",\n  \"error\": \"invalid-totp\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "4918ded1-5139-4598-93bc-1bd18237177a",
+          "name": "Refresh access token",
+          "request": {
+            "name": "Refresh access token",
+            "description": {
+              "content": "Generate a new JWT access token using a valid refresh token. The refresh token used will be revoked and a new one will be issued.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "token"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refreshToken\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "f74f7389-9fd0-403b-92c0-df10c0c76418",
+              "name": "Access token successfully refreshed",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "token"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"refreshToken\": \"2c35b6f3-c4b9-48e3-978a-d4d0f1d42e24\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"accessToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...\",\n  \"accessTokenExpiresIn\": 900,\n  \"refreshToken\": \"2c35b6f3-c4b9-48e3-978a-d4d0f1d42e24\",\n  \"refreshTokenId\": \"2c35b6f3-c4b9-48e3-978a-d4d0f1d42e24\",\n  \"user\": {\n    \"avatarUrl\": \"https://myapp.com/avatars/user123.jpg\",\n    \"createdAt\": \"2023-01-15T12:34:56Z\",\n    \"defaultRole\": \"user\",\n    \"displayName\": \"John Smith\",\n    \"emailVerified\": true,\n    \"id\": \"2c35b6f3-c4b9-48e3-978a-d4d0f1d42e24\",\n    \"isAnonymous\": false,\n    \"locale\": \"en\",\n    \"metadata\": {\n      \"firstName\": \"John\",\n      \"lastName\": \"Smith\"\n    },\n    \"phoneNumberVerified\": false,\n    \"roles\": [\n      \"user\",\n      \"customer\"\n    ],\n    \"email\": \"john.smith@nhost.io\",\n    \"phoneNumber\": \"+12025550123\",\n    \"activeMfaType\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3f816bc1-c03b-4e45-8857-ada99f3727c5",
+              "name": "An error occurred while processing the request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "token"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"refreshToken\": \"2c35b6f3-c4b9-48e3-978a-d4d0f1d42e24\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": 400,\n  \"message\": \"Invalid email format\",\n  \"error\": \"invalid-totp\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "de1f4d23-544c-450a-aa45-7806afbf0b0c",
+          "name": "Verify JWT token",
+          "request": {
+            "name": "Verify JWT token",
+            "description": {
+              "content": "Verify the validity of a JWT access token. If no request body is provided, the Authorization header will be used for verification.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "token",
+                "verify"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"token\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "370bbab2-315c-49b3-a627-6b8d13101865",
+              "name": "Valid JWT token",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "token",
+                    "verify"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"token\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"OK\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "88bea9a2-ec47-442a-998b-d2a7934220a7",
+              "name": "An error occurred while processing the request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "token",
+                    "verify"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"token\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": 400,\n  \"message\": \"Invalid email format\",\n  \"error\": \"invalid-totp\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://{{subdomain}}.auth.{{region}}.nhost.run/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "56c1c0cb-4245-4a1c-a01c-8ddff067c36b",
+    "name": "Nhost authentication session API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Comprehensive authentication service for managing user identities, sessions, and authentication methods\n\nContact Support:\n Name: Nhost Support\n Email: support@nhost.io",
+      "type": "text/plain"
+    }
+  }
+}

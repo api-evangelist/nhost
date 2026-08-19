@@ -1,0 +1,73 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Nhost authentication operations API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "operations",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Delete broken metadata",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{subdomain}.auth.{region}.nhost.run/v1/ops/delete-broken-metadata"
+          },
+          "docs": "Broken metadata is defined as metadata that has isUploaded = true but there is no file in the storage matching it. This is an admin operation that requires the Hasura admin secret."
+        },
+        {
+          "info": {
+            "name": "Deletes orphaned files",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{subdomain}.auth.{region}.nhost.run/v1/ops/delete-orphans"
+          },
+          "docs": "Orphaned files are files that are present in the storage but have no associated metadata. This is an admin operation that requires the Hasura admin secret."
+        },
+        {
+          "info": {
+            "name": "Lists broken metadata",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{subdomain}.auth.{region}.nhost.run/v1/ops/list-broken-metadata"
+          },
+          "docs": "Broken metadata is defined as metadata that has isUploaded = true but there is no file in the storage matching it. This is an admin operation that requires the Hasura admin secret."
+        },
+        {
+          "info": {
+            "name": "Lists files that haven't been uploaded",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{subdomain}.auth.{region}.nhost.run/v1/ops/list-not-uploaded"
+          },
+          "docs": "That is, metadata that has isUploaded = false. This is an admin operation that requires the Hasura admin secret."
+        },
+        {
+          "info": {
+            "name": "Lists orphaned files",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{subdomain}.auth.{region}.nhost.run/v1/ops/list-orphans"
+          },
+          "docs": "Orphaned files are files that are present in the storage but have no associated metadata. This is an admin operation that requires the Hasura admin secret."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

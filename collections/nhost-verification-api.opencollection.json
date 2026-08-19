@@ -1,0 +1,64 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Nhost authentication verification API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "verification",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Verify Webauthn sign-up",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{subdomain}.auth.{region}.nhost.run/v1/signup/webauthn/verify",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Complete the Webauthn sign-up process by verifying the response from the user's device. Returns a session if validation is successful."
+        },
+        {
+          "info": {
+            "name": "Verify email and authentication tickets",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{subdomain}.auth.{region}.nhost.run/v1/verify",
+            "params": [
+              {
+                "name": "ticket",
+                "value": "",
+                "type": "query",
+                "description": "Ticket"
+              },
+              {
+                "name": "type",
+                "value": "",
+                "type": "query",
+                "description": "Type of the ticket. Deprecated, no longer used"
+              },
+              {
+                "name": "redirectTo",
+                "value": "",
+                "type": "query",
+                "description": "Target URL for the redirect"
+              }
+            ]
+          },
+          "docs": "Verify tickets created by email verification, magic link authentication, or password reset processes. Redirects the user to the appropriate destination upon successful verification."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

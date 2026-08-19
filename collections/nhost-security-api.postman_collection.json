@@ -1,0 +1,1107 @@
+{
+  "item": [
+    {
+      "id": "adc17f2d-8527-4bf2-8bde-cac0ded93012",
+      "name": "security",
+      "description": {
+        "content": "Security-related operations including Personal Access Tokens, WebAuthn management, account elevation, and account linking",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "a3ed4904-c892-4e96-896f-fe5f6e3920bc",
+          "name": "Elevate access for an already signed in user using FIDO2 Webauthn",
+          "request": {
+            "name": "Elevate access for an already signed in user using FIDO2 Webauthn",
+            "description": {
+              "content": "Generate a Webauthn challenge for elevating user permissions",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "elevate",
+                "webauthn"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "b8862be6-278a-409a-a442-3b0fa763d7c6",
+              "name": "Challenge sent for elevation",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "elevate",
+                    "webauthn"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"challenge\": \"string\",\n  \"timeout\": 667,\n  \"rpId\": \"string\",\n  \"allowCredentials\": [\n    {\n      \"type\": \"public-key\",\n      \"id\": \"string\",\n      \"transports\": [\n        \"ble\",\n        \"ble\"\n      ]\n    },\n    {\n      \"type\": \"public-key\",\n      \"id\": \"string\",\n      \"transports\": [\n        \"usb\",\n        \"ble\"\n      ]\n    }\n  ],\n  \"userVerification\": \"preferred\",\n  \"hints\": [\n    \"security-key\",\n    \"client-device\"\n  ],\n  \"extensions\": {\n    \"key_0\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "aaa0ad94-dd37-4e64-8573-0ab945a26c5c",
+              "name": "An error occurred while processing the request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "elevate",
+                    "webauthn"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": 400,\n  \"message\": \"Invalid email format\",\n  \"error\": \"invalid-pat\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "0c1e0f73-754b-44ba-a2f5-32b94b96f14f",
+          "name": "Verify FIDO2 Webauthn authentication using public-key cryptography for elevation",
+          "request": {
+            "name": "Verify FIDO2 Webauthn authentication using public-key cryptography for elevation",
+            "description": {
+              "content": "Complete Webauthn elevation by verifying the authentication response",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "elevate",
+                "webauthn",
+                "verify"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"credential\": {\n    \"id\": \"<string>\",\n    \"type\": \"<string>\",\n    \"rawId\": \"<byte>\",\n    \"response\": {\n      \"clientDataJSON\": \"<string>\",\n      \"authenticatorData\": \"<string>\",\n      \"signature\": \"<string>\",\n      \"userHandle\": \"<string>\"\n    },\n    \"clientExtensionResults\": {\n      \"appid\": \"<boolean>\",\n      \"credProps\": {\n        \"rk\": \"<boolean>\"\n      },\n      \"hmacCreateSecret\": \"<boolean>\",\n      \"key_0\": true\n    },\n    \"authenticatorAttachment\": \"<string>\"\n  },\n  \"email\": \"<email>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "902a2b5f-73c4-4559-af97-ee32d01b342b",
+              "name": "Elevated successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "elevate",
+                    "webauthn",
+                    "verify"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"credential\": {\n    \"id\": \"<string>\",\n    \"type\": \"<string>\",\n    \"rawId\": \"<byte>\",\n    \"response\": {\n      \"clientDataJSON\": \"<string>\",\n      \"authenticatorData\": \"<string>\",\n      \"signature\": \"<string>\",\n      \"userHandle\": \"<string>\"\n    },\n    \"clientExtensionResults\": {\n      \"appid\": \"<boolean>\",\n      \"credProps\": {\n        \"rk\": \"<boolean>\"\n      },\n      \"hmacCreateSecret\": \"<boolean>\"\n    },\n    \"authenticatorAttachment\": \"<string>\"\n  },\n  \"email\": \"john.smith@nhost.io\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"session\": {\n    \"accessToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...\",\n    \"accessTokenExpiresIn\": 900,\n    \"refreshToken\": \"2c35b6f3-c4b9-48e3-978a-d4d0f1d42e24\",\n    \"refreshTokenId\": \"2c35b6f3-c4b9-48e3-978a-d4d0f1d42e24\",\n    \"user\": {\n      \"avatarUrl\": \"https://myapp.com/avatars/user123.jpg\",\n      \"createdAt\": \"2023-01-15T12:34:56Z\",\n      \"defaultRole\": \"user\",\n      \"displayName\": \"John Smith\",\n      \"emailVerified\": true,\n      \"id\": \"2c35b6f3-c4b9-48e3-978a-d4d0f1d42e24\",\n      \"isAnonymous\": false,\n      \"locale\": \"en\",\n      \"metadata\": {\n        \"firstName\": \"John\",\n        \"lastName\": \"Smith\"\n      },\n      \"phoneNumberVerified\": false,\n      \"roles\": [\n        \"user\",\n        \"customer\"\n      ],\n      \"email\": \"john.smith@nhost.io\",\n      \"phoneNumber\": \"+12025550123\",\n      \"activeMfaType\": \"string\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2c53988a-3734-4cb1-a433-8f6527e81c94",
+              "name": "An error occurred while processing the request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "elevate",
+                    "webauthn",
+                    "verify"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"credential\": {\n    \"id\": \"<string>\",\n    \"type\": \"<string>\",\n    \"rawId\": \"<byte>\",\n    \"response\": {\n      \"clientDataJSON\": \"<string>\",\n      \"authenticatorData\": \"<string>\",\n      \"signature\": \"<string>\",\n      \"userHandle\": \"<string>\"\n    },\n    \"clientExtensionResults\": {\n      \"appid\": \"<boolean>\",\n      \"credProps\": {\n        \"rk\": \"<boolean>\"\n      },\n      \"hmacCreateSecret\": \"<boolean>\"\n    },\n    \"authenticatorAttachment\": \"<string>\"\n  },\n  \"email\": \"john.smith@nhost.io\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": 400,\n  \"message\": \"Invalid email format\",\n  \"error\": \"invalid-pat\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "07fe64c5-b21f-4b34-8196-43da18468299",
+          "name": "Link a user account with the provider's account using an id token",
+          "request": {
+            "name": "Link a user account with the provider's account using an id token",
+            "description": {
+              "content": "Link the authenticated user's account with an external OAuth provider account using an ID token. Requires elevated permissions.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "link",
+                "idtoken"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"provider\": \"<string>\",\n  \"idToken\": \"<string>\",\n  \"nonce\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "2fb28555-10d9-4fe8-8212-eb8ff16a23c2",
+              "name": "Identity linked successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "link",
+                    "idtoken"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"provider\": \"<string>\",\n  \"idToken\": \"<string>\",\n  \"nonce\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"OK\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "065cd444-70bd-4c3a-aeb3-a955f06d512d",
+              "name": "An error occurred while processing the request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "link",
+                    "idtoken"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"provider\": \"<string>\",\n  \"idToken\": \"<string>\",\n  \"nonce\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": 400,\n  \"message\": \"Invalid email format\",\n  \"error\": \"invalid-pat\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ddd44eb1-2d3b-4977-aaaa-062cdea561f0",
+          "name": "Create a Personal Access Token (PAT)",
+          "request": {
+            "name": "Create a Personal Access Token (PAT)",
+            "description": {
+              "content": "Generate a new Personal Access Token for programmatic API access. PATs are long-lived tokens that can be used instead of regular authentication for automated systems. Requires elevated permissions.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "pat"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"expiresAt\": \"<dateTime>\",\n  \"metadata\": {\n    \"key_0\": \"string\",\n    \"key_1\": \"string\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "0fa85341-c6c6-4ffb-9c77-c13c4a90c9e8",
+              "name": "Successfully created a Personal Access Token",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "pat"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"expiresAt\": \"<dateTime>\",\n  \"metadata\": {\n    \"name\": \"my-pat\",\n    \"used-by\": \"my-app-cli\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"2c35b6f3-c4b9-48e3-978a-d4d0f1d42e24\",\n  \"personalAccessToken\": \"2c35b6f3-c4b9-48e3-978a-d4d0f1d42e24\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "32495656-b48f-4cd6-af4e-c74ec749d0b6",
+              "name": "An error occurred while processing the request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "pat"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"expiresAt\": \"<dateTime>\",\n  \"metadata\": {\n    \"name\": \"my-pat\",\n    \"used-by\": \"my-app-cli\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": 400,\n  \"message\": \"Invalid email format\",\n  \"error\": \"invalid-pat\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "aa28ffe8-1217-4d5d-b21f-b0b61e70e4f8",
+          "name": "Manage multi-factor authentication",
+          "request": {
+            "name": "Manage multi-factor authentication",
+            "description": {
+              "content": "Activate or deactivate multi-factor authentication for the authenticated user",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "user",
+                "mfa"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"<string>\",\n  \"activeMfaType\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "ee01ccc2-2b4a-4ea3-9452-f19d75ac15dd",
+              "name": "MFA status successfully updated",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "user",
+                    "mfa"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"code\": \"123456\",\n  \"activeMfaType\": \"totp\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"OK\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8fa8b0f8-8df5-40a8-bee5-ed998f9d5057",
+              "name": "An error occurred while processing the request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "user",
+                    "mfa"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"code\": \"123456\",\n  \"activeMfaType\": \"totp\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": 400,\n  \"message\": \"Invalid email format\",\n  \"error\": \"invalid-pat\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b41a1bf7-5213-45de-8dbf-ed856fe01a64",
+          "name": "Initialize adding of a new webauthn security key",
+          "request": {
+            "name": "Initialize adding of a new webauthn security key",
+            "description": {
+              "content": "Start the process of adding a new WebAuthn security key to the user's account. Returns a challenge that must be completed by the user's authenticator device. Requires elevated permissions.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "user",
+                "webauthn",
+                "add"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "9d3b64e7-67ff-423b-8494-9eed4443e107",
+              "name": "Challenge created for registering a new security key",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "user",
+                    "webauthn",
+                    "add"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"rp\": {\n    \"name\": \"string\",\n    \"id\": \"string\"\n  },\n  \"user\": {\n    \"name\": \"string\",\n    \"displayName\": \"string\",\n    \"id\": \"string\"\n  },\n  \"challenge\": \"<byte>\",\n  \"pubKeyCredParams\": [\n    {\n      \"type\": \"public-key\",\n      \"alg\": 7713\n    },\n    {\n      \"type\": \"public-key\",\n      \"alg\": 9036\n    }\n  ],\n  \"timeout\": 7352,\n  \"excludeCredentials\": [\n    {\n      \"type\": \"public-key\",\n      \"id\": \"<byte>\",\n      \"transports\": [\n        \"nfc\",\n        \"hybrid\"\n      ]\n    },\n    {\n      \"type\": \"public-key\",\n      \"id\": \"<byte>\",\n      \"transports\": [\n        \"smart-card\",\n        \"internal\"\n      ]\n    }\n  ],\n  \"authenticatorSelection\": {\n    \"authenticatorAttachment\": \"platform\",\n    \"requireResidentKey\": false,\n    \"residentKey\": \"discouraged\",\n    \"userVerification\": \"preferred\"\n  },\n  \"hints\": [\n    \"security-key\",\n    \"client-device\"\n  ],\n  \"attestation\": \"none\",\n  \"attestationFormats\": [\n    \"packed\",\n    \"fido-u2f\"\n  ],\n  \"extensions\": {\n    \"key_0\": true\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "77b71556-0667-4221-bb02-1ba9482982f8",
+              "name": "An error occurred while processing the request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "user",
+                    "webauthn",
+                    "add"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": 400,\n  \"message\": \"Invalid email format\",\n  \"error\": \"invalid-pat\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "3e0e7f39-dd8f-43d4-a20b-7b86b85a0c1e",
+          "name": "Verify adding of a new webauthn security key",
+          "request": {
+            "name": "Verify adding of a new webauthn security key",
+            "description": {
+              "content": "Complete the process of adding a new WebAuthn security key by verifying the authenticator response. Requires elevated permissions.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "user",
+                "webauthn",
+                "verify"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"credential\": {\n    \"id\": \"<string>\",\n    \"type\": \"<string>\",\n    \"rawId\": \"<byte>\",\n    \"response\": {\n      \"clientDataJSON\": \"<byte>\",\n      \"attestationObject\": \"<byte>\",\n      \"transports\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"authenticatorData\": \"<byte>\",\n      \"publicKey\": \"<byte>\",\n      \"publicKeyAlgorithm\": \"<long>\"\n    },\n    \"clientExtensionResults\": {\n      \"appid\": \"<boolean>\",\n      \"credProps\": {\n        \"rk\": \"<boolean>\"\n      },\n      \"hmacCreateSecret\": \"<boolean>\",\n      \"key_0\": 1435,\n      \"key_1\": 87\n    },\n    \"authenticatorAttachment\": \"<string>\"\n  },\n  \"nickname\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "420edbd1-a08c-4a60-a2a0-e2c49c92f541",
+              "name": "Security key successfully added",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "user",
+                    "webauthn",
+                    "verify"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"credential\": {\n    \"id\": \"<string>\",\n    \"type\": \"<string>\",\n    \"rawId\": \"<byte>\",\n    \"response\": {\n      \"clientDataJSON\": \"<byte>\",\n      \"attestationObject\": \"<byte>\",\n      \"transports\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"authenticatorData\": \"<byte>\",\n      \"publicKey\": \"<byte>\",\n      \"publicKeyAlgorithm\": \"<long>\"\n    },\n    \"clientExtensionResults\": {\n      \"appid\": \"<boolean>\",\n      \"credProps\": {\n        \"rk\": \"<boolean>\"\n      },\n      \"hmacCreateSecret\": \"<boolean>\"\n    },\n    \"authenticatorAttachment\": \"<string>\"\n  },\n  \"nickname\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"123e4567-e89b-12d3-a456-426614174000\",\n  \"nickname\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f33ac919-9661-4645-90c8-9e7fad90d36a",
+              "name": "An error occurred while processing the request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "user",
+                    "webauthn",
+                    "verify"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"credential\": {\n    \"id\": \"<string>\",\n    \"type\": \"<string>\",\n    \"rawId\": \"<byte>\",\n    \"response\": {\n      \"clientDataJSON\": \"<byte>\",\n      \"attestationObject\": \"<byte>\",\n      \"transports\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"authenticatorData\": \"<byte>\",\n      \"publicKey\": \"<byte>\",\n      \"publicKeyAlgorithm\": \"<long>\"\n    },\n    \"clientExtensionResults\": {\n      \"appid\": \"<boolean>\",\n      \"credProps\": {\n        \"rk\": \"<boolean>\"\n      },\n      \"hmacCreateSecret\": \"<boolean>\"\n    },\n    \"authenticatorAttachment\": \"<string>\"\n  },\n  \"nickname\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": 400,\n  \"message\": \"Invalid email format\",\n  \"error\": \"invalid-pat\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://{{subdomain}}.auth.{{region}}.nhost.run/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "22a85d9c-ff65-4c14-97c0-cefcd6cf27ab",
+    "name": "Nhost authentication security API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Comprehensive authentication service for managing user identities, sessions, and authentication methods\n\nContact Support:\n Name: Nhost Support\n Email: support@nhost.io",
+      "type": "text/plain"
+    }
+  }
+}

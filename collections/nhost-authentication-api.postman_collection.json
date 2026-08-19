@@ -1,0 +1,3092 @@
+{
+  "item": [
+    {
+      "id": "5577a88f-8d18-4154-b16f-43dc8e4f4da7",
+      "name": "authentication",
+      "description": {
+        "content": "User authentication operations including sign-in, sign-up, and various authentication methods (email/password, passwordless, OAuth, WebAuthn, MFA)",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "fa8da97b-fb36-4a21-a5ba-e666681b622b",
+          "name": "Sign in anonymously",
+          "request": {
+            "name": "Sign in anonymously",
+            "description": {
+              "content": "Create an anonymous user session without providing credentials. Anonymous users can be converted to regular users later via the deanonymize endpoint.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "signin",
+                "anonymous"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"displayName\": \"<string>\",\n  \"locale\": \"<string>\",\n  \"metadata\": {\n    \"key_0\": 403\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "05d9a9e4-df2a-45cf-a4a1-96a8ed138dd7",
+              "name": "Successfully signed in",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "signin",
+                    "anonymous"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"displayName\": \"John Smith\",\n  \"locale\": \"en\",\n  \"metadata\": {\n    \"firstName\": \"John\",\n    \"lastName\": \"Smith\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"session\": {\n    \"accessToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...\",\n    \"accessTokenExpiresIn\": 900,\n    \"refreshToken\": \"2c35b6f3-c4b9-48e3-978a-d4d0f1d42e24\",\n    \"refreshTokenId\": \"2c35b6f3-c4b9-48e3-978a-d4d0f1d42e24\",\n    \"user\": {\n      \"avatarUrl\": \"https://myapp.com/avatars/user123.jpg\",\n      \"createdAt\": \"2023-01-15T12:34:56Z\",\n      \"defaultRole\": \"user\",\n      \"displayName\": \"John Smith\",\n      \"emailVerified\": true,\n      \"id\": \"2c35b6f3-c4b9-48e3-978a-d4d0f1d42e24\",\n      \"isAnonymous\": false,\n      \"locale\": \"en\",\n      \"metadata\": {\n        \"firstName\": \"John\",\n        \"lastName\": \"Smith\"\n      },\n      \"phoneNumberVerified\": false,\n      \"roles\": [\n        \"user\",\n        \"customer\"\n      ],\n      \"email\": \"john.smith@nhost.io\",\n      \"phoneNumber\": \"+12025550123\",\n      \"activeMfaType\": \"string\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5fad23f7-388a-40db-aa47-07fcdd1da4de",
+              "name": "An error occurred while processing the request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "signin",
+                    "anonymous"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"displayName\": \"John Smith\",\n  \"locale\": \"en\",\n  \"metadata\": {\n    \"firstName\": \"John\",\n    \"lastName\": \"Smith\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": 400,\n  \"message\": \"Invalid email format\",\n  \"error\": \"oauth-provider-error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "90558c47-78a4-43d1-afa0-00cd9bf70f63",
+          "name": "Sign in with email and password",
+          "request": {
+            "name": "Sign in with email and password",
+            "description": {
+              "content": "Authenticate a user with their email and password. Returns a session object or MFA challenge if two-factor authentication is enabled.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "signin",
+                "email-password"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"<email>\",\n  \"password\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "cce6f979-70df-4a02-a579-e56ecd360c68",
+              "name": "Authentication successful. If MFA is enabled, a challenge will be returned instead of a session.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "signin",
+                    "email-password"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"john.smith@nhost.io\",\n  \"password\": \"Str0ngPassw#ord-94|%\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"session\": {\n    \"accessToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...\",\n    \"accessTokenExpiresIn\": 900,\n    \"refreshToken\": \"2c35b6f3-c4b9-48e3-978a-d4d0f1d42e24\",\n    \"refreshTokenId\": \"2c35b6f3-c4b9-48e3-978a-d4d0f1d42e24\",\n    \"user\": {\n      \"avatarUrl\": \"https://myapp.com/avatars/user123.jpg\",\n      \"createdAt\": \"2023-01-15T12:34:56Z\",\n      \"defaultRole\": \"user\",\n      \"displayName\": \"John Smith\",\n      \"emailVerified\": true,\n      \"id\": \"2c35b6f3-c4b9-48e3-978a-d4d0f1d42e24\",\n      \"isAnonymous\": false,\n      \"locale\": \"en\",\n      \"metadata\": {\n        \"firstName\": \"John\",\n        \"lastName\": \"Smith\"\n      },\n      \"phoneNumberVerified\": false,\n      \"roles\": [\n        \"user\",\n        \"customer\"\n      ],\n      \"email\": \"john.smith@nhost.io\",\n      \"phoneNumber\": \"+12025550123\",\n      \"activeMfaType\": \"string\"\n    }\n  },\n  \"mfa\": {\n    \"ticket\": \"mfaTotp:abc123def456\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "31386a2d-bca5-4bf7-9442-30e930f56d88",
+              "name": "An error occurred while processing the request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "signin",
+                    "email-password"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"john.smith@nhost.io\",\n  \"password\": \"Str0ngPassw#ord-94|%\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": 400,\n  \"message\": \"Invalid email format\",\n  \"error\": \"oauth-provider-error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "685681cf-68d0-4d87-8a94-b85b6e54214d",
+          "name": "Sign in with an ID token",
+          "request": {
+            "name": "Sign in with an ID token",
+            "description": {
+              "content": "Authenticate using an ID token from a supported OAuth provider (Apple or Google). Creates a new user account if one doesn't exist.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "signin",
+                "idtoken"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"provider\": \"<string>\",\n  \"idToken\": \"<string>\",\n  \"nonce\": \"<string>\",\n  \"options\": {\n    \"allowedRoles\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"defaultRole\": \"<string>\",\n    \"displayName\": \"<string>\",\n    \"locale\": \"<string>\",\n    \"metadata\": {\n      \"key_0\": 593\n    },\n    \"redirectTo\": \"<uri>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "c770dc94-b546-45c4-8622-05a588ca1e3b",
+              "name": "Successfully signed in",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "signin",
+                    "idtoken"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"provider\": \"<string>\",\n  \"idToken\": \"<string>\",\n  \"nonce\": \"<string>\",\n  \"options\": {\n    \"allowedRoles\": [\n      \"me\",\n      \"user\"\n    ],\n    \"defaultRole\": \"user\",\n    \"displayName\": \"John Smith\",\n    \"locale\": \"en\",\n    \"metadata\": {\n      \"firstName\": \"John\",\n      \"lastName\": \"Smith\"\n    },\n    \"redirectTo\": \"https://my-app.com/catch-redirection\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"session\": {\n    \"accessToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...\",\n    \"accessTokenExpiresIn\": 900,\n    \"refreshToken\": \"2c35b6f3-c4b9-48e3-978a-d4d0f1d42e24\",\n    \"refreshTokenId\": \"2c35b6f3-c4b9-48e3-978a-d4d0f1d42e24\",\n    \"user\": {\n      \"avatarUrl\": \"https://myapp.com/avatars/user123.jpg\",\n      \"createdAt\": \"2023-01-15T12:34:56Z\",\n      \"defaultRole\": \"user\",\n      \"displayName\": \"John Smith\",\n      \"emailVerified\": true,\n      \"id\": \"2c35b6f3-c4b9-48e3-978a-d4d0f1d42e24\",\n      \"isAnonymous\": false,\n      \"locale\": \"en\",\n      \"metadata\": {\n        \"firstName\": \"John\",\n        \"lastName\": \"Smith\"\n      },\n      \"phoneNumberVerified\": false,\n      \"roles\": [\n        \"user\",\n        \"customer\"\n      ],\n      \"email\": \"john.smith@nhost.io\",\n      \"phoneNumber\": \"+12025550123\",\n      \"activeMfaType\": \"string\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b89749d1-94ac-43e6-b8ad-f926565977f1",
+              "name": "An error occurred while processing the request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "signin",
+                    "idtoken"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"provider\": \"<string>\",\n  \"idToken\": \"<string>\",\n  \"nonce\": \"<string>\",\n  \"options\": {\n    \"allowedRoles\": [\n      \"me\",\n      \"user\"\n    ],\n    \"defaultRole\": \"user\",\n    \"displayName\": \"John Smith\",\n    \"locale\": \"en\",\n    \"metadata\": {\n      \"firstName\": \"John\",\n      \"lastName\": \"Smith\"\n    },\n    \"redirectTo\": \"https://my-app.com/catch-redirection\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": 400,\n  \"message\": \"Invalid email format\",\n  \"error\": \"oauth-provider-error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "fcb7f77f-75d3-4c72-a3e6-079449e74bae",
+          "name": "Verify TOTP for MFA",
+          "request": {
+            "name": "Verify TOTP for MFA",
+            "description": {
+              "content": "Complete the multi-factor authentication by verifying a Time-based One-Time Password (TOTP). Returns a session if validation is successful.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "signin",
+                "mfa",
+                "totp"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"ticket\": \"<string>\",\n  \"otp\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "60e7e901-7c8f-4ca3-acc1-4718c8dc8c4e",
+              "name": "MFA verification successful, session created",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "signin",
+                    "mfa",
+                    "totp"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"ticket\": \"<string>\",\n  \"otp\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"session\": {\n    \"accessToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...\",\n    \"accessTokenExpiresIn\": 900,\n    \"refreshToken\": \"2c35b6f3-c4b9-48e3-978a-d4d0f1d42e24\",\n    \"refreshTokenId\": \"2c35b6f3-c4b9-48e3-978a-d4d0f1d42e24\",\n    \"user\": {\n      \"avatarUrl\": \"https://myapp.com/avatars/user123.jpg\",\n      \"createdAt\": \"2023-01-15T12:34:56Z\",\n      \"defaultRole\": \"user\",\n      \"displayName\": \"John Smith\",\n      \"emailVerified\": true,\n      \"id\": \"2c35b6f3-c4b9-48e3-978a-d4d0f1d42e24\",\n      \"isAnonymous\": false,\n      \"locale\": \"en\",\n      \"metadata\": {\n        \"firstName\": \"John\",\n        \"lastName\": \"Smith\"\n      },\n      \"phoneNumberVerified\": false,\n      \"roles\": [\n        \"user\",\n        \"customer\"\n      ],\n      \"email\": \"john.smith@nhost.io\",\n      \"phoneNumber\": \"+12025550123\",\n      \"activeMfaType\": \"string\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8f8b7a6d-2f18-42da-8f1e-5e1e4e4eeda8",
+              "name": "An error occurred while processing the request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "signin",
+                    "mfa",
+                    "totp"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"ticket\": \"<string>\",\n  \"otp\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": 400,\n  \"message\": \"Invalid email format\",\n  \"error\": \"oauth-provider-error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e3a44611-84e5-411d-bcb0-cf6f113f9d7f",
+          "name": "Sign in with email OTP",
+          "request": {
+            "name": "Sign in with email OTP",
+            "description": {
+              "content": "Initiate email-based one-time password authentication. Sends an OTP to the specified email address. If the user doesn't exist, a new account will be created with the provided options.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "signin",
+                "otp",
+                "email"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"<email>\",\n  \"options\": {\n    \"allowedRoles\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"defaultRole\": \"<string>\",\n    \"displayName\": \"<string>\",\n    \"locale\": \"<string>\",\n    \"metadata\": {\n      \"key_0\": 6426.657936269135\n    },\n    \"redirectTo\": \"<uri>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "675c6d42-b341-4f02-ab4f-00c5ab5ea184",
+              "name": "OTP sent to user's email successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "signin",
+                    "otp",
+                    "email"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"john.smith@nhost.io\",\n  \"options\": {\n    \"allowedRoles\": [\n      \"me\",\n      \"user\"\n    ],\n    \"defaultRole\": \"user\",\n    \"displayName\": \"John Smith\",\n    \"locale\": \"en\",\n    \"metadata\": {\n      \"firstName\": \"John\",\n      \"lastName\": \"Smith\"\n    },\n    \"redirectTo\": \"https://my-app.com/catch-redirection\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"OK\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "cec582fd-7ac3-4ee7-9dde-660df29eb496",
+              "name": "An error occurred while processing the request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "signin",
+                    "otp",
+                    "email"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"john.smith@nhost.io\",\n  \"options\": {\n    \"allowedRoles\": [\n      \"me\",\n      \"user\"\n    ],\n    \"defaultRole\": \"user\",\n    \"displayName\": \"John Smith\",\n    \"locale\": \"en\",\n    \"metadata\": {\n      \"firstName\": \"John\",\n      \"lastName\": \"Smith\"\n    },\n    \"redirectTo\": \"https://my-app.com/catch-redirection\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": 400,\n  \"message\": \"Invalid email format\",\n  \"error\": \"oauth-provider-error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e4156852-d469-4be8-a2db-01bf294cd574",
+          "name": "Verify email OTP",
+          "request": {
+            "name": "Verify email OTP",
+            "description": {
+              "content": "Complete email OTP authentication by verifying the one-time password. Returns a session if validation is successful.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "signin",
+                "otp",
+                "email",
+                "verify"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"otp\": \"<string>\",\n  \"email\": \"<email>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "3be0af1a-60bc-4144-87d0-6322c5e9f989",
+              "name": "Magic link sent to user's email successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "signin",
+                    "otp",
+                    "email",
+                    "verify"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"otp\": \"<string>\",\n  \"email\": \"john.smith@nhost.io\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"session\": {\n    \"accessToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...\",\n    \"accessTokenExpiresIn\": 900,\n    \"refreshToken\": \"2c35b6f3-c4b9-48e3-978a-d4d0f1d42e24\",\n    \"refreshTokenId\": \"2c35b6f3-c4b9-48e3-978a-d4d0f1d42e24\",\n    \"user\": {\n      \"avatarUrl\": \"https://myapp.com/avatars/user123.jpg\",\n      \"createdAt\": \"2023-01-15T12:34:56Z\",\n      \"defaultRole\": \"user\",\n      \"displayName\": \"John Smith\",\n      \"emailVerified\": true,\n      \"id\": \"2c35b6f3-c4b9-48e3-978a-d4d0f1d42e24\",\n      \"isAnonymous\": false,\n      \"locale\": \"en\",\n      \"metadata\": {\n        \"firstName\": \"John\",\n        \"lastName\": \"Smith\"\n      },\n      \"phoneNumberVerified\": false,\n      \"roles\": [\n        \"user\",\n        \"customer\"\n      ],\n      \"email\": \"john.smith@nhost.io\",\n      \"phoneNumber\": \"+12025550123\",\n      \"activeMfaType\": \"string\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4bf79441-ec5e-4d9e-aecd-c7c383e5b18d",
+              "name": "An error occurred while processing the request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "signin",
+                    "otp",
+                    "email",
+                    "verify"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"otp\": \"<string>\",\n  \"email\": \"john.smith@nhost.io\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": 400,\n  \"message\": \"Invalid email format\",\n  \"error\": \"oauth-provider-error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "5315f029-5150-4b32-ba88-3e4735fe575c",
+          "name": "Sign in with magic link email",
+          "request": {
+            "name": "Sign in with magic link email",
+            "description": {
+              "content": "Initiate passwordless authentication by sending a magic link to the user's email. If the user doesn't exist, a new account will be created with the provided options.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "signin",
+                "passwordless",
+                "email"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"<email>\",\n  \"options\": {\n    \"allowedRoles\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"defaultRole\": \"<string>\",\n    \"displayName\": \"<string>\",\n    \"locale\": \"<string>\",\n    \"metadata\": {\n      \"key_0\": 6426.657936269135\n    },\n    \"redirectTo\": \"<uri>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "186f1798-7f2a-4430-aeea-d2f4cccdc101",
+              "name": "Magic link email sent successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "signin",
+                    "passwordless",
+                    "email"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"john.smith@nhost.io\",\n  \"options\": {\n    \"allowedRoles\": [\n      \"me\",\n      \"user\"\n    ],\n    \"defaultRole\": \"user\",\n    \"displayName\": \"John Smith\",\n    \"locale\": \"en\",\n    \"metadata\": {\n      \"firstName\": \"John\",\n      \"lastName\": \"Smith\"\n    },\n    \"redirectTo\": \"https://my-app.com/catch-redirection\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"OK\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4ca8407b-1098-4bef-bc2e-f67ce7a1478f",
+              "name": "An error occurred while processing the request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "signin",
+                    "passwordless",
+                    "email"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"john.smith@nhost.io\",\n  \"options\": {\n    \"allowedRoles\": [\n      \"me\",\n      \"user\"\n    ],\n    \"defaultRole\": \"user\",\n    \"displayName\": \"John Smith\",\n    \"locale\": \"en\",\n    \"metadata\": {\n      \"firstName\": \"John\",\n      \"lastName\": \"Smith\"\n    },\n    \"redirectTo\": \"https://my-app.com/catch-redirection\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": 400,\n  \"message\": \"Invalid email format\",\n  \"error\": \"oauth-provider-error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "537d1c64-f45b-4571-8320-0525b5ce5207",
+          "name": "Sign in with SMS OTP",
+          "request": {
+            "name": "Sign in with SMS OTP",
+            "description": {
+              "content": "Initiate passwordless authentication by sending a one-time password to the user's phone number. If the user doesn't exist, a new account will be created with the provided options.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "signin",
+                "passwordless",
+                "sms"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phoneNumber\": \"<string>\",\n  \"options\": {\n    \"allowedRoles\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"defaultRole\": \"<string>\",\n    \"displayName\": \"<string>\",\n    \"locale\": \"<string>\",\n    \"metadata\": {\n      \"key_0\": \"string\",\n      \"key_1\": 1259.2784566274772\n    },\n    \"redirectTo\": \"<uri>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "7175f44a-4ad6-4f1c-9233-404d095e1eed",
+              "name": "OTP sent to user's phone number successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "signin",
+                    "passwordless",
+                    "sms"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"phoneNumber\": \"+123456789\",\n  \"options\": {\n    \"allowedRoles\": [\n      \"me\",\n      \"user\"\n    ],\n    \"defaultRole\": \"user\",\n    \"displayName\": \"John Smith\",\n    \"locale\": \"en\",\n    \"metadata\": {\n      \"firstName\": \"John\",\n      \"lastName\": \"Smith\"\n    },\n    \"redirectTo\": \"https://my-app.com/catch-redirection\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"OK\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b192e30d-d861-4d30-927a-24ba46d506f7",
+              "name": "An error occurred while processing the request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "signin",
+                    "passwordless",
+                    "sms"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"phoneNumber\": \"+123456789\",\n  \"options\": {\n    \"allowedRoles\": [\n      \"me\",\n      \"user\"\n    ],\n    \"defaultRole\": \"user\",\n    \"displayName\": \"John Smith\",\n    \"locale\": \"en\",\n    \"metadata\": {\n      \"firstName\": \"John\",\n      \"lastName\": \"Smith\"\n    },\n    \"redirectTo\": \"https://my-app.com/catch-redirection\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": 400,\n  \"message\": \"Invalid email format\",\n  \"error\": \"oauth-provider-error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "cd7614cd-344e-422f-a573-50328cf5bf4d",
+          "name": "Verify SMS OTP",
+          "request": {
+            "name": "Verify SMS OTP",
+            "description": {
+              "content": "Complete passwordless SMS authentication by verifying the one-time password. Returns a session if validation is successful.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "signin",
+                "passwordless",
+                "sms",
+                "otp"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phoneNumber\": \"<string>\",\n  \"otp\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "5759eebf-c1e6-48d2-a586-e88d619aa1ad",
+              "name": "User successfully authenticated",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "signin",
+                    "passwordless",
+                    "sms",
+                    "otp"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"phoneNumber\": \"+123456789\",\n  \"otp\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"session\": {\n    \"accessToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...\",\n    \"accessTokenExpiresIn\": 900,\n    \"refreshToken\": \"2c35b6f3-c4b9-48e3-978a-d4d0f1d42e24\",\n    \"refreshTokenId\": \"2c35b6f3-c4b9-48e3-978a-d4d0f1d42e24\",\n    \"user\": {\n      \"avatarUrl\": \"https://myapp.com/avatars/user123.jpg\",\n      \"createdAt\": \"2023-01-15T12:34:56Z\",\n      \"defaultRole\": \"user\",\n      \"displayName\": \"John Smith\",\n      \"emailVerified\": true,\n      \"id\": \"2c35b6f3-c4b9-48e3-978a-d4d0f1d42e24\",\n      \"isAnonymous\": false,\n      \"locale\": \"en\",\n      \"metadata\": {\n        \"firstName\": \"John\",\n        \"lastName\": \"Smith\"\n      },\n      \"phoneNumberVerified\": false,\n      \"roles\": [\n        \"user\",\n        \"customer\"\n      ],\n      \"email\": \"john.smith@nhost.io\",\n      \"phoneNumber\": \"+12025550123\",\n      \"activeMfaType\": \"string\"\n    }\n  },\n  \"mfa\": {\n    \"ticket\": \"mfaTotp:abc123def456\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "45dc4e0c-f5cb-4441-8596-287d4990a3a3",
+              "name": "An error occurred while processing the request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "signin",
+                    "passwordless",
+                    "sms",
+                    "otp"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"phoneNumber\": \"+123456789\",\n  \"otp\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": 400,\n  \"message\": \"Invalid email format\",\n  \"error\": \"oauth-provider-error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ac16cb10-0f88-4176-a695-699e545c13dc",
+          "name": "Sign in with Personal Access Token (PAT)",
+          "request": {
+            "name": "Sign in with Personal Access Token (PAT)",
+            "description": {
+              "content": "Authenticate using a Personal Access Token. PATs are long-lived tokens that can be used for programmatic access to the API.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "signin",
+                "pat"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"personalAccessToken\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "10027b63-38f9-47ed-835c-b2596edda81a",
+              "name": "Successfully signed in",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "signin",
+                    "pat"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"personalAccessToken\": \"2c35b6f3-c4b9-48e3-978a-d4d0f1d42e24\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"session\": {\n    \"accessToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...\",\n    \"accessTokenExpiresIn\": 900,\n    \"refreshToken\": \"2c35b6f3-c4b9-48e3-978a-d4d0f1d42e24\",\n    \"refreshTokenId\": \"2c35b6f3-c4b9-48e3-978a-d4d0f1d42e24\",\n    \"user\": {\n      \"avatarUrl\": \"https://myapp.com/avatars/user123.jpg\",\n      \"createdAt\": \"2023-01-15T12:34:56Z\",\n      \"defaultRole\": \"user\",\n      \"displayName\": \"John Smith\",\n      \"emailVerified\": true,\n      \"id\": \"2c35b6f3-c4b9-48e3-978a-d4d0f1d42e24\",\n      \"isAnonymous\": false,\n      \"locale\": \"en\",\n      \"metadata\": {\n        \"firstName\": \"John\",\n        \"lastName\": \"Smith\"\n      },\n      \"phoneNumberVerified\": false,\n      \"roles\": [\n        \"user\",\n        \"customer\"\n      ],\n      \"email\": \"john.smith@nhost.io\",\n      \"phoneNumber\": \"+12025550123\",\n      \"activeMfaType\": \"string\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "db2da205-b3ad-42ab-aa70-aae0d6edb0b4",
+              "name": "An error occurred while processing the request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "signin",
+                    "pat"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"personalAccessToken\": \"2c35b6f3-c4b9-48e3-978a-d4d0f1d42e24\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": 400,\n  \"message\": \"Invalid email format\",\n  \"error\": \"oauth-provider-error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "471a8e79-1ae4-4c81-8399-b6dbad50c034",
+          "name": "Sign in with an OAuth2 provider",
+          "request": {
+            "name": "Sign in with an OAuth2 provider",
+            "description": {
+              "content": "Initiate OAuth2 authentication flow with a social provider. Redirects the user to the provider's authorization page.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "signin",
+                "provider",
+                ":provider"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "allowedRoles",
+                  "value": "<string>,<string>",
+                  "description": "Array of allowed roles for the user"
+                },
+                {
+                  "disabled": false,
+                  "key": "defaultRole",
+                  "value": "<string>",
+                  "description": "Default role for the user"
+                },
+                {
+                  "disabled": false,
+                  "key": "displayName",
+                  "value": "<string>",
+                  "description": "Display name for the user"
+                },
+                {
+                  "disabled": false,
+                  "key": "locale",
+                  "value": "<string>",
+                  "description": "A two-characters locale"
+                },
+                {
+                  "description": {
+                    "content": "Additional metadata for the user (JSON encoded string)",
+                    "type": "text/plain"
+                  },
+                  "key": "metadata",
+                  "value": ""
+                },
+                {
+                  "disabled": false,
+                  "key": "redirectTo",
+                  "value": "<uri>",
+                  "description": "URI to redirect to"
+                },
+                {
+                  "disabled": false,
+                  "key": "connect",
+                  "value": "<string>",
+                  "description": "If set, this means that the user is already authenticated and wants to link their account. This needs to be a valid JWT access token."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "provider",
+                  "description": "(Required) The name of the social provider"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "7dd34b34-f538-4297-a968-37ed6a489723",
+              "name": "Redirect to social provider",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "signin",
+                    "provider",
+                    ":provider"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "allowedRoles",
+                      "value": "me,user"
+                    },
+                    {
+                      "key": "defaultRole",
+                      "value": "user"
+                    },
+                    {
+                      "key": "displayName",
+                      "value": "John Smith"
+                    },
+                    {
+                      "key": "locale",
+                      "value": "en"
+                    },
+                    {
+                      "key": "metadata",
+                      "value": ""
+                    },
+                    {
+                      "key": "redirectTo",
+                      "value": "https://my-app.com/catch-redirection"
+                    },
+                    {
+                      "key": "connect",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "provider",
+                      "description": "(Required) The name of the social provider"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Found",
+              "code": 302,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "(Required) URL to redirect to",
+                  "key": "Location",
+                  "value": "http://QFODypNULXMiGGhXa.vrmyFEBe"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "843a21e6-7fdc-4e26-b688-55a60e80549e",
+              "name": "An error occurred while processing the request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "signin",
+                    "provider",
+                    ":provider"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "allowedRoles",
+                      "value": "me,user"
+                    },
+                    {
+                      "key": "defaultRole",
+                      "value": "user"
+                    },
+                    {
+                      "key": "displayName",
+                      "value": "John Smith"
+                    },
+                    {
+                      "key": "locale",
+                      "value": "en"
+                    },
+                    {
+                      "key": "metadata",
+                      "value": ""
+                    },
+                    {
+                      "key": "redirectTo",
+                      "value": "https://my-app.com/catch-redirection"
+                    },
+                    {
+                      "key": "connect",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "provider",
+                      "description": "(Required) The name of the social provider"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": 400,\n  \"message\": \"Invalid email format\",\n  \"error\": \"oauth-provider-error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c4e35858-22d6-4774-8afb-bbd8a4450b64",
+          "name": "OAuth2 provider callback endpoint",
+          "request": {
+            "name": "OAuth2 provider callback endpoint",
+            "description": {
+              "content": "Handles the callback from OAuth2 providers after user authorization. Processes the authorization code and creates a user session.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "signin",
+                "provider",
+                ":provider",
+                "callback"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "code",
+                  "value": "<string>",
+                  "description": "Authorization code provided by the authentication provider"
+                },
+                {
+                  "disabled": false,
+                  "key": "id_token",
+                  "value": "<string>",
+                  "description": "ID token provided by the authentication provider"
+                },
+                {
+                  "disabled": false,
+                  "key": "state",
+                  "value": "<string>",
+                  "description": "(Required) State parameter to avoid CSRF attacks"
+                },
+                {
+                  "disabled": false,
+                  "key": "oauth_token",
+                  "value": "<string>",
+                  "description": "OAuth token for the provider (e.g., X)"
+                },
+                {
+                  "disabled": false,
+                  "key": "oauth_verifier",
+                  "value": "<string>",
+                  "description": "OAuth verifier for the provider (e.g., X)"
+                },
+                {
+                  "disabled": false,
+                  "key": "error",
+                  "value": "<string>",
+                  "description": "Error message if authentication failed"
+                },
+                {
+                  "disabled": false,
+                  "key": "error_description",
+                  "value": "<string>",
+                  "description": "Detailed error description if authentication failed"
+                },
+                {
+                  "disabled": false,
+                  "key": "error_uri",
+                  "value": "<string>",
+                  "description": "URI with more information about the error"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "provider",
+                  "description": "(Required) The name of the social provider"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "3cc204f1-f423-4f1a-ae0e-1138ecb07e1f",
+              "name": "Redirect to client application after successful authentication",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "signin",
+                    "provider",
+                    ":provider",
+                    "callback"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "code",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "id_token",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "state",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "oauth_token",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "oauth_verifier",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "error",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "error_description",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "error_uri",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "provider",
+                      "description": "(Required) The name of the social provider"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Found",
+              "code": 302,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "(Required) URL to redirect to",
+                  "key": "Location",
+                  "value": "http://QFODypNULXMiGGhXa.vrmyFEBe"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "d1611f1d-03fc-4ecc-84ee-8b13a28c3b1e",
+              "name": "An error occurred while processing the request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "signin",
+                    "provider",
+                    ":provider",
+                    "callback"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "code",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "id_token",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "state",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "oauth_token",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "oauth_verifier",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "error",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "error_description",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "error_uri",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "provider",
+                      "description": "(Required) The name of the social provider"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": 400,\n  \"message\": \"Invalid email format\",\n  \"error\": \"oauth-provider-error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "7123ad8c-d67e-48ea-92d5-fc99d9d4a4bf",
+          "name": "OAuth2 provider callback endpoint (form_post)",
+          "request": {
+            "name": "OAuth2 provider callback endpoint (form_post)",
+            "description": {
+              "content": "Handles OAuth2 provider callbacks using form_post response mode. Used by providers like Apple that send data via POST instead of query parameters.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "signin",
+                "provider",
+                ":provider",
+                "callback"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "provider",
+                  "description": "(Required) The name of the social provider"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "state",
+                  "value": "<string>",
+                  "description": "(Required) State parameter to avoid CSRF attacks"
+                },
+                {
+                  "disabled": false,
+                  "key": "code",
+                  "value": "<string>",
+                  "description": "Authorization code provided by the authentication provider"
+                },
+                {
+                  "disabled": false,
+                  "key": "id_token",
+                  "value": "<string>",
+                  "description": "ID token provided by the authentication provider"
+                },
+                {
+                  "disabled": false,
+                  "key": "user",
+                  "value": "<string>",
+                  "description": "JSON string containing user information (only provided on first authentication with Apple)"
+                },
+                {
+                  "disabled": false,
+                  "key": "error",
+                  "value": "<string>",
+                  "description": "Error message if authentication failed"
+                },
+                {
+                  "disabled": false,
+                  "key": "error_description",
+                  "value": "<string>",
+                  "description": "Detailed error description if authentication failed"
+                },
+                {
+                  "disabled": false,
+                  "key": "error_uri",
+                  "value": "<string>",
+                  "description": "URI with more information about the error"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "4297c261-1a7c-4003-822e-b5410bf7466c",
+              "name": "Redirect to client application after successful authentication",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "signin",
+                    "provider",
+                    ":provider",
+                    "callback"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "provider",
+                      "description": "(Required) The name of the social provider"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) State parameter to avoid CSRF attacks",
+                        "type": "text/plain"
+                      },
+                      "key": "state",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Authorization code provided by the authentication provider",
+                        "type": "text/plain"
+                      },
+                      "key": "code",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "ID token provided by the authentication provider",
+                        "type": "text/plain"
+                      },
+                      "key": "id_token",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "JSON string containing user information (only provided on first authentication with Apple)",
+                        "type": "text/plain"
+                      },
+                      "key": "user",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Error message if authentication failed",
+                        "type": "text/plain"
+                      },
+                      "key": "error",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Detailed error description if authentication failed",
+                        "type": "text/plain"
+                      },
+                      "key": "error_description",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "URI with more information about the error",
+                        "type": "text/plain"
+                      },
+                      "key": "error_uri",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Found",
+              "code": 302,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "(Required) URL to redirect to",
+                  "key": "Location",
+                  "value": "http://QFODypNULXMiGGhXa.vrmyFEBe"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "935e3fb8-80fd-413f-9e48-f898fddaa6ab",
+              "name": "An error occurred while processing the request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "signin",
+                    "provider",
+                    ":provider",
+                    "callback"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "provider",
+                      "description": "(Required) The name of the social provider"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) State parameter to avoid CSRF attacks",
+                        "type": "text/plain"
+                      },
+                      "key": "state",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Authorization code provided by the authentication provider",
+                        "type": "text/plain"
+                      },
+                      "key": "code",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "ID token provided by the authentication provider",
+                        "type": "text/plain"
+                      },
+                      "key": "id_token",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "JSON string containing user information (only provided on first authentication with Apple)",
+                        "type": "text/plain"
+                      },
+                      "key": "user",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Error message if authentication failed",
+                        "type": "text/plain"
+                      },
+                      "key": "error",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Detailed error description if authentication failed",
+                        "type": "text/plain"
+                      },
+                      "key": "error_description",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "URI with more information about the error",
+                        "type": "text/plain"
+                      },
+                      "key": "error_uri",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": 400,\n  \"message\": \"Invalid email format\",\n  \"error\": \"oauth-provider-error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c1c956a8-5a04-49f4-a0e7-30290b7469a9",
+          "name": "Sign in with Webauthn",
+          "request": {
+            "name": "Sign in with Webauthn",
+            "description": {
+              "content": "Initiate a Webauthn sign-in process by sending a challenge to the user's device. The user must have previously registered a Webauthn credential.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "signin",
+                "webauthn"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"<email>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "2eb5372f-be52-40a9-9d51-8c9ca4d7274b",
+              "name": "Challenge sent",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "signin",
+                    "webauthn"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"john.smith@nhost.io\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"challenge\": \"string\",\n  \"timeout\": 7469,\n  \"rpId\": \"string\",\n  \"allowCredentials\": [\n    {\n      \"type\": \"public-key\",\n      \"id\": \"string\",\n      \"transports\": [\n        \"smart-card\",\n        \"internal\"\n      ]\n    },\n    {\n      \"type\": \"public-key\",\n      \"id\": \"string\",\n      \"transports\": [\n        \"smart-card\",\n        \"nfc\"\n      ]\n    }\n  ],\n  \"userVerification\": \"preferred\",\n  \"hints\": [\n    \"client-device\",\n    \"hybrid\"\n  ],\n  \"extensions\": {\n    \"key_0\": 401.6367232043694\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a179a881-e839-4e8f-9c04-2cf9b981b18a",
+              "name": "An error occurred while processing the request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "signin",
+                    "webauthn"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"john.smith@nhost.io\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": 400,\n  \"message\": \"Invalid email format\",\n  \"error\": \"oauth-provider-error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "942c03f5-19ed-413c-8418-1eaeec137425",
+          "name": "Verify Webauthn sign-in",
+          "request": {
+            "name": "Verify Webauthn sign-in",
+            "description": {
+              "content": "Complete the Webauthn sign-in process by verifying the response from the user's device. Returns a session if validation is successful.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "signin",
+                "webauthn",
+                "verify"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"credential\": {\n    \"id\": \"<string>\",\n    \"type\": \"<string>\",\n    \"rawId\": \"<byte>\",\n    \"response\": {\n      \"clientDataJSON\": \"<string>\",\n      \"authenticatorData\": \"<string>\",\n      \"signature\": \"<string>\",\n      \"userHandle\": \"<string>\"\n    },\n    \"clientExtensionResults\": {\n      \"appid\": \"<boolean>\",\n      \"credProps\": {\n        \"rk\": \"<boolean>\"\n      },\n      \"hmacCreateSecret\": \"<boolean>\"\n    },\n    \"authenticatorAttachment\": \"<string>\"\n  },\n  \"email\": \"<email>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "59515173-351a-4e9c-8997-8f693a478dc7",
+              "name": "Sign in successful",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "signin",
+                    "webauthn",
+                    "verify"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"credential\": {\n    \"id\": \"<string>\",\n    \"type\": \"<string>\",\n    \"rawId\": \"<byte>\",\n    \"response\": {\n      \"clientDataJSON\": \"<string>\",\n      \"authenticatorData\": \"<string>\",\n      \"signature\": \"<string>\",\n      \"userHandle\": \"<string>\"\n    },\n    \"clientExtensionResults\": {\n      \"appid\": \"<boolean>\",\n      \"credProps\": {\n        \"rk\": \"<boolean>\"\n      },\n      \"hmacCreateSecret\": \"<boolean>\"\n    },\n    \"authenticatorAttachment\": \"<string>\"\n  },\n  \"email\": \"john.smith@nhost.io\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"session\": {\n    \"accessToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...\",\n    \"accessTokenExpiresIn\": 900,\n    \"refreshToken\": \"2c35b6f3-c4b9-48e3-978a-d4d0f1d42e24\",\n    \"refreshTokenId\": \"2c35b6f3-c4b9-48e3-978a-d4d0f1d42e24\",\n    \"user\": {\n      \"avatarUrl\": \"https://myapp.com/avatars/user123.jpg\",\n      \"createdAt\": \"2023-01-15T12:34:56Z\",\n      \"defaultRole\": \"user\",\n      \"displayName\": \"John Smith\",\n      \"emailVerified\": true,\n      \"id\": \"2c35b6f3-c4b9-48e3-978a-d4d0f1d42e24\",\n      \"isAnonymous\": false,\n      \"locale\": \"en\",\n      \"metadata\": {\n        \"firstName\": \"John\",\n        \"lastName\": \"Smith\"\n      },\n      \"phoneNumberVerified\": false,\n      \"roles\": [\n        \"user\",\n        \"customer\"\n      ],\n      \"email\": \"john.smith@nhost.io\",\n      \"phoneNumber\": \"+12025550123\",\n      \"activeMfaType\": \"string\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "67673150-0c8b-4c79-a473-c17f60af1d21",
+              "name": "An error occurred while processing the request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "signin",
+                    "webauthn",
+                    "verify"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"credential\": {\n    \"id\": \"<string>\",\n    \"type\": \"<string>\",\n    \"rawId\": \"<byte>\",\n    \"response\": {\n      \"clientDataJSON\": \"<string>\",\n      \"authenticatorData\": \"<string>\",\n      \"signature\": \"<string>\",\n      \"userHandle\": \"<string>\"\n    },\n    \"clientExtensionResults\": {\n      \"appid\": \"<boolean>\",\n      \"credProps\": {\n        \"rk\": \"<boolean>\"\n      },\n      \"hmacCreateSecret\": \"<boolean>\"\n    },\n    \"authenticatorAttachment\": \"<string>\"\n  },\n  \"email\": \"john.smith@nhost.io\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": 400,\n  \"message\": \"Invalid email format\",\n  \"error\": \"oauth-provider-error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "bdff4e9b-ed72-4e56-aa09-edf61ec84824",
+          "name": "Sign up with email and password",
+          "request": {
+            "name": "Sign up with email and password",
+            "description": {
+              "content": "Register a new user account with email and password. Returns a session if email verification is not required, otherwise returns null session.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "signup",
+                "email-password"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"<email>\",\n  \"password\": \"<string>\",\n  \"options\": {\n    \"allowedRoles\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"defaultRole\": \"<string>\",\n    \"displayName\": \"<string>\",\n    \"locale\": \"<string>\",\n    \"metadata\": {\n      \"key_0\": true\n    },\n    \"redirectTo\": \"<uri>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "dd81cf27-f78f-4315-b5c0-bb553532b11e",
+              "name": "Registration successful. If email verification is required, session will be null.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "signup",
+                    "email-password"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"john.smith@nhost.io\",\n  \"password\": \"Str0ngPassw#ord-94|%\",\n  \"options\": {\n    \"allowedRoles\": [\n      \"me\",\n      \"user\"\n    ],\n    \"defaultRole\": \"user\",\n    \"displayName\": \"John Smith\",\n    \"locale\": \"en\",\n    \"metadata\": {\n      \"firstName\": \"John\",\n      \"lastName\": \"Smith\"\n    },\n    \"redirectTo\": \"https://my-app.com/catch-redirection\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"session\": {\n    \"accessToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...\",\n    \"accessTokenExpiresIn\": 900,\n    \"refreshToken\": \"2c35b6f3-c4b9-48e3-978a-d4d0f1d42e24\",\n    \"refreshTokenId\": \"2c35b6f3-c4b9-48e3-978a-d4d0f1d42e24\",\n    \"user\": {\n      \"avatarUrl\": \"https://myapp.com/avatars/user123.jpg\",\n      \"createdAt\": \"2023-01-15T12:34:56Z\",\n      \"defaultRole\": \"user\",\n      \"displayName\": \"John Smith\",\n      \"emailVerified\": true,\n      \"id\": \"2c35b6f3-c4b9-48e3-978a-d4d0f1d42e24\",\n      \"isAnonymous\": false,\n      \"locale\": \"en\",\n      \"metadata\": {\n        \"firstName\": \"John\",\n        \"lastName\": \"Smith\"\n      },\n      \"phoneNumberVerified\": false,\n      \"roles\": [\n        \"user\",\n        \"customer\"\n      ],\n      \"email\": \"john.smith@nhost.io\",\n      \"phoneNumber\": \"+12025550123\",\n      \"activeMfaType\": \"string\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6f1810f1-4f4f-4556-acc8-ff36e5bc5c0c",
+              "name": "An error occurred while processing the request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "signup",
+                    "email-password"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"john.smith@nhost.io\",\n  \"password\": \"Str0ngPassw#ord-94|%\",\n  \"options\": {\n    \"allowedRoles\": [\n      \"me\",\n      \"user\"\n    ],\n    \"defaultRole\": \"user\",\n    \"displayName\": \"John Smith\",\n    \"locale\": \"en\",\n    \"metadata\": {\n      \"firstName\": \"John\",\n      \"lastName\": \"Smith\"\n    },\n    \"redirectTo\": \"https://my-app.com/catch-redirection\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": 400,\n  \"message\": \"Invalid email format\",\n  \"error\": \"oauth-provider-error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "afae310e-4477-4660-86c3-71ca69aa39e7",
+          "name": "Sign up with Webauthn",
+          "request": {
+            "name": "Sign up with Webauthn",
+            "description": {
+              "content": "Initiate a Webauthn sign-up process by sending a challenge to the user's device. The user must not have an existing account.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "signup",
+                "webauthn"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"<email>\",\n  \"options\": {\n    \"allowedRoles\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"defaultRole\": \"<string>\",\n    \"displayName\": \"<string>\",\n    \"locale\": \"<string>\",\n    \"metadata\": {\n      \"key_0\": 6426.657936269135\n    },\n    \"redirectTo\": \"<uri>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "59e24b4e-8419-4cd7-bae2-a1d3297ec59f",
+              "name": "Challenge sent",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "signup",
+                    "webauthn"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"john.smith@nhost.io\",\n  \"options\": {\n    \"allowedRoles\": [\n      \"me\",\n      \"user\"\n    ],\n    \"defaultRole\": \"user\",\n    \"displayName\": \"John Smith\",\n    \"locale\": \"en\",\n    \"metadata\": {\n      \"firstName\": \"John\",\n      \"lastName\": \"Smith\"\n    },\n    \"redirectTo\": \"https://my-app.com/catch-redirection\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"rp\": {\n    \"name\": \"string\",\n    \"id\": \"string\"\n  },\n  \"user\": {\n    \"name\": \"string\",\n    \"displayName\": \"string\",\n    \"id\": \"string\"\n  },\n  \"challenge\": \"<byte>\",\n  \"pubKeyCredParams\": [\n    {\n      \"type\": \"public-key\",\n      \"alg\": 8172\n    },\n    {\n      \"type\": \"public-key\",\n      \"alg\": 6912\n    }\n  ],\n  \"timeout\": 3297,\n  \"excludeCredentials\": [\n    {\n      \"type\": \"public-key\",\n      \"id\": \"<byte>\",\n      \"transports\": [\n        \"hybrid\",\n        \"ble\"\n      ]\n    },\n    {\n      \"type\": \"public-key\",\n      \"id\": \"<byte>\",\n      \"transports\": [\n        \"hybrid\",\n        \"internal\"\n      ]\n    }\n  ],\n  \"authenticatorSelection\": {\n    \"authenticatorAttachment\": \"platform\",\n    \"requireResidentKey\": true,\n    \"residentKey\": \"discouraged\",\n    \"userVerification\": \"preferred\"\n  },\n  \"hints\": [\n    \"client-device\",\n    \"client-device\"\n  ],\n  \"attestation\": \"none\",\n  \"attestationFormats\": [\n    \"none\",\n    \"packed\"\n  ],\n  \"extensions\": {\n    \"key_0\": 9687.931395122232,\n    \"key_1\": true\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c96792be-fa73-4d40-9974-543263c6f334",
+              "name": "An error occurred while processing the request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "signup",
+                    "webauthn"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"john.smith@nhost.io\",\n  \"options\": {\n    \"allowedRoles\": [\n      \"me\",\n      \"user\"\n    ],\n    \"defaultRole\": \"user\",\n    \"displayName\": \"John Smith\",\n    \"locale\": \"en\",\n    \"metadata\": {\n      \"firstName\": \"John\",\n      \"lastName\": \"Smith\"\n    },\n    \"redirectTo\": \"https://my-app.com/catch-redirection\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": 400,\n  \"message\": \"Invalid email format\",\n  \"error\": \"oauth-provider-error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c4aa200a-9bcd-4dca-a0d7-e679fa08e5b0",
+          "name": "Verify Webauthn sign-up",
+          "request": {
+            "name": "Verify Webauthn sign-up",
+            "description": {
+              "content": "Complete the Webauthn sign-up process by verifying the response from the user's device. Returns a session if validation is successful.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "signup",
+                "webauthn",
+                "verify"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"credential\": {\n    \"id\": \"<string>\",\n    \"type\": \"<string>\",\n    \"rawId\": \"<byte>\",\n    \"response\": {\n      \"clientDataJSON\": \"<byte>\",\n      \"attestationObject\": \"<byte>\",\n      \"transports\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"authenticatorData\": \"<byte>\",\n      \"publicKey\": \"<byte>\",\n      \"publicKeyAlgorithm\": \"<long>\"\n    },\n    \"clientExtensionResults\": {\n      \"appid\": \"<boolean>\",\n      \"credProps\": {\n        \"rk\": \"<boolean>\"\n      },\n      \"hmacCreateSecret\": \"<boolean>\"\n    },\n    \"authenticatorAttachment\": \"<string>\"\n  },\n  \"options\": {\n    \"allowedRoles\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"defaultRole\": \"<string>\",\n    \"displayName\": \"<string>\",\n    \"locale\": \"<string>\",\n    \"metadata\": {\n      \"key_0\": 7948.789312813619,\n      \"key_1\": 2185,\n      \"key_2\": false\n    },\n    \"redirectTo\": \"<uri>\"\n  },\n  \"nickname\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "bffd9f8b-346b-49b6-a484-698287de140d",
+              "name": "Sign up successful",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "signup",
+                    "webauthn",
+                    "verify"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"credential\": {\n    \"id\": \"<string>\",\n    \"type\": \"<string>\",\n    \"rawId\": \"<byte>\",\n    \"response\": {\n      \"clientDataJSON\": \"<byte>\",\n      \"attestationObject\": \"<byte>\",\n      \"transports\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"authenticatorData\": \"<byte>\",\n      \"publicKey\": \"<byte>\",\n      \"publicKeyAlgorithm\": \"<long>\"\n    },\n    \"clientExtensionResults\": {\n      \"appid\": \"<boolean>\",\n      \"credProps\": {\n        \"rk\": \"<boolean>\"\n      },\n      \"hmacCreateSecret\": \"<boolean>\"\n    },\n    \"authenticatorAttachment\": \"<string>\"\n  },\n  \"options\": {\n    \"allowedRoles\": [\n      \"me\",\n      \"user\"\n    ],\n    \"defaultRole\": \"user\",\n    \"displayName\": \"John Smith\",\n    \"locale\": \"en\",\n    \"metadata\": {\n      \"firstName\": \"John\",\n      \"lastName\": \"Smith\"\n    },\n    \"redirectTo\": \"https://my-app.com/catch-redirection\"\n  },\n  \"nickname\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"session\": {\n    \"accessToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...\",\n    \"accessTokenExpiresIn\": 900,\n    \"refreshToken\": \"2c35b6f3-c4b9-48e3-978a-d4d0f1d42e24\",\n    \"refreshTokenId\": \"2c35b6f3-c4b9-48e3-978a-d4d0f1d42e24\",\n    \"user\": {\n      \"avatarUrl\": \"https://myapp.com/avatars/user123.jpg\",\n      \"createdAt\": \"2023-01-15T12:34:56Z\",\n      \"defaultRole\": \"user\",\n      \"displayName\": \"John Smith\",\n      \"emailVerified\": true,\n      \"id\": \"2c35b6f3-c4b9-48e3-978a-d4d0f1d42e24\",\n      \"isAnonymous\": false,\n      \"locale\": \"en\",\n      \"metadata\": {\n        \"firstName\": \"John\",\n        \"lastName\": \"Smith\"\n      },\n      \"phoneNumberVerified\": false,\n      \"roles\": [\n        \"user\",\n        \"customer\"\n      ],\n      \"email\": \"john.smith@nhost.io\",\n      \"phoneNumber\": \"+12025550123\",\n      \"activeMfaType\": \"string\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "85e63478-d5f1-4654-b89a-9e7dd0a72b40",
+              "name": "An error occurred while processing the request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "signup",
+                    "webauthn",
+                    "verify"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"credential\": {\n    \"id\": \"<string>\",\n    \"type\": \"<string>\",\n    \"rawId\": \"<byte>\",\n    \"response\": {\n      \"clientDataJSON\": \"<byte>\",\n      \"attestationObject\": \"<byte>\",\n      \"transports\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"authenticatorData\": \"<byte>\",\n      \"publicKey\": \"<byte>\",\n      \"publicKeyAlgorithm\": \"<long>\"\n    },\n    \"clientExtensionResults\": {\n      \"appid\": \"<boolean>\",\n      \"credProps\": {\n        \"rk\": \"<boolean>\"\n      },\n      \"hmacCreateSecret\": \"<boolean>\"\n    },\n    \"authenticatorAttachment\": \"<string>\"\n  },\n  \"options\": {\n    \"allowedRoles\": [\n      \"me\",\n      \"user\"\n    ],\n    \"defaultRole\": \"user\",\n    \"displayName\": \"John Smith\",\n    \"locale\": \"en\",\n    \"metadata\": {\n      \"firstName\": \"John\",\n      \"lastName\": \"Smith\"\n    },\n    \"redirectTo\": \"https://my-app.com/catch-redirection\"\n  },\n  \"nickname\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": 400,\n  \"message\": \"Invalid email format\",\n  \"error\": \"oauth-provider-error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f49769d4-89db-44a0-881b-20404e794ce3",
+          "name": "Deanonymize an anonymous user",
+          "request": {
+            "name": "Deanonymize an anonymous user",
+            "description": {
+              "content": "Convert an anonymous user to a regular user by adding email and optionally password credentials. A confirmation email will be sent if the server is configured to do so.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "user",
+                "deanonymize"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"signInMethod\": \"<string>\",\n  \"email\": \"<email>\",\n  \"password\": \"<string>\",\n  \"connection\": \"<string>\",\n  \"options\": {\n    \"allowedRoles\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"defaultRole\": \"<string>\",\n    \"displayName\": \"<string>\",\n    \"locale\": \"<string>\",\n    \"metadata\": {\n      \"key_0\": false,\n      \"key_1\": 3038.232030482394,\n      \"key_2\": 7133.0443352926395\n    },\n    \"redirectTo\": \"<uri>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "72f3461a-908c-4a1a-9203-0032556bf55e",
+              "name": "User deanonymized successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "user",
+                    "deanonymize"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"signInMethod\": \"<string>\",\n  \"email\": \"john.smith@nhost.io\",\n  \"password\": \"Str0ngPassw#ord-94|%\",\n  \"connection\": \"<string>\",\n  \"options\": {\n    \"allowedRoles\": [\n      \"me\",\n      \"user\"\n    ],\n    \"defaultRole\": \"user\",\n    \"displayName\": \"John Smith\",\n    \"locale\": \"en\",\n    \"metadata\": {\n      \"firstName\": \"John\",\n      \"lastName\": \"Smith\"\n    },\n    \"redirectTo\": \"https://my-app.com/catch-redirection\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"OK\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "71035a6e-3466-425c-b256-c4c6a7f68247",
+              "name": "An error occurred while processing the request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "user",
+                    "deanonymize"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"signInMethod\": \"<string>\",\n  \"email\": \"john.smith@nhost.io\",\n  \"password\": \"Str0ngPassw#ord-94|%\",\n  \"connection\": \"<string>\",\n  \"options\": {\n    \"allowedRoles\": [\n      \"me\",\n      \"user\"\n    ],\n    \"defaultRole\": \"user\",\n    \"displayName\": \"John Smith\",\n    \"locale\": \"en\",\n    \"metadata\": {\n      \"firstName\": \"John\",\n      \"lastName\": \"Smith\"\n    },\n    \"redirectTo\": \"https://my-app.com/catch-redirection\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": 400,\n  \"message\": \"Invalid email format\",\n  \"error\": \"oauth-provider-error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://{{subdomain}}.auth.{{region}}.nhost.run/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "840b83eb-d5a9-4d66-9327-24622d53989d",
+    "name": "Nhost authentication API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Comprehensive authentication service for managing user identities, sessions, and authentication methods\n\nContact Support:\n Name: Nhost Support\n Email: support@nhost.io",
+      "type": "text/plain"
+    }
+  }
+}

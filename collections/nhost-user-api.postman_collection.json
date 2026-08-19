@@ -1,0 +1,901 @@
+{
+  "item": [
+    {
+      "id": "560eed21-3dcb-4def-8266-bca551b53cc1",
+      "name": "user",
+      "description": {
+        "content": "User profile and account management operations including email/password changes, MFA configuration, and profile updates",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "56f5cc6a-3457-477c-8f82-e9b555fabd2e",
+          "name": "Generate TOTP secret",
+          "request": {
+            "name": "Generate TOTP secret",
+            "description": {
+              "content": "Generate a Time-based One-Time Password (TOTP) secret for setting up multi-factor authentication",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "mfa",
+                "totp",
+                "generate"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "a34d48ee-00ed-45d7-8f10-ad010691efef",
+              "name": "TOTP secret successfully generated",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mfa",
+                    "totp",
+                    "generate"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"imageUrl\": \"data:image/png;base64,iVBORw0KGg...\",\n  \"totpSecret\": \"ABCDEFGHIJK23456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "04489aa9-8500-44c9-98d6-33ab73695cff",
+              "name": "An error occurred while processing the request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mfa",
+                    "totp",
+                    "generate"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": 400,\n  \"message\": \"Invalid email format\",\n  \"error\": \"oauth-profile-fetch-failed\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "8b2942ef-8e52-49df-9ee8-8b3cb9682837",
+          "name": "Get user information",
+          "request": {
+            "name": "Get user information",
+            "description": {
+              "content": "Retrieve the authenticated user's profile information including roles, metadata, and account status.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "user"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "bc5b420b-9e9b-4d6b-a406-0f5aebc2ad2b",
+              "name": "User information",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "user"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"avatarUrl\": \"https://myapp.com/avatars/user123.jpg\",\n  \"createdAt\": \"2023-01-15T12:34:56Z\",\n  \"defaultRole\": \"user\",\n  \"displayName\": \"John Smith\",\n  \"emailVerified\": true,\n  \"id\": \"2c35b6f3-c4b9-48e3-978a-d4d0f1d42e24\",\n  \"isAnonymous\": false,\n  \"locale\": \"en\",\n  \"metadata\": {\n    \"firstName\": \"John\",\n    \"lastName\": \"Smith\"\n  },\n  \"phoneNumberVerified\": false,\n  \"roles\": [\n    \"user\",\n    \"customer\"\n  ],\n  \"email\": \"john.smith@nhost.io\",\n  \"phoneNumber\": \"+12025550123\",\n  \"activeMfaType\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f52b2626-388f-4813-a8ec-b7c8412bc023",
+              "name": "An error occurred while processing the request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "user"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": 400,\n  \"message\": \"Invalid email format\",\n  \"error\": \"oauth-profile-fetch-failed\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "3352cd61-17cf-4090-9326-f6e88007cf3e",
+          "name": "Change user email",
+          "request": {
+            "name": "Change user email",
+            "description": {
+              "content": "Request to change the authenticated user's email address. A verification email will be sent to the new address to confirm the change. Requires elevated permissions.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "user",
+                "email",
+                "change"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"newEmail\": \"<email>\",\n  \"options\": {\n    \"redirectTo\": \"<uri>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "22ccaa0a-0a72-42dc-a1e9-94af1c75fa63",
+              "name": "Email change requested. An email with a verification link has been sent to the new address",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "user",
+                    "email",
+                    "change"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"newEmail\": \"john.smith@nhost.io\",\n  \"options\": {\n    \"redirectTo\": \"https://my-app.com/catch-redirection\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"OK\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8b8372f9-94b3-49bc-b1b4-d10238299a60",
+              "name": "An error occurred while processing the request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "user",
+                    "email",
+                    "change"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"newEmail\": \"john.smith@nhost.io\",\n  \"options\": {\n    \"redirectTo\": \"https://my-app.com/catch-redirection\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": 400,\n  \"message\": \"Invalid email format\",\n  \"error\": \"oauth-profile-fetch-failed\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "9525b93c-06a1-42ca-8acd-cb4fef8e1b6e",
+          "name": "Send verification email",
+          "request": {
+            "name": "Send verification email",
+            "description": {
+              "content": "Send an email verification link to the specified email address. Used to verify email addresses for new accounts or email changes.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "user",
+                "email",
+                "send-verification-email"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"<email>\",\n  \"options\": {\n    \"redirectTo\": \"<uri>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "b1ccb26a-29f0-49b5-b130-bdb3df7bd339",
+              "name": "Email verification email sent successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "user",
+                    "email",
+                    "send-verification-email"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"john.smith@nhost.io\",\n  \"options\": {\n    \"redirectTo\": \"https://my-app.com/catch-redirection\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"OK\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "181187e8-00b6-4f4c-906e-794d13386c98",
+              "name": "An error occurred while processing the request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "user",
+                    "email",
+                    "send-verification-email"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"john.smith@nhost.io\",\n  \"options\": {\n    \"redirectTo\": \"https://my-app.com/catch-redirection\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": 400,\n  \"message\": \"Invalid email format\",\n  \"error\": \"oauth-profile-fetch-failed\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "7e520198-7eb9-4439-980f-05f5c8cf6cad",
+          "name": "Change user password",
+          "request": {
+            "name": "Change user password",
+            "description": {
+              "content": "Change the user's password. The user must be authenticated with elevated permissions or provide a valid password reset ticket.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "user",
+                "password"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"newPassword\": \"<string>\",\n  \"ticket\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "cd371f7f-b397-40da-8cc2-fcd09e75a2e8",
+              "name": "Password changed successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "user",
+                    "password"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"newPassword\": \"Str0ngPassw#ord-94|%\",\n  \"ticket\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"OK\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "241670b8-73bd-4f1b-93d6-53bbb9f73239",
+              "name": "An error occurred while processing the request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "user",
+                    "password"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"newPassword\": \"Str0ngPassw#ord-94|%\",\n  \"ticket\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": 400,\n  \"message\": \"Invalid email format\",\n  \"error\": \"oauth-profile-fetch-failed\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "01205c1f-8274-451b-9374-5a6f0b301364",
+          "name": "Request password reset",
+          "request": {
+            "name": "Request password reset",
+            "description": {
+              "content": "Request a password reset for a user account. An email with a verification link will be sent to the user's email address to complete the password reset process.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "user",
+                "password",
+                "reset"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"<email>\",\n  \"options\": {\n    \"redirectTo\": \"<uri>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "d90c0236-5f8d-46f6-909b-f3e61a71066a",
+              "name": "Password reset requested",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "user",
+                    "password",
+                    "reset"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"john.smith@nhost.io\",\n  \"options\": {\n    \"redirectTo\": \"https://my-app.com/catch-redirection\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"OK\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d9422c83-e217-4912-9015-cea5230b0487",
+              "name": "An error occurred while processing the request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "user",
+                    "password",
+                    "reset"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"john.smith@nhost.io\",\n  \"options\": {\n    \"redirectTo\": \"https://my-app.com/catch-redirection\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": 400,\n  \"message\": \"Invalid email format\",\n  \"error\": \"oauth-profile-fetch-failed\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://{{subdomain}}.auth.{{region}}.nhost.run/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "30c92d86-0a2c-4207-aae6-7c26213c4e6f",
+    "name": "Nhost authentication user API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Comprehensive authentication service for managing user identities, sessions, and authentication methods\n\nContact Support:\n Name: Nhost Support\n Email: support@nhost.io",
+      "type": "text/plain"
+    }
+  }
+}

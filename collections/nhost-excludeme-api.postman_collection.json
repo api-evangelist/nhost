@@ -1,0 +1,1652 @@
+{
+  "item": [
+    {
+      "id": "11cd427a-3712-48c5-825b-a9d3332f44c1",
+      "name": "excludeme",
+      "description": {
+        "content": "These operations are not intended to be used directly by clients and should be excluded from client SDKs",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "074df1a1-aeb9-4a6d-8650-3398b44789ef",
+          "name": "OAuth2 provider callback endpoint",
+          "request": {
+            "name": "OAuth2 provider callback endpoint",
+            "description": {
+              "content": "Handles the callback from OAuth2 providers after user authorization. Processes the authorization code and creates a user session.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "signin",
+                "provider",
+                ":provider",
+                "callback"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "code",
+                  "value": "<string>",
+                  "description": "Authorization code provided by the authentication provider"
+                },
+                {
+                  "disabled": false,
+                  "key": "id_token",
+                  "value": "<string>",
+                  "description": "ID token provided by the authentication provider"
+                },
+                {
+                  "disabled": false,
+                  "key": "state",
+                  "value": "<string>",
+                  "description": "(Required) State parameter to avoid CSRF attacks"
+                },
+                {
+                  "disabled": false,
+                  "key": "oauth_token",
+                  "value": "<string>",
+                  "description": "OAuth token for the provider (e.g., X)"
+                },
+                {
+                  "disabled": false,
+                  "key": "oauth_verifier",
+                  "value": "<string>",
+                  "description": "OAuth verifier for the provider (e.g., X)"
+                },
+                {
+                  "disabled": false,
+                  "key": "error",
+                  "value": "<string>",
+                  "description": "Error message if authentication failed"
+                },
+                {
+                  "disabled": false,
+                  "key": "error_description",
+                  "value": "<string>",
+                  "description": "Detailed error description if authentication failed"
+                },
+                {
+                  "disabled": false,
+                  "key": "error_uri",
+                  "value": "<string>",
+                  "description": "URI with more information about the error"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "provider",
+                  "description": "(Required) The name of the social provider"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "d03ff207-78cf-4c96-97fe-1652f244a6d8",
+              "name": "Redirect to client application after successful authentication",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "signin",
+                    "provider",
+                    ":provider",
+                    "callback"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "code",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "id_token",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "state",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "oauth_token",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "oauth_verifier",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "error",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "error_description",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "error_uri",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "provider",
+                      "description": "(Required) The name of the social provider"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Found",
+              "code": 302,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "(Required) URL to redirect to",
+                  "key": "Location",
+                  "value": "http://OJtEnDHBkUdVfX.zgMtKnp6U6e4nGnO7FnXYmd,yeE"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "95f97390-0e0c-43e4-bd40-84eba32e9074",
+              "name": "An error occurred while processing the request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "signin",
+                    "provider",
+                    ":provider",
+                    "callback"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "code",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "id_token",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "state",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "oauth_token",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "oauth_verifier",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "error",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "error_description",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "error_uri",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "provider",
+                      "description": "(Required) The name of the social provider"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": 400,\n  \"message\": \"Invalid email format\",\n  \"error\": \"password-too-short\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "d4f970ef-4a82-4325-beab-04809069d0c5",
+          "name": "OAuth2 provider callback endpoint (form_post)",
+          "request": {
+            "name": "OAuth2 provider callback endpoint (form_post)",
+            "description": {
+              "content": "Handles OAuth2 provider callbacks using form_post response mode. Used by providers like Apple that send data via POST instead of query parameters.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "signin",
+                "provider",
+                ":provider",
+                "callback"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "provider",
+                  "description": "(Required) The name of the social provider"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "state",
+                  "value": "<string>",
+                  "description": "(Required) State parameter to avoid CSRF attacks"
+                },
+                {
+                  "disabled": false,
+                  "key": "code",
+                  "value": "<string>",
+                  "description": "Authorization code provided by the authentication provider"
+                },
+                {
+                  "disabled": false,
+                  "key": "id_token",
+                  "value": "<string>",
+                  "description": "ID token provided by the authentication provider"
+                },
+                {
+                  "disabled": false,
+                  "key": "user",
+                  "value": "<string>",
+                  "description": "JSON string containing user information (only provided on first authentication with Apple)"
+                },
+                {
+                  "disabled": false,
+                  "key": "error",
+                  "value": "<string>",
+                  "description": "Error message if authentication failed"
+                },
+                {
+                  "disabled": false,
+                  "key": "error_description",
+                  "value": "<string>",
+                  "description": "Detailed error description if authentication failed"
+                },
+                {
+                  "disabled": false,
+                  "key": "error_uri",
+                  "value": "<string>",
+                  "description": "URI with more information about the error"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "831a0922-09c7-4094-a7b8-1bb650dcdeeb",
+              "name": "Redirect to client application after successful authentication",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "signin",
+                    "provider",
+                    ":provider",
+                    "callback"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "provider",
+                      "description": "(Required) The name of the social provider"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) State parameter to avoid CSRF attacks",
+                        "type": "text/plain"
+                      },
+                      "key": "state",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Authorization code provided by the authentication provider",
+                        "type": "text/plain"
+                      },
+                      "key": "code",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "ID token provided by the authentication provider",
+                        "type": "text/plain"
+                      },
+                      "key": "id_token",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "JSON string containing user information (only provided on first authentication with Apple)",
+                        "type": "text/plain"
+                      },
+                      "key": "user",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Error message if authentication failed",
+                        "type": "text/plain"
+                      },
+                      "key": "error",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Detailed error description if authentication failed",
+                        "type": "text/plain"
+                      },
+                      "key": "error_description",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "URI with more information about the error",
+                        "type": "text/plain"
+                      },
+                      "key": "error_uri",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Found",
+              "code": 302,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "(Required) URL to redirect to",
+                  "key": "Location",
+                  "value": "http://OJtEnDHBkUdVfX.zgMtKnp6U6e4nGnO7FnXYmd,yeE"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "434a3746-e532-4e02-b19c-79ae95fde4b0",
+              "name": "An error occurred while processing the request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "signin",
+                    "provider",
+                    ":provider",
+                    "callback"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "provider",
+                      "description": "(Required) The name of the social provider"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) State parameter to avoid CSRF attacks",
+                        "type": "text/plain"
+                      },
+                      "key": "state",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Authorization code provided by the authentication provider",
+                        "type": "text/plain"
+                      },
+                      "key": "code",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "ID token provided by the authentication provider",
+                        "type": "text/plain"
+                      },
+                      "key": "id_token",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "JSON string containing user information (only provided on first authentication with Apple)",
+                        "type": "text/plain"
+                      },
+                      "key": "user",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Error message if authentication failed",
+                        "type": "text/plain"
+                      },
+                      "key": "error",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Detailed error description if authentication failed",
+                        "type": "text/plain"
+                      },
+                      "key": "error_description",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "URI with more information about the error",
+                        "type": "text/plain"
+                      },
+                      "key": "error_uri",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": 400,\n  \"message\": \"Invalid email format\",\n  \"error\": \"password-too-short\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "3ba27f2c-663d-4e08-af41-dfe70811c1e0",
+          "name": "Retrieve contents of file",
+          "request": {
+            "name": "Retrieve contents of file",
+            "description": {
+              "content": "Retrieve contents of file",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "files",
+                ":id",
+                "presignedurl",
+                "contents"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "X-Amz-Algorithm",
+                  "value": "<string>",
+                  "description": "(Required) Use presignedurl endpoint to generate this automatically"
+                },
+                {
+                  "disabled": false,
+                  "key": "X-Amz-Credential",
+                  "value": "<string>",
+                  "description": "(Required) Use presignedurl endpoint to generate this automatically"
+                },
+                {
+                  "disabled": false,
+                  "key": "X-Amz-Date",
+                  "value": "<string>",
+                  "description": "(Required) Use presignedurl endpoint to generate this automatically"
+                },
+                {
+                  "disabled": false,
+                  "key": "X-Amz-Expires",
+                  "value": "<string>",
+                  "description": "(Required) Use presignedurl endpoint to generate this automatically"
+                },
+                {
+                  "disabled": false,
+                  "key": "X-Amz-Signature",
+                  "value": "<string>",
+                  "description": "(Required) Use presignedurl endpoint to generate this automatically"
+                },
+                {
+                  "disabled": false,
+                  "key": "X-Amz-SignedHeaders",
+                  "value": "<string>",
+                  "description": "(Required) Use presignedurl endpoint to generate this automatically"
+                },
+                {
+                  "disabled": false,
+                  "key": "X-Amz-Checksum-Mode",
+                  "value": "<string>",
+                  "description": "(Required) Use presignedurl endpoint to generate this automatically"
+                },
+                {
+                  "disabled": false,
+                  "key": "X-Amz-Security-Token",
+                  "value": "<string>",
+                  "description": "Use presignedurl endpoint to generate this automatically"
+                },
+                {
+                  "disabled": false,
+                  "key": "x-id",
+                  "value": "<string>",
+                  "description": "(Required) Use presignedurl endpoint to generate this automatically"
+                },
+                {
+                  "disabled": false,
+                  "key": "q",
+                  "value": "<integer>",
+                  "description": "Image quality (1-100). Only applies to JPEG, WebP and PNG files"
+                },
+                {
+                  "disabled": false,
+                  "key": "h",
+                  "value": "<integer>",
+                  "description": "Maximum height to resize image to while maintaining aspect ratio. Only applies to image files"
+                },
+                {
+                  "disabled": false,
+                  "key": "w",
+                  "value": "<integer>",
+                  "description": "Maximum width to resize image to while maintaining aspect ratio. Only applies to image files"
+                },
+                {
+                  "disabled": false,
+                  "key": "b",
+                  "value": "<number>",
+                  "description": "Blur the image using this sigma value. Only applies to image files"
+                },
+                {
+                  "disabled": false,
+                  "key": "f",
+                  "value": "same",
+                  "description": "Output format for image files. Use 'auto' for content negotiation based on Accept header"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) Unique identifier of the file"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "Only return the file if the current ETag matches one of the values provided",
+                "key": "if-match",
+                "value": "<string>"
+              },
+              {
+                "disabled": false,
+                "description": "Only return the file if the current ETag does not match any of the values provided",
+                "key": "if-none-match",
+                "value": "<string>"
+              },
+              {
+                "disabled": false,
+                "description": "Only return the file if it has been modified after the given date",
+                "key": "if-modified-since",
+                "value": "<string>"
+              },
+              {
+                "disabled": false,
+                "description": "Only return the file if it has not been modified after the given date",
+                "key": "if-unmodified-since",
+                "value": "<string>"
+              },
+              {
+                "disabled": false,
+                "description": "Range of bytes to retrieve from the file. Format: bytes=start-end",
+                "key": "Range",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/octet-stream"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [
+            {
+              "id": "02136895-8c11-4de7-a99e-ac7e96143a01",
+              "name": "File content retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "files",
+                    ":id",
+                    "presignedurl",
+                    "contents"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "X-Amz-Algorithm",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "X-Amz-Credential",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "X-Amz-Date",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "X-Amz-Expires",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "X-Amz-Signature",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "X-Amz-SignedHeaders",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "X-Amz-Checksum-Mode",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "X-Amz-Security-Token",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "x-id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "q",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "h",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "w",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "b",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "f",
+                      "value": "same"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Unique identifier of the file"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "Only return the file if the current ETag matches one of the values provided",
+                    "key": "if-match",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Only return the file if the current ETag does not match any of the values provided",
+                    "key": "if-none-match",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Only return the file if it has been modified after the given date",
+                    "key": "if-modified-since",
+                    "value": "Tue, 12 Aug 2025 12:03:50 GMT"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Only return the file if it has not been modified after the given date",
+                    "key": "if-unmodified-since",
+                    "value": "Tue, 12 Aug 2025 12:03:50 GMT"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Range of bytes to retrieve from the file. Format: bytes=start-end",
+                    "key": "Range",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/octet-stream"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "Directives for caching mechanisms",
+                  "key": "Cache-Control",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "Entity tag for cache validation",
+                  "key": "Etag",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "Indicates if the content should be displayed inline or as an attachment",
+                  "key": "Content-Disposition",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "Date and time the file was last modified",
+                  "key": "Last-Modified",
+                  "value": "1964-04-24T11:54:37.524Z"
+                },
+                {
+                  "disabled": false,
+                  "description": "Cache key for surrogate caching",
+                  "key": "Surrogate-Key",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "Cache control directives for surrogate caching",
+                  "key": "Surrogate-Control",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "Always set to bytes. https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept-Ranges",
+                  "key": "Accept-Ranges",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/octet-stream"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "dfb4a65b-2f3b-4ab0-81a6-4790a8112853",
+              "name": "Partial file content retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "files",
+                    ":id",
+                    "presignedurl",
+                    "contents"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "X-Amz-Algorithm",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "X-Amz-Credential",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "X-Amz-Date",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "X-Amz-Expires",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "X-Amz-Signature",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "X-Amz-SignedHeaders",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "X-Amz-Checksum-Mode",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "X-Amz-Security-Token",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "x-id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "q",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "h",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "w",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "b",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "f",
+                      "value": "same"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Unique identifier of the file"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "Only return the file if the current ETag matches one of the values provided",
+                    "key": "if-match",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Only return the file if the current ETag does not match any of the values provided",
+                    "key": "if-none-match",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Only return the file if it has been modified after the given date",
+                    "key": "if-modified-since",
+                    "value": "Tue, 12 Aug 2025 12:03:50 GMT"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Only return the file if it has not been modified after the given date",
+                    "key": "if-unmodified-since",
+                    "value": "Tue, 12 Aug 2025 12:03:50 GMT"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Range of bytes to retrieve from the file. Format: bytes=start-end",
+                    "key": "Range",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/octet-stream"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Partial Content",
+              "code": 206,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "Directives for caching mechanisms",
+                  "key": "Cache-Control",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "Range of bytes returned in the response",
+                  "key": "Content-Range",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "Entity tag for cache validation",
+                  "key": "Etag",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "Indicates if the content should be displayed inline or as an attachment",
+                  "key": "Content-Disposition",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "Date and time the file was last modified",
+                  "key": "Last-Modified",
+                  "value": "1964-04-24T11:54:37.524Z"
+                },
+                {
+                  "disabled": false,
+                  "description": "Cache key for surrogate caching",
+                  "key": "Surrogate-Key",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "Cache control directives for surrogate caching",
+                  "key": "Surrogate-Control",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/octet-stream"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "314e3d85-57cf-4644-bc44-7c39e2539f25",
+              "name": "File not modified since the condition specified in If-Modified-Since or If-None-Match headers",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "files",
+                    ":id",
+                    "presignedurl",
+                    "contents"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "X-Amz-Algorithm",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "X-Amz-Credential",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "X-Amz-Date",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "X-Amz-Expires",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "X-Amz-Signature",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "X-Amz-SignedHeaders",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "X-Amz-Checksum-Mode",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "X-Amz-Security-Token",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "x-id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "q",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "h",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "w",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "b",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "f",
+                      "value": "same"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Unique identifier of the file"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "Only return the file if the current ETag matches one of the values provided",
+                    "key": "if-match",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Only return the file if the current ETag does not match any of the values provided",
+                    "key": "if-none-match",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Only return the file if it has been modified after the given date",
+                    "key": "if-modified-since",
+                    "value": "Tue, 12 Aug 2025 12:03:50 GMT"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Only return the file if it has not been modified after the given date",
+                    "key": "if-unmodified-since",
+                    "value": "Tue, 12 Aug 2025 12:03:50 GMT"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Range of bytes to retrieve from the file. Format: bytes=start-end",
+                    "key": "Range",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Modified",
+              "code": 304,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "Directives for caching mechanisms",
+                  "key": "Cache-Control",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "Entity tag for cache validation",
+                  "key": "Etag",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "Cache control directives for surrogate caching",
+                  "key": "Surrogate-Control",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "e1a77d71-6ba3-4024-95c7-050b44c24bfe",
+              "name": "Precondition failed for conditional request headers (If-Match, If-Unmodified-Since, If-None-Match)",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "files",
+                    ":id",
+                    "presignedurl",
+                    "contents"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "X-Amz-Algorithm",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "X-Amz-Credential",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "X-Amz-Date",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "X-Amz-Expires",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "X-Amz-Signature",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "X-Amz-SignedHeaders",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "X-Amz-Checksum-Mode",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "X-Amz-Security-Token",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "x-id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "q",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "h",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "w",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "b",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "f",
+                      "value": "same"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Unique identifier of the file"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "Only return the file if the current ETag matches one of the values provided",
+                    "key": "if-match",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Only return the file if the current ETag does not match any of the values provided",
+                    "key": "if-none-match",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Only return the file if it has been modified after the given date",
+                    "key": "if-modified-since",
+                    "value": "Tue, 12 Aug 2025 12:03:50 GMT"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Only return the file if it has not been modified after the given date",
+                    "key": "if-unmodified-since",
+                    "value": "Tue, 12 Aug 2025 12:03:50 GMT"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Range of bytes to retrieve from the file. Format: bytes=start-end",
+                    "key": "Range",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Precondition Failed",
+              "code": 412,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "Directives for caching mechanisms",
+                  "key": "Cache-Control",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "Entity tag for cache validation",
+                  "key": "Etag",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "Cache control directives for surrogate caching",
+                  "key": "Surrogate-Control",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "772c2293-2063-4e95-a515-de062cafabc7",
+              "name": "Error occurred",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "files",
+                    ":id",
+                    "presignedurl",
+                    "contents"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "X-Amz-Algorithm",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "X-Amz-Credential",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "X-Amz-Date",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "X-Amz-Expires",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "X-Amz-Signature",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "X-Amz-SignedHeaders",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "X-Amz-Checksum-Mode",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "X-Amz-Security-Token",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "x-id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "q",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "h",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "w",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "b",
+                      "value": "<number>"
+                    },
+                    {
+                      "key": "f",
+                      "value": "same"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) Unique identifier of the file"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "Only return the file if the current ETag matches one of the values provided",
+                    "key": "if-match",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Only return the file if the current ETag does not match any of the values provided",
+                    "key": "if-none-match",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Only return the file if it has been modified after the given date",
+                    "key": "if-modified-since",
+                    "value": "Tue, 12 Aug 2025 12:03:50 GMT"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Only return the file if it has not been modified after the given date",
+                    "key": "if-unmodified-since",
+                    "value": "Tue, 12 Aug 2025 12:03:50 GMT"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Range of bytes to retrieve from the file. Format: bytes=start-end",
+                    "key": "Range",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "Error message details",
+                  "key": "X-Error",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "67e8d490-94b0-4bfc-b239-7f16fcac6bdd",
+          "name": "Get OpenAPI specification",
+          "request": {
+            "name": "Get OpenAPI specification",
+            "description": {
+              "content": "Returns the OpenAPI schema definition for this API, allowing clients to understand the available endpoints and models.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "openapi.yaml"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/x-yaml"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "d5b0c541-01ed-44c0-b7ca-278f2565f4dc",
+              "name": "OpenAPI schema definition",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "openapi.yaml"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/x-yaml"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/x-yaml"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "4f9a74a1-41cd-47b2-9f2c-0b2bea9b9d4c",
+              "name": "Error occurred",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "openapi.yaml"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"message\": \"File not found\",\n    \"data\": {\n      \"key_0\": \"string\",\n      \"key_1\": 1685.4445517662352,\n      \"key_2\": true,\n      \"key_3\": 7153\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://{{subdomain}}.auth.{{region}}.nhost.run/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "11b1ce26-3d33-4891-bd42-7aa4614bc5b2",
+    "name": "Nhost authentication excludeme API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Comprehensive authentication service for managing user identities, sessions, and authentication methods\n\nContact Support:\n Name: Nhost Support\n Email: support@nhost.io",
+      "type": "text/plain"
+    }
+  }
+}

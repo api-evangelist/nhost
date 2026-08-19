@@ -1,0 +1,240 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Nhost authentication files API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "files",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Upload files",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{subdomain}.auth.{region}.nhost.run/v1/files",
+            "body": {
+              "type": "multipart-form",
+              "data": [
+                {
+                  "name": "bucket-id",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "metadata[]",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "file[]",
+                  "type": "text",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Upload one or more files to a specified bucket. Supports batch uploading with optional custom metadata for each file. If uploading multiple files, either provide metadata for all files or none."
+        },
+        {
+          "info": {
+            "name": "Download file",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{subdomain}.auth.{region}.nhost.run/v1/files/:id",
+            "headers": [
+              {
+                "name": "if-match",
+                "value": ""
+              },
+              {
+                "name": "if-none-match",
+                "value": ""
+              },
+              {
+                "name": "if-modified-since",
+                "value": ""
+              },
+              {
+                "name": "if-unmodified-since",
+                "value": ""
+              },
+              {
+                "name": "Range",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier of the file to download"
+              },
+              {
+                "name": "q",
+                "value": "",
+                "type": "query",
+                "description": "Image quality (1-100). Only applies to JPEG, WebP and PNG files"
+              },
+              {
+                "name": "h",
+                "value": "",
+                "type": "query",
+                "description": "Maximum height to resize image to while maintaining aspect ratio. Only applies to image files"
+              },
+              {
+                "name": "w",
+                "value": "",
+                "type": "query",
+                "description": "Maximum width to resize image to while maintaining aspect ratio. Only applies to image files"
+              },
+              {
+                "name": "b",
+                "value": "",
+                "type": "query",
+                "description": "Blur the image using this sigma value. Only applies to image files"
+              },
+              {
+                "name": "f",
+                "value": "",
+                "type": "query",
+                "description": "Output format for image files. Use 'auto' for content negotiation based on Accept header"
+              }
+            ]
+          },
+          "docs": "Retrieve and download the complete file content. Supports conditional requests, image transformations, and range requests for partial downloads."
+        },
+        {
+          "info": {
+            "name": "Replace file",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{subdomain}.auth.{region}.nhost.run/v1/files/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier of the file to replace"
+              }
+            ],
+            "body": {
+              "type": "multipart-form",
+              "data": [
+                {
+                  "name": "metadata",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "file",
+                  "type": "text",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Replace an existing file with new content while preserving the file ID. The operation follows these steps:\n1. The isUploaded flag is set to false to mark the file as being updated\n2. The file content is replaced in the storage backend\n3. File metadata is updated (size, mime-type, isUploaded, etc.)\n\nEach step is atomic, but if a step fails, previous steps will not be automatically rolled back.\n"
+        },
+        {
+          "info": {
+            "name": "Delete file",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{subdomain}.auth.{region}.nhost.run/v1/files/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier of the file to delete"
+              }
+            ]
+          },
+          "docs": "Permanently delete a file from storage. This removes both the file content and its associated metadata."
+        },
+        {
+          "info": {
+            "name": "Check file information",
+            "type": "http"
+          },
+          "http": {
+            "method": "HEAD",
+            "url": "https://{subdomain}.auth.{region}.nhost.run/v1/files/:id",
+            "headers": [
+              {
+                "name": "if-match",
+                "value": ""
+              },
+              {
+                "name": "if-none-match",
+                "value": ""
+              },
+              {
+                "name": "if-modified-since",
+                "value": ""
+              },
+              {
+                "name": "if-unmodified-since",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier of the file to check"
+              },
+              {
+                "name": "q",
+                "value": "",
+                "type": "query",
+                "description": "Image quality (1-100). Only applies to JPEG, WebP and PNG files"
+              },
+              {
+                "name": "h",
+                "value": "",
+                "type": "query",
+                "description": "Maximum height to resize image to while maintaining aspect ratio. Only applies to image files"
+              },
+              {
+                "name": "w",
+                "value": "",
+                "type": "query",
+                "description": "Maximum width to resize image to while maintaining aspect ratio. Only applies to image files"
+              },
+              {
+                "name": "b",
+                "value": "",
+                "type": "query",
+                "description": "Blur the image using this sigma value. Only applies to image files"
+              },
+              {
+                "name": "f",
+                "value": "",
+                "type": "query",
+                "description": "Output format for image files. Use 'auto' for content negotiation based on Accept header"
+              }
+            ]
+          },
+          "docs": "Retrieve file metadata headers without downloading the file content. Supports conditional requests and provides caching information."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

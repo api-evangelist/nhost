@@ -1,0 +1,442 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Nhost authentication API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "authentication",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Sign in anonymously",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{subdomain}.auth.{region}.nhost.run/v1/signin/anonymous",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create an anonymous user session without providing credentials. Anonymous users can be converted to regular users later via the deanonymize endpoint."
+        },
+        {
+          "info": {
+            "name": "Sign in with email and password",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{subdomain}.auth.{region}.nhost.run/v1/signin/email-password",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Authenticate a user with their email and password. Returns a session object or MFA challenge if two-factor authentication is enabled."
+        },
+        {
+          "info": {
+            "name": "Sign in with an ID token",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{subdomain}.auth.{region}.nhost.run/v1/signin/idtoken",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Authenticate using an ID token from a supported OAuth provider (Apple or Google). Creates a new user account if one doesn't exist."
+        },
+        {
+          "info": {
+            "name": "Verify TOTP for MFA",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{subdomain}.auth.{region}.nhost.run/v1/signin/mfa/totp",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Complete the multi-factor authentication by verifying a Time-based One-Time Password (TOTP). Returns a session if validation is successful."
+        },
+        {
+          "info": {
+            "name": "Sign in with email OTP",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{subdomain}.auth.{region}.nhost.run/v1/signin/otp/email",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Initiate email-based one-time password authentication. Sends an OTP to the specified email address. If the user doesn't exist, a new account will be created with the provided options."
+        },
+        {
+          "info": {
+            "name": "Verify email OTP",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{subdomain}.auth.{region}.nhost.run/v1/signin/otp/email/verify",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Complete email OTP authentication by verifying the one-time password. Returns a session if validation is successful."
+        },
+        {
+          "info": {
+            "name": "Sign in with magic link email",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{subdomain}.auth.{region}.nhost.run/v1/signin/passwordless/email",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Initiate passwordless authentication by sending a magic link to the user's email. If the user doesn't exist, a new account will be created with the provided options."
+        },
+        {
+          "info": {
+            "name": "Sign in with SMS OTP",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{subdomain}.auth.{region}.nhost.run/v1/signin/passwordless/sms",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Initiate passwordless authentication by sending a one-time password to the user's phone number. If the user doesn't exist, a new account will be created with the provided options."
+        },
+        {
+          "info": {
+            "name": "Verify SMS OTP",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{subdomain}.auth.{region}.nhost.run/v1/signin/passwordless/sms/otp",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Complete passwordless SMS authentication by verifying the one-time password. Returns a session if validation is successful."
+        },
+        {
+          "info": {
+            "name": "Sign in with Personal Access Token (PAT)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{subdomain}.auth.{region}.nhost.run/v1/signin/pat",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Authenticate using a Personal Access Token. PATs are long-lived tokens that can be used for programmatic access to the API."
+        },
+        {
+          "info": {
+            "name": "Sign in with an OAuth2 provider",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{subdomain}.auth.{region}.nhost.run/v1/signin/provider/:provider",
+            "params": [
+              {
+                "name": "provider",
+                "value": "",
+                "type": "path",
+                "description": "The name of the social provider"
+              },
+              {
+                "name": "allowedRoles",
+                "value": "",
+                "type": "query",
+                "description": "Array of allowed roles for the user"
+              },
+              {
+                "name": "defaultRole",
+                "value": "",
+                "type": "query",
+                "description": "Default role for the user"
+              },
+              {
+                "name": "displayName",
+                "value": "",
+                "type": "query",
+                "description": "Display name for the user"
+              },
+              {
+                "name": "locale",
+                "value": "",
+                "type": "query",
+                "description": "A two-characters locale"
+              },
+              {
+                "name": "metadata",
+                "value": "",
+                "type": "query",
+                "description": "Additional metadata for the user (JSON encoded string)"
+              },
+              {
+                "name": "redirectTo",
+                "value": "",
+                "type": "query",
+                "description": "URI to redirect to"
+              },
+              {
+                "name": "connect",
+                "value": "",
+                "type": "query",
+                "description": "If set, this means that the user is already authenticated and wants to link their account. This needs to be a valid JWT access token."
+              }
+            ]
+          },
+          "docs": "Initiate OAuth2 authentication flow with a social provider. Redirects the user to the provider's authorization page."
+        },
+        {
+          "info": {
+            "name": "OAuth2 provider callback endpoint",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{subdomain}.auth.{region}.nhost.run/v1/signin/provider/:provider/callback",
+            "params": [
+              {
+                "name": "provider",
+                "value": "",
+                "type": "path",
+                "description": "The name of the social provider"
+              },
+              {
+                "name": "code",
+                "value": "",
+                "type": "query",
+                "description": "Authorization code provided by the authentication provider"
+              },
+              {
+                "name": "id_token",
+                "value": "",
+                "type": "query",
+                "description": "ID token provided by the authentication provider"
+              },
+              {
+                "name": "state",
+                "value": "",
+                "type": "query",
+                "description": "State parameter to avoid CSRF attacks"
+              },
+              {
+                "name": "oauth_token",
+                "value": "",
+                "type": "query",
+                "description": "OAuth token for the provider (e.g., X)"
+              },
+              {
+                "name": "oauth_verifier",
+                "value": "",
+                "type": "query",
+                "description": "OAuth verifier for the provider (e.g., X)"
+              },
+              {
+                "name": "error",
+                "value": "",
+                "type": "query",
+                "description": "Error message if authentication failed"
+              },
+              {
+                "name": "error_description",
+                "value": "",
+                "type": "query",
+                "description": "Detailed error description if authentication failed"
+              },
+              {
+                "name": "error_uri",
+                "value": "",
+                "type": "query",
+                "description": "URI with more information about the error"
+              }
+            ]
+          },
+          "docs": "Handles the callback from OAuth2 providers after user authorization. Processes the authorization code and creates a user session."
+        },
+        {
+          "info": {
+            "name": "OAuth2 provider callback endpoint (form_post)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{subdomain}.auth.{region}.nhost.run/v1/signin/provider/:provider/callback",
+            "params": [
+              {
+                "name": "provider",
+                "value": "",
+                "type": "path",
+                "description": "The name of the social provider"
+              }
+            ],
+            "body": {
+              "type": "form-urlencoded",
+              "data": [
+                {
+                  "name": "code",
+                  "value": ""
+                },
+                {
+                  "name": "id_token",
+                  "value": ""
+                },
+                {
+                  "name": "state",
+                  "value": ""
+                },
+                {
+                  "name": "user",
+                  "value": ""
+                },
+                {
+                  "name": "error",
+                  "value": ""
+                },
+                {
+                  "name": "error_description",
+                  "value": ""
+                },
+                {
+                  "name": "error_uri",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Handles OAuth2 provider callbacks using form_post response mode. Used by providers like Apple that send data via POST instead of query parameters."
+        },
+        {
+          "info": {
+            "name": "Sign in with Webauthn",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{subdomain}.auth.{region}.nhost.run/v1/signin/webauthn",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Initiate a Webauthn sign-in process by sending a challenge to the user's device. The user must have previously registered a Webauthn credential."
+        },
+        {
+          "info": {
+            "name": "Verify Webauthn sign-in",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{subdomain}.auth.{region}.nhost.run/v1/signin/webauthn/verify",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Complete the Webauthn sign-in process by verifying the response from the user's device. Returns a session if validation is successful."
+        },
+        {
+          "info": {
+            "name": "Sign up with email and password",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{subdomain}.auth.{region}.nhost.run/v1/signup/email-password",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Register a new user account with email and password. Returns a session if email verification is not required, otherwise returns null session."
+        },
+        {
+          "info": {
+            "name": "Sign up with Webauthn",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{subdomain}.auth.{region}.nhost.run/v1/signup/webauthn",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Initiate a Webauthn sign-up process by sending a challenge to the user's device. The user must not have an existing account."
+        },
+        {
+          "info": {
+            "name": "Verify Webauthn sign-up",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{subdomain}.auth.{region}.nhost.run/v1/signup/webauthn/verify",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Complete the Webauthn sign-up process by verifying the response from the user's device. Returns a session if validation is successful."
+        },
+        {
+          "info": {
+            "name": "Deanonymize an anonymous user",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{subdomain}.auth.{region}.nhost.run/v1/user/deanonymize",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Convert an anonymous user to a regular user by adding email and optionally password credentials. A confirmation email will be sent if the server is configured to do so."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,71 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Nhost authentication session API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "session",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Sign out",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{subdomain}.auth.{region}.nhost.run/v1/signout",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "End the current user session by invalidating refresh tokens. Optionally sign out from all devices."
+        },
+        {
+          "info": {
+            "name": "Refresh access token",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{subdomain}.auth.{region}.nhost.run/v1/token",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Generate a new JWT access token using a valid refresh token. The refresh token used will be revoked and a new one will be issued."
+        },
+        {
+          "info": {
+            "name": "Verify JWT token",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{subdomain}.auth.{region}.nhost.run/v1/token/verify",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Verify the validity of a JWT access token. If no request body is provided, the Authorization header will be used for verification."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

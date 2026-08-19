@@ -1,0 +1,143 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Nhost authentication security API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "security",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Elevate access for an already signed in user using FIDO2 Webauthn",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{subdomain}.auth.{region}.nhost.run/v1/elevate/webauthn",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Generate a Webauthn challenge for elevating user permissions"
+        },
+        {
+          "info": {
+            "name": "Verify FIDO2 Webauthn authentication using public-key cryptography for elevation",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{subdomain}.auth.{region}.nhost.run/v1/elevate/webauthn/verify",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Complete Webauthn elevation by verifying the authentication response"
+        },
+        {
+          "info": {
+            "name": "Link a user account with the provider's account using an id token",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{subdomain}.auth.{region}.nhost.run/v1/link/idtoken",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Link the authenticated user's account with an external OAuth provider account using an ID token. Requires elevated permissions."
+        },
+        {
+          "info": {
+            "name": "Create a Personal Access Token (PAT)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{subdomain}.auth.{region}.nhost.run/v1/pat",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Generate a new Personal Access Token for programmatic API access. PATs are long-lived tokens that can be used instead of regular authentication for automated systems. Requires elevated permissions."
+        },
+        {
+          "info": {
+            "name": "Manage multi-factor authentication",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{subdomain}.auth.{region}.nhost.run/v1/user/mfa",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Activate or deactivate multi-factor authentication for the authenticated user"
+        },
+        {
+          "info": {
+            "name": "Initialize adding of a new webauthn security key",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{subdomain}.auth.{region}.nhost.run/v1/user/webauthn/add",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Start the process of adding a new WebAuthn security key to the user's account. Returns a challenge that must be completed by the user's authenticator device. Requires elevated permissions."
+        },
+        {
+          "info": {
+            "name": "Verify adding of a new webauthn security key",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{subdomain}.auth.{region}.nhost.run/v1/user/webauthn/verify",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Complete the process of adding a new WebAuthn security key by verifying the authenticator response. Requires elevated permissions."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

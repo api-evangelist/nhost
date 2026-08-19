@@ -1,0 +1,29 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Nhost authentication documentation API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "documentation",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get OpenAPI specification",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{subdomain}.auth.{region}.nhost.run/v1/openapi.yaml"
+          },
+          "docs": "Returns the OpenAPI schema definition for this API, allowing clients to understand the available endpoints and models."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

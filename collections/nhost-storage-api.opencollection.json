@@ -1,0 +1,162 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Nhost authentication storage API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "storage",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieve presigned URL to retrieve the file",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{subdomain}.auth.{region}.nhost.run/v1/files/:id/presignedurl",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier of the file"
+              }
+            ]
+          },
+          "docs": "Retrieve presigned URL to retrieve the file. Expiration of the URL is\ndetermined by bucket configuration\n"
+        },
+        {
+          "info": {
+            "name": "Retrieve contents of file",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{subdomain}.auth.{region}.nhost.run/v1/files/:id/presignedurl/contents",
+            "headers": [
+              {
+                "name": "if-match",
+                "value": ""
+              },
+              {
+                "name": "if-none-match",
+                "value": ""
+              },
+              {
+                "name": "if-modified-since",
+                "value": ""
+              },
+              {
+                "name": "if-unmodified-since",
+                "value": ""
+              },
+              {
+                "name": "Range",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier of the file"
+              },
+              {
+                "name": "X-Amz-Algorithm",
+                "value": "",
+                "type": "query",
+                "description": "Use presignedurl endpoint to generate this automatically"
+              },
+              {
+                "name": "X-Amz-Credential",
+                "value": "",
+                "type": "query",
+                "description": "Use presignedurl endpoint to generate this automatically"
+              },
+              {
+                "name": "X-Amz-Date",
+                "value": "",
+                "type": "query",
+                "description": "Use presignedurl endpoint to generate this automatically"
+              },
+              {
+                "name": "X-Amz-Expires",
+                "value": "",
+                "type": "query",
+                "description": "Use presignedurl endpoint to generate this automatically"
+              },
+              {
+                "name": "X-Amz-Signature",
+                "value": "",
+                "type": "query",
+                "description": "Use presignedurl endpoint to generate this automatically"
+              },
+              {
+                "name": "X-Amz-SignedHeaders",
+                "value": "",
+                "type": "query",
+                "description": "Use presignedurl endpoint to generate this automatically"
+              },
+              {
+                "name": "X-Amz-Checksum-Mode",
+                "value": "",
+                "type": "query",
+                "description": "Use presignedurl endpoint to generate this automatically"
+              },
+              {
+                "name": "X-Amz-Security-Token",
+                "value": "",
+                "type": "query",
+                "description": "Use presignedurl endpoint to generate this automatically"
+              },
+              {
+                "name": "x-id",
+                "value": "",
+                "type": "query",
+                "description": "Use presignedurl endpoint to generate this automatically"
+              },
+              {
+                "name": "q",
+                "value": "",
+                "type": "query",
+                "description": "Image quality (1-100). Only applies to JPEG, WebP and PNG files"
+              },
+              {
+                "name": "h",
+                "value": "",
+                "type": "query",
+                "description": "Maximum height to resize image to while maintaining aspect ratio. Only applies to image files"
+              },
+              {
+                "name": "w",
+                "value": "",
+                "type": "query",
+                "description": "Maximum width to resize image to while maintaining aspect ratio. Only applies to image files"
+              },
+              {
+                "name": "b",
+                "value": "",
+                "type": "query",
+                "description": "Blur the image using this sigma value. Only applies to image files"
+              },
+              {
+                "name": "f",
+                "value": "",
+                "type": "query",
+                "description": "Output format for image files. Use 'auto' for content negotiation based on Accept header"
+              }
+            ]
+          },
+          "docs": "Retrieve contents of file"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

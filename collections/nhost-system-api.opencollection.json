@@ -1,0 +1,62 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Nhost authentication system API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "system",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get public keys for JWT verification in JWK Set format",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{subdomain}.auth.{region}.nhost.run/v1/.well-known/jwks.json"
+          },
+          "docs": "Retrieve the JSON Web Key Set (JWKS) containing public keys used to verify JWT signatures. This endpoint is used by clients to validate access tokens."
+        },
+        {
+          "info": {
+            "name": "Health check (GET)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{subdomain}.auth.{region}.nhost.run/v1/healthz"
+          },
+          "docs": "Verify if the authentication service is operational using GET method"
+        },
+        {
+          "info": {
+            "name": "Health check (HEAD)",
+            "type": "http"
+          },
+          "http": {
+            "method": "HEAD",
+            "url": "https://{subdomain}.auth.{region}.nhost.run/v1/healthz"
+          },
+          "docs": "Verify if the authentication service is operational using HEAD method"
+        },
+        {
+          "info": {
+            "name": "Get service version",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{subdomain}.auth.{region}.nhost.run/v1/version"
+          },
+          "docs": "Retrieve version information about the authentication service"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

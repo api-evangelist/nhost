@@ -1,0 +1,322 @@
+{
+  "item": [
+    {
+      "id": "c48bba92-a9c7-479e-a755-74bd128def96",
+      "name": "verification",
+      "description": {
+        "content": "Email and ticket verification operations for confirming user actions",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "7bd4f893-2452-479f-b7e7-fe919dc58a3a",
+          "name": "Verify Webauthn sign-up",
+          "request": {
+            "name": "Verify Webauthn sign-up",
+            "description": {
+              "content": "Complete the Webauthn sign-up process by verifying the response from the user's device. Returns a session if validation is successful.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "signup",
+                "webauthn",
+                "verify"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"credential\": {\n    \"id\": \"<string>\",\n    \"type\": \"<string>\",\n    \"rawId\": \"<byte>\",\n    \"response\": {\n      \"clientDataJSON\": \"<byte>\",\n      \"attestationObject\": \"<byte>\",\n      \"transports\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"authenticatorData\": \"<byte>\",\n      \"publicKey\": \"<byte>\",\n      \"publicKeyAlgorithm\": \"<long>\"\n    },\n    \"clientExtensionResults\": {\n      \"appid\": \"<boolean>\",\n      \"credProps\": {\n        \"rk\": \"<boolean>\"\n      },\n      \"hmacCreateSecret\": \"<boolean>\"\n    },\n    \"authenticatorAttachment\": \"<string>\"\n  },\n  \"options\": {\n    \"allowedRoles\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"defaultRole\": \"<string>\",\n    \"displayName\": \"<string>\",\n    \"locale\": \"<string>\",\n    \"metadata\": {\n      \"key_0\": false\n    },\n    \"redirectTo\": \"<uri>\"\n  },\n  \"nickname\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "eab67638-f4ea-4da4-9f4b-3582d71557e9",
+              "name": "Sign up successful",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "signup",
+                    "webauthn",
+                    "verify"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"credential\": {\n    \"id\": \"<string>\",\n    \"type\": \"<string>\",\n    \"rawId\": \"<byte>\",\n    \"response\": {\n      \"clientDataJSON\": \"<byte>\",\n      \"attestationObject\": \"<byte>\",\n      \"transports\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"authenticatorData\": \"<byte>\",\n      \"publicKey\": \"<byte>\",\n      \"publicKeyAlgorithm\": \"<long>\"\n    },\n    \"clientExtensionResults\": {\n      \"appid\": \"<boolean>\",\n      \"credProps\": {\n        \"rk\": \"<boolean>\"\n      },\n      \"hmacCreateSecret\": \"<boolean>\"\n    },\n    \"authenticatorAttachment\": \"<string>\"\n  },\n  \"options\": {\n    \"allowedRoles\": [\n      \"me\",\n      \"user\"\n    ],\n    \"defaultRole\": \"user\",\n    \"displayName\": \"John Smith\",\n    \"locale\": \"en\",\n    \"metadata\": {\n      \"firstName\": \"John\",\n      \"lastName\": \"Smith\"\n    },\n    \"redirectTo\": \"https://my-app.com/catch-redirection\"\n  },\n  \"nickname\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"session\": {\n    \"accessToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...\",\n    \"accessTokenExpiresIn\": 900,\n    \"refreshToken\": \"2c35b6f3-c4b9-48e3-978a-d4d0f1d42e24\",\n    \"refreshTokenId\": \"2c35b6f3-c4b9-48e3-978a-d4d0f1d42e24\",\n    \"user\": {\n      \"avatarUrl\": \"https://myapp.com/avatars/user123.jpg\",\n      \"createdAt\": \"2023-01-15T12:34:56Z\",\n      \"defaultRole\": \"user\",\n      \"displayName\": \"John Smith\",\n      \"emailVerified\": true,\n      \"id\": \"2c35b6f3-c4b9-48e3-978a-d4d0f1d42e24\",\n      \"isAnonymous\": false,\n      \"locale\": \"en\",\n      \"metadata\": {\n        \"firstName\": \"John\",\n        \"lastName\": \"Smith\"\n      },\n      \"phoneNumberVerified\": false,\n      \"roles\": [\n        \"user\",\n        \"customer\"\n      ],\n      \"email\": \"john.smith@nhost.io\",\n      \"phoneNumber\": \"+12025550123\",\n      \"activeMfaType\": \"string\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "11f148a1-76ed-40dc-b239-f2cf544fe159",
+              "name": "An error occurred while processing the request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "signup",
+                    "webauthn",
+                    "verify"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"credential\": {\n    \"id\": \"<string>\",\n    \"type\": \"<string>\",\n    \"rawId\": \"<byte>\",\n    \"response\": {\n      \"clientDataJSON\": \"<byte>\",\n      \"attestationObject\": \"<byte>\",\n      \"transports\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"authenticatorData\": \"<byte>\",\n      \"publicKey\": \"<byte>\",\n      \"publicKeyAlgorithm\": \"<long>\"\n    },\n    \"clientExtensionResults\": {\n      \"appid\": \"<boolean>\",\n      \"credProps\": {\n        \"rk\": \"<boolean>\"\n      },\n      \"hmacCreateSecret\": \"<boolean>\"\n    },\n    \"authenticatorAttachment\": \"<string>\"\n  },\n  \"options\": {\n    \"allowedRoles\": [\n      \"me\",\n      \"user\"\n    ],\n    \"defaultRole\": \"user\",\n    \"displayName\": \"John Smith\",\n    \"locale\": \"en\",\n    \"metadata\": {\n      \"firstName\": \"John\",\n      \"lastName\": \"Smith\"\n    },\n    \"redirectTo\": \"https://my-app.com/catch-redirection\"\n  },\n  \"nickname\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": 400,\n  \"message\": \"Invalid email format\",\n  \"error\": \"signup-disabled\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "54fc24f0-a1a8-4108-bbfa-7b0b0208678f",
+          "name": "Verify email and authentication tickets",
+          "request": {
+            "name": "Verify email and authentication tickets",
+            "description": {
+              "content": "Verify tickets created by email verification, magic link authentication, or password reset processes. Redirects the user to the appropriate destination upon successful verification.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "verify"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "ticket",
+                  "value": "<string>",
+                  "description": "(Required) Ticket"
+                },
+                {
+                  "disabled": false,
+                  "key": "type",
+                  "value": "<string>",
+                  "description": "Type of the ticket. Deprecated, no longer used"
+                },
+                {
+                  "disabled": false,
+                  "key": "redirectTo",
+                  "value": "<uri>",
+                  "description": "(Required) Target URL for the redirect"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "71ef777d-7610-46f3-bd4d-8820ad5be99f",
+              "name": "Redirect response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "verify"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "ticket",
+                      "value": "verifyEmail:xxxxxxxx"
+                    },
+                    {
+                      "key": "type",
+                      "value": "emailVerify"
+                    },
+                    {
+                      "key": "redirectTo",
+                      "value": "https://my-app.com/catch-redirection"
+                    }
+                  ],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Found",
+              "code": 302,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "(Required) URL to redirect to",
+                  "key": "Location",
+                  "value": "https://pwRpbfySex.jumLgDgn594Ag1NHzUEq5tS9l8+FnVH708dYr2SQJjtM.7m1yT.VHVm3JCZ,p7WCwkO"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "916e6001-9631-4b5d-8c8e-1ca985546d25",
+              "name": "An error occurred while processing the request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "verify"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "ticket",
+                      "value": "verifyEmail:xxxxxxxx"
+                    },
+                    {
+                      "key": "type",
+                      "value": "emailVerify"
+                    },
+                    {
+                      "key": "redirectTo",
+                      "value": "https://my-app.com/catch-redirection"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": 400,\n  \"message\": \"Invalid email format\",\n  \"error\": \"signup-disabled\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://{{subdomain}}.auth.{{region}}.nhost.run/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "6d39b28d-dfb8-4872-94a0-dfdc89dd2d83",
+    "name": "Nhost authentication verification API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Comprehensive authentication service for managing user identities, sessions, and authentication methods\n\nContact Support:\n Name: Nhost Support\n Email: support@nhost.io",
+      "type": "text/plain"
+    }
+  }
+}
