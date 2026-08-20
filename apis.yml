@@ -36,6 +36,16 @@ tags:
 - File Storage
 - Serverless Functions
 - Real-Time
+- Open-Source
+- Firebase Alternative
+- Backend-as-a-Service
+tags_raw:
+- GraphQL
+- PostgreSQL
+- Authentication
+- File Storage
+- Serverless Functions
+- Real-Time
 - Open Source
 - Firebase Alternative
 - Backend as a Service
@@ -49,6 +59,11 @@ apis:
   humanURL: https://docs.nhost.io/products/graphql/
   baseURL: https://{subdomain}.nhost.run/v1/graphql
   tags:
+  - GraphQL
+  - Real-Time
+  - Subscription
+  - PostgreSQL
+  tags_raw:
   - GraphQL
   - Real-Time
   - Subscriptions
@@ -69,6 +84,11 @@ apis:
   tags:
   - Serverless
   - Functions
+  - Webhook
+  - HTTP Endpoints
+  tags_raw:
+  - Serverless
+  - Functions
   - Webhooks
   - HTTP Endpoints
   properties:
@@ -83,6 +103,11 @@ apis:
   humanURL: https://docs.nhost.io/products/ai/
   baseURL: https://{subdomain}.nhost.run/v1/ai
   tags:
+  - Artificial Intelligence
+  - Embeddings
+  - Assistants
+  - Vector Search
+  tags_raw:
   - AI
   - Embeddings
   - Assistants
@@ -98,6 +123,8 @@ apis:
   humanURL: https://docs.nhost.io/products/graphql/
   baseURL: https://{subdomain}.nhost.run/v1/graphql
   tags:
+  - Authentication
+  tags_raw:
   - authentication
   properties:
   - type: OpenAPI
@@ -112,6 +139,8 @@ apis:
   humanURL: https://docs.nhost.io/products/graphql/
   baseURL: https://{subdomain}.nhost.run/v1/graphql
   tags:
+  - Documentation
+  tags_raw:
   - documentation
   properties:
   - type: OpenAPI
@@ -142,6 +171,8 @@ apis:
   humanURL: https://docs.nhost.io/products/graphql/
   baseURL: https://{subdomain}.nhost.run/v1/graphql
   tags:
+  - File
+  tags_raw:
   - files
   properties:
   - type: OpenAPI
@@ -155,7 +186,8 @@ apis:
   description: Administrative operations
   humanURL: https://docs.nhost.io/products/graphql/
   baseURL: https://{subdomain}.nhost.run/v1/graphql
-  tags:
+  tags: []
+  tags_raw:
   - operations
   properties:
   - type: OpenAPI
@@ -172,6 +204,8 @@ apis:
   humanURL: https://docs.nhost.io/products/graphql/
   baseURL: https://{subdomain}.nhost.run/v1/graphql
   tags:
+  - Security
+  tags_raw:
   - security
   properties:
   - type: OpenAPI
@@ -186,6 +220,8 @@ apis:
   humanURL: https://docs.nhost.io/products/graphql/
   baseURL: https://{subdomain}.nhost.run/v1/graphql
   tags:
+  - Session
+  tags_raw:
   - session
   properties:
   - type: OpenAPI
@@ -200,6 +236,8 @@ apis:
   humanURL: https://docs.nhost.io/products/graphql/
   baseURL: https://{subdomain}.nhost.run/v1/graphql
   tags:
+  - Storage
+  tags_raw:
   - storage
   properties:
   - type: OpenAPI
@@ -214,6 +252,8 @@ apis:
   humanURL: https://docs.nhost.io/products/graphql/
   baseURL: https://{subdomain}.nhost.run/v1/graphql
   tags:
+  - System
+  tags_raw:
   - system
   properties:
   - type: OpenAPI
@@ -230,6 +270,8 @@ apis:
   humanURL: https://docs.nhost.io/products/graphql/
   baseURL: https://{subdomain}.nhost.run/v1/graphql
   tags:
+  - User
+  tags_raw:
   - user
   properties:
   - type: OpenAPI
@@ -244,6 +286,8 @@ apis:
   humanURL: https://docs.nhost.io/products/graphql/
   baseURL: https://{subdomain}.nhost.run/v1/graphql
   tags:
+  - Verification
+  tags_raw:
   - verification
   properties:
   - type: OpenAPI
