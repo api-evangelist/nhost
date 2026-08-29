@@ -1,34 +1,43 @@
 {
   "provider": "nhost",
   "sources": [
-    "nhost-authentication-api-openapi.yml",
-    "nhost-documentation-api-openapi.yml",
-    "nhost-excludeme-api-openapi.yml",
-    "nhost-files-api-openapi.yml",
-    "nhost-operations-api-openapi.yml",
-    "nhost-security-api-openapi.yml",
-    "nhost-session-api-openapi.yml",
-    "nhost-storage-api-openapi.yml",
-    "nhost-system-api-openapi.yml",
-    "nhost-user-api-openapi.yml",
-    "nhost-verification-api-openapi.yml"
+    "_original/nhost-authentication-openapi.yml",
+    "_original/nhost-storage-openapi.yml"
   ],
   "outputs": [
     "nhost-authentication-api-openapi.yml",
-    "nhost-documentation-api-openapi.yml",
     "nhost-excludeme-api-openapi.yml",
-    "nhost-files-api-openapi.yml",
-    "nhost-operations-api-openapi.yml",
     "nhost-security-api-openapi.yml",
     "nhost-session-api-openapi.yml",
-    "nhost-storage-api-openapi.yml",
     "nhost-system-api-openapi.yml",
     "nhost-user-api-openapi.yml",
-    "nhost-verification-api-openapi.yml"
+    "nhost-verification-api-openapi.yml",
+    "nhost-documentation-api-openapi.yml",
+    "nhost-files-api-openapi.yml",
+    "nhost-operations-api-openapi.yml",
+    "nhost-storage-api-openapi.yml"
   ],
   "archived": [],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "sourced from openapi/_original/ (2 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "nhost-authentication-openapi.yml: upgraded openapi 3.0.0 -> OpenAPI 3.2.0",
+    "nhost-storage-openapi.yml: upgraded openapi 3.0.0 -> OpenAPI 3.2.0",
+    "tag 'excludeme' spans 2 source specs (nhost-authentication-openapi.yml, nhost-storage-openapi.yml): per-path servers applied",
+    "tag 'system' spans 2 source specs (nhost-authentication-openapi.yml, nhost-storage-openapi.yml): per-path servers applied"
+  ],
+  "skipped": [
+    "nhost-authentication-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "nhost-documentation-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "nhost-excludeme-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "nhost-files-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "nhost-operations-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "nhost-security-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "nhost-session-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "nhost-storage-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "nhost-system-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "nhost-user-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "nhost-verification-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }

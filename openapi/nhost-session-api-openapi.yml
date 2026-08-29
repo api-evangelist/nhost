@@ -1,7 +1,7 @@
-openapi: 3.0.0
+openapi: 3.2.0
 info:
   version: 1.0.0
-  title: Nhost authentication session API
+  title: Nhost Authentication Session API
   description: Comprehensive authentication service for managing user identities, sessions, and authentication methods
   license:
     name: MIT License
@@ -177,9 +177,10 @@ components:
           items:
             type: string
         activeMfaType:
-          type: string
+          type:
+          - string
+          - 'null'
           description: Active MFA type for the user
-          nullable: true
       required:
       - avatarUrl
       - createdAt
@@ -192,16 +193,13 @@ components:
       - metadata
       - phoneNumberVerified
       - roles
-    SignOutRequest:
+    VerifyTokenRequest:
       type: object
+      additionalProperties: false
       properties:
-        refreshToken:
+        token:
           type: string
-          description: Refresh token for the current session
-        all:
-          type: boolean
-          default: false
-          description: Sign out from all connected devices
+          description: JWT token to verify
     ErrorResponse:
       type: object
       description: Standardized error response
@@ -285,11 +283,6 @@ components:
       - accessTokenExpiresIn
       - refreshToken
       - refreshTokenId
-    OKResponse:
-      type: string
-      additionalProperties: false
-      enum:
-      - OK
     RefreshTokenRequest:
       type: object
       description: Request to refresh an access token
@@ -302,13 +295,21 @@ components:
           type: string
       required:
       - refreshToken
-    VerifyTokenRequest:
-      type: object
+    OKResponse:
+      type: string
       additionalProperties: false
+      enum:
+      - OK
+    SignOutRequest:
+      type: object
       properties:
-        token:
+        refreshToken:
           type: string
-          description: JWT token to verify
+          description: Refresh token for the current session
+        all:
+          type: boolean
+          default: false
+          description: Sign out from all connected devices
   securitySchemes:
     BearerAuth:
       type: http

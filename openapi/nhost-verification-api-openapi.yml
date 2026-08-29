@@ -1,7 +1,7 @@
-openapi: 3.0.0
+openapi: 3.2.0
 info:
   version: 1.0.0
-  title: Nhost authentication verification API
+  title: Nhost Authentication Verification API
   description: Comprehensive authentication service for managing user identities, sessions, and authentication methods
   license:
     name: MIT License
@@ -141,9 +141,10 @@ components:
           items:
             type: string
         activeMfaType:
-          type: string
+          type:
+          - string
+          - 'null'
           description: Active MFA type for the user
-          nullable: true
       required:
       - avatarUrl
       - createdAt
@@ -156,26 +157,6 @@ components:
       - metadata
       - phoneNumberVerified
       - roles
-    SessionPayload:
-      type: object
-      description: Container for session information
-      additionalProperties: false
-      properties:
-        session:
-          $ref: '#/components/schemas/Session'
-    SignUpWebauthnVerifyRequest:
-      type: object
-      additionalProperties: false
-      properties:
-        credential:
-          $ref: '#/components/schemas/CredentialCreationResponse'
-        options:
-          $ref: '#/components/schemas/SignUpOptions'
-        nickname:
-          description: Nickname for the security key
-          type: string
-      required:
-      - credential
     ErrorResponse:
       type: object
       description: Standardized error response
@@ -228,65 +209,19 @@ components:
       - status
       - message
       - error
-    CredentialCreationResponse:
+    SignUpWebauthnVerifyRequest:
       type: object
       additionalProperties: false
-      x-go-type-import:
-        name: protocol
-        path: github.com/go-webauthn/webauthn/protocol
-      x-go-type: protocol.CredentialCreationResponse
       properties:
-        id:
+        credential:
+          $ref: '#/components/schemas/CredentialCreationResponse'
+        options:
+          $ref: '#/components/schemas/SignUpOptions'
+        nickname:
+          description: Nickname for the security key
           type: string
-          description: The credential's identifier
-        type:
-          type: string
-          description: The credential type represented by this object
-        rawId:
-          $ref: '#/components/schemas/URLEncodedBase64'
-        clientExtensionResults:
-          $ref: '#/components/schemas/AuthenticationExtensionsClientOutputs'
-        authenticatorAttachment:
-          type: string
-          description: The authenticator attachment
-        response:
-          $ref: '#/components/schemas/AuthenticatorAttestationResponse'
       required:
-      - id
-      - type
-      - rawId
-      - response
-    Session:
-      type: object
-      description: User authentication session containing tokens and user information
-      additionalProperties: false
-      properties:
-        accessToken:
-          type: string
-          description: JWT token for authenticating API requests
-          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-        accessTokenExpiresIn:
-          type: integer
-          format: int64
-          description: Expiration time of the access token in seconds
-          example: 900
-        refreshTokenId:
-          description: Identifier for the refresh token
-          example: 2c35b6f3-c4b9-48e3-978a-d4d0f1d42e24
-          pattern: \b[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}\b
-          type: string
-        refreshToken:
-          description: Token used to refresh the access token
-          example: 2c35b6f3-c4b9-48e3-978a-d4d0f1d42e24
-          pattern: \b[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}\b
-          type: string
-        user:
-          $ref: '#/components/schemas/User'
-      required:
-      - accessToken
-      - accessTokenExpiresIn
-      - refreshToken
-      - refreshTokenId
+      - credential
     SignUpOptions:
       type: object
       additionalProperties: false
@@ -323,10 +258,37 @@ components:
           type: string
           format: uri
           example: https://my-app.com/catch-redirection
-    URLEncodedBase64:
-      type: string
-      format: byte
-      description: Base64url-encoded binary data
+    Session:
+      type: object
+      description: User authentication session containing tokens and user information
+      additionalProperties: false
+      properties:
+        accessToken:
+          type: string
+          description: JWT token for authenticating API requests
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        accessTokenExpiresIn:
+          type: integer
+          format: int64
+          description: Expiration time of the access token in seconds
+          example: 900
+        refreshTokenId:
+          description: Identifier for the refresh token
+          example: 2c35b6f3-c4b9-48e3-978a-d4d0f1d42e24
+          pattern: \b[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}\b
+          type: string
+        refreshToken:
+          description: Token used to refresh the access token
+          example: 2c35b6f3-c4b9-48e3-978a-d4d0f1d42e24
+          pattern: \b[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}\b
+          type: string
+        user:
+          $ref: '#/components/schemas/User'
+      required:
+      - accessToken
+      - accessTokenExpiresIn
+      - refreshToken
+      - refreshTokenId
     CredentialPropertiesOutput:
       type: object
       additionalProperties: false
@@ -335,6 +297,58 @@ components:
         rk:
           type: boolean
           description: Indicates if the credential is a resident key
+    AuthenticationExtensionsClientOutputs:
+      type: object
+      additionalProperties: true
+      description: Map of extension outputs from the client
+      properties:
+        appid:
+          type: boolean
+          description: Application identifier extension output
+        credProps:
+          $ref: '#/components/schemas/CredentialPropertiesOutput'
+        hmacCreateSecret:
+          type: boolean
+          description: HMAC secret extension output
+    URLEncodedBase64:
+      type: string
+      format: byte
+      description: Base64url-encoded binary data
+    SessionPayload:
+      type: object
+      description: Container for session information
+      additionalProperties: false
+      properties:
+        session:
+          $ref: '#/components/schemas/Session'
+    CredentialCreationResponse:
+      type: object
+      additionalProperties: false
+      x-go-type-import:
+        name: protocol
+        path: github.com/go-webauthn/webauthn/protocol
+      x-go-type: protocol.CredentialCreationResponse
+      properties:
+        id:
+          type: string
+          description: The credential's identifier
+        type:
+          type: string
+          description: The credential type represented by this object
+        rawId:
+          $ref: '#/components/schemas/URLEncodedBase64'
+        clientExtensionResults:
+          $ref: '#/components/schemas/AuthenticationExtensionsClientOutputs'
+        authenticatorAttachment:
+          type: string
+          description: The authenticator attachment
+        response:
+          $ref: '#/components/schemas/AuthenticatorAttestationResponse'
+      required:
+      - id
+      - type
+      - rawId
+      - response
     AuthenticatorAttestationResponse:
       type: object
       additionalProperties: false
@@ -359,19 +373,6 @@ components:
       required:
       - clientDataJSON
       - attestationObject
-    AuthenticationExtensionsClientOutputs:
-      type: object
-      additionalProperties: true
-      description: Map of extension outputs from the client
-      properties:
-        appid:
-          type: boolean
-          description: Application identifier extension output
-        credProps:
-          $ref: '#/components/schemas/CredentialPropertiesOutput'
-        hmacCreateSecret:
-          type: boolean
-          description: HMAC secret extension output
   parameters:
     RedirectToQuery:
       in: query
@@ -383,6 +384,15 @@ components:
         type: string
         format: uri
         example: https://my-app.com/catch-redirection
+    TicketQuery:
+      in: query
+      name: ticket
+      description: Ticket
+      required: true
+      schema:
+        type: string
+        description: Ticket
+        example: verifyEmail:xxxxxxxx
     TicketTypeQuery:
       in: query
       name: type
@@ -398,15 +408,6 @@ components:
         description: Type of the ticket
         example: emailVerify
       deprecated: true
-    TicketQuery:
-      in: query
-      name: ticket
-      description: Ticket
-      required: true
-      schema:
-        type: string
-        description: Ticket
-        example: verifyEmail:xxxxxxxx
   headers:
     RedirectLocation:
       description: URL to redirect to

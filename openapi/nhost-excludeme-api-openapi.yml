@@ -1,18 +1,17 @@
-openapi: 3.0.0
+openapi: 3.2.0
 info:
+  title: Nhost Excludeme API
   version: 1.0.0
-  title: Nhost authentication excludeme API
-  description: Comprehensive authentication service for managing user identities, sessions, and authentication methods
-  license:
-    name: MIT License
-    url: https://opensource.org/licenses/MIT
   contact:
     name: Nhost Support
     email: support@nhost.io
     url: https://nhost.io
+  description: 'Operations tagged excludeme across 2 of this provider''s published API definitions: nhost-authentication-openapi.yml, nhost-storage-openapi.yml. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://{subdomain}.auth.{region}.nhost.run/v1
   description: Nhost Authentication API Server
+- url: https://{subdomain}.storage.{region}.nhost.run/v1
+  description: Nhost Storage API Server
 tags:
 - name: excludeme
   description: These operations are not intended to be used directly by clients and should be excluded from client SDKs
@@ -102,31 +101,37 @@ paths:
               type: object
               properties:
                 code:
-                  type: string
-                  nullable: true
+                  type:
+                  - string
+                  - 'null'
                   description: Authorization code provided by the authentication provider
                 id_token:
-                  type: string
-                  nullable: true
+                  type:
+                  - string
+                  - 'null'
                   description: ID token provided by the authentication provider
                 state:
                   type: string
                   description: State parameter to avoid CSRF attacks
                 user:
-                  type: string
-                  nullable: true
+                  type:
+                  - string
+                  - 'null'
                   description: JSON string containing user information (only provided on first authentication with Apple)
                 error:
-                  type: string
-                  nullable: true
+                  type:
+                  - string
+                  - 'null'
                   description: Error message if authentication failed
                 error_description:
-                  type: string
-                  nullable: true
+                  type:
+                  - string
+                  - 'null'
                   description: Detailed error description if authentication failed
                 error_uri:
-                  type: string
-                  nullable: true
+                  type:
+                  - string
+                  - 'null'
                   description: URI with more information about the error
               required:
               - state
@@ -144,6 +149,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: An error occurred while processing the request
+    servers:
+    - url: https://{subdomain}.auth.{region}.nhost.run/v1
+      description: Nhost Authentication API Server
   /files/{id}/presignedurl/contents:
     get:
       summary: Retrieve contents of file
@@ -384,6 +392,9 @@ paths:
               description: Error message details
               schema:
                 type: string
+    servers:
+    - url: https://{subdomain}.storage.{region}.nhost.run/v1
+      description: Nhost Storage API Server
   /openapi.yaml:
     get:
       summary: Get OpenAPI specification
@@ -404,26 +415,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse_2'
+    servers:
+    - url: https://{subdomain}.storage.{region}.nhost.run/v1
+      description: Nhost Storage API Server
 components:
   schemas:
-    OutputImageFormat:
-      type: string
-      description: Output format for image files. Use 'auto' for content negotiation based on Accept header
-      default: same
-      enum:
-      - auto
-      - same
-      - jpeg
-      - webp
-      - png
-      - avif
-      example: same
-    RFC2822Date:
-      type: string
-      description: Date in RFC 2822 format
-      pattern: ^(Mon|Tue|Wed|Thu|Fri|Sat|Sun), \d{1,2} (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) \d{4} \d{2}:\d{2}:\d{2} \w+$
-      example: Tue, 12 Aug 2025 12:03:50 GMT
-      x-go-type: Time
     ErrorResponse:
       type: object
       description: Standardized error response
@@ -476,6 +472,24 @@ components:
       - status
       - message
       - error
+    RFC2822Date:
+      type: string
+      description: Date in RFC 2822 format
+      pattern: ^(Mon|Tue|Wed|Thu|Fri|Sat|Sun), \d{1,2} (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) \d{4} \d{2}:\d{2}:\d{2} \w+$
+      example: Tue, 12 Aug 2025 12:03:50 GMT
+      x-go-type: Time
+    OutputImageFormat:
+      type: string
+      description: Output format for image files. Use 'auto' for content negotiation based on Accept header
+      default: same
+      enum:
+      - auto
+      - same
+      - jpeg
+      - webp
+      - png
+      - avif
+      example: same
     ErrorResponse_2:
       type: object
       description: Error information returned by the API.
@@ -496,6 +510,13 @@ components:
           required:
           - message
       additionalProperties: false
+  headers:
+    RedirectLocation:
+      description: URL to redirect to
+      schema:
+        type: string
+        format: uri
+      required: true
   parameters:
     SignInProvider:
       in: path
@@ -522,13 +543,6 @@ components:
         - windowslive
         - twitter
       deprecated: true
-  headers:
-    RedirectLocation:
-      description: URL to redirect to
-      schema:
-        type: string
-        format: uri
-      required: true
   securitySchemes:
     BearerAuth:
       type: http
@@ -538,3 +552,16 @@ components:
       type: http
       scheme: bearer
       description: Bearer authentication that requires elevated permissions. Used for sensitive operations that may require additional security measures such as recent authentication. For details see https://docs.nhost.io/guides/auth/elevated-permissions
+    Authorization:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: API key to authorize requests.
+    X-Hasura-Admin-Secret:
+      type: apiKey
+      name: X-Hasura-Admin-Secret
+      in: header
+      description: Hasura admin secret key for backend/administrative operations.
+x-refined-from:
+- nhost-authentication-openapi.yml
+- nhost-storage-openapi.yml

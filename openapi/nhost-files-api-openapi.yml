@@ -1,18 +1,18 @@
-openapi: 3.0.0
+openapi: 3.2.0
 info:
   version: 1.0.0
-  title: Nhost authentication files API
-  description: Comprehensive authentication service for managing user identities, sessions, and authentication methods
+  title: Nhost Storage Files API
+  description: Nhost Storage API - A service for managing and serving files with powerful access control capabilities
   license:
-    name: MIT License
-    url: https://opensource.org/licenses/MIT
+    name: Apache License 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
   contact:
     name: Nhost Support
     email: support@nhost.io
     url: https://nhost.io
 servers:
-- url: https://{subdomain}.auth.{region}.nhost.run/v1
-  description: Nhost Authentication API Server
+- url: https://{subdomain}.storage.{region}.nhost.run/v1
+  description: Nhost Storage API Server
 tags:
 - name: files
   description: File management operations
@@ -480,6 +480,31 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
 components:
   schemas:
+    ErrorResponseWithProcessedFiles:
+      type: object
+      description: Error information returned by the API.
+      properties:
+        processedFiles:
+          type: array
+          description: List of files that were successfully processed before the error occurred.
+          items:
+            $ref: '#/components/schemas/FileMetadata'
+        error:
+          type: object
+          additionalProperties: false
+          description: Error details.
+          properties:
+            message:
+              type: string
+              description: Human-readable error message.
+              example: File not found
+            data:
+              type: object
+              additionalProperties: true
+              description: Additional data related to the error, if any.
+          required:
+          - message
+      additionalProperties: false
     OutputImageFormat:
       type: string
       description: Output format for image files. Use 'auto' for content negotiation based on Accept header
@@ -492,12 +517,6 @@ components:
       - png
       - avif
       example: same
-    RFC2822Date:
-      type: string
-      description: Date in RFC 2822 format
-      pattern: ^(Mon|Tue|Wed|Thu|Fri|Sat|Sun), \d{1,2} (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) \d{4} \d{2}:\d{2}:\d{2} \w+$
-      example: Tue, 12 Aug 2025 12:03:50 GMT
-      x-go-type: Time
     ErrorResponse:
       type: object
       description: Error information returned by the API.
@@ -517,6 +536,42 @@ components:
               description: Additional data related to the error, if any.
           required:
           - message
+      additionalProperties: false
+    UploadFileMetadata:
+      type: object
+      description: Metadata provided when uploading a new file.
+      properties:
+        id:
+          type: string
+          description: Optional custom ID for the file. If not provided, a UUID will be generated.
+          example: custom-id-123
+        name:
+          type: string
+          description: Name to assign to the file. If not provided, the original filename will be used.
+          example: custom-filename.png
+        metadata:
+          type: object
+          additionalProperties: true
+          description: Custom metadata to associate with the file.
+          example:
+            alt: Custom image
+            category: document
+      additionalProperties: false
+    UpdateFileMetadata:
+      type: object
+      description: Metadata that can be updated for an existing file.
+      properties:
+        name:
+          type: string
+          description: New name to assign to the file.
+          example: renamed-file.jpg
+        metadata:
+          type: object
+          additionalProperties: true
+          description: Updated custom metadata to associate with the file.
+          example:
+            alt: Updated image description
+            category: profile
       additionalProperties: false
     FileMetadata:
       type: object
@@ -583,73 +638,20 @@ components:
       - isUploaded
       - mimeType
       additionalProperties: false
-    UploadFileMetadata:
-      type: object
-      description: Metadata provided when uploading a new file.
-      properties:
-        id:
-          type: string
-          description: Optional custom ID for the file. If not provided, a UUID will be generated.
-          example: custom-id-123
-        name:
-          type: string
-          description: Name to assign to the file. If not provided, the original filename will be used.
-          example: custom-filename.png
-        metadata:
-          type: object
-          additionalProperties: true
-          description: Custom metadata to associate with the file.
-          example:
-            alt: Custom image
-            category: document
-      additionalProperties: false
-    ErrorResponseWithProcessedFiles:
-      type: object
-      description: Error information returned by the API.
-      properties:
-        processedFiles:
-          type: array
-          description: List of files that were successfully processed before the error occurred.
-          items:
-            $ref: '#/components/schemas/FileMetadata'
-        error:
-          type: object
-          additionalProperties: false
-          description: Error details.
-          properties:
-            message:
-              type: string
-              description: Human-readable error message.
-              example: File not found
-            data:
-              type: object
-              additionalProperties: true
-              description: Additional data related to the error, if any.
-          required:
-          - message
-      additionalProperties: false
-    UpdateFileMetadata:
-      type: object
-      description: Metadata that can be updated for an existing file.
-      properties:
-        name:
-          type: string
-          description: New name to assign to the file.
-          example: renamed-file.jpg
-        metadata:
-          type: object
-          additionalProperties: true
-          description: Updated custom metadata to associate with the file.
-          example:
-            alt: Updated image description
-            category: profile
-      additionalProperties: false
+    RFC2822Date:
+      type: string
+      description: Date in RFC 2822 format
+      pattern: ^(Mon|Tue|Wed|Thu|Fri|Sat|Sun), \d{1,2} (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) \d{4} \d{2}:\d{2}:\d{2} \w+$
+      example: Tue, 12 Aug 2025 12:03:50 GMT
+      x-go-type: Time
   securitySchemes:
-    BearerAuth:
+    Authorization:
       type: http
       scheme: bearer
-      description: Bearer authentication with JWT access token. Used to authenticate requests to protected endpoints.
-    BearerAuthElevated:
-      type: http
-      scheme: bearer
-      description: Bearer authentication that requires elevated permissions. Used for sensitive operations that may require additional security measures such as recent authentication. For details see https://docs.nhost.io/guides/auth/elevated-permissions
+      bearerFormat: JWT
+      description: API key to authorize requests.
+    X-Hasura-Admin-Secret:
+      type: apiKey
+      name: X-Hasura-Admin-Secret
+      in: header
+      description: Hasura admin secret key for backend/administrative operations.
