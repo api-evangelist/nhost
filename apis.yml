@@ -118,7 +118,7 @@ apis:
   tags:
   - Artificial Intelligence
   - Embeddings
-  - Assistants
+  - Assistant
   - Vector Search
   tags_raw:
   - AI
@@ -233,7 +233,7 @@ apis:
   humanURL: https://docs.nhost.io/products/graphql/
   baseURL: https://{subdomain}.nhost.run/v1/graphql
   tags:
-  - Session
+  - Sessions
   tags_raw:
   - session
   properties:
