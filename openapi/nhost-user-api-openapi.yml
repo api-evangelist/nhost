@@ -14,7 +14,7 @@ servers:
 - url: https://{subdomain}.auth.{region}.nhost.run/v1
   description: Nhost Authentication API Server
 tags:
-- name: user
+- name: User
   description: User profile and account management operations including email/password changes, MFA configuration, and profile updates
 paths:
   /mfa/totp/generate:
@@ -23,7 +23,7 @@ paths:
       description: Generate a Time-based One-Time Password (TOTP) secret for setting up multi-factor authentication
       operationId: changeUserMfa
       tags:
-      - user
+      - User
       security:
       - BearerAuth: []
       responses:
@@ -45,7 +45,7 @@ paths:
       description: Retrieve the authenticated user's profile information including roles, metadata, and account status.
       operationId: getUser
       tags:
-      - user
+      - User
       security:
       - BearerAuth: []
       responses:
@@ -67,7 +67,7 @@ paths:
       description: Request to change the authenticated user's email address. A verification email will be sent to the new address to confirm the change. Requires elevated permissions.
       operationId: changeUserEmail
       tags:
-      - user
+      - User
       security:
       - BearerAuthElevated: []
       requestBody:
@@ -96,7 +96,7 @@ paths:
       description: Send an email verification link to the specified email address. Used to verify email addresses for new accounts or email changes.
       operationId: sendVerificationEmail
       tags:
-      - user
+      - User
       requestBody:
         description: Email address and optional redirect URL for verification email
         content:
@@ -123,7 +123,7 @@ paths:
       description: Change the user's password. The user must be authenticated with elevated permissions or provide a valid password reset ticket.
       operationId: changeUserPassword
       tags:
-      - user
+      - User
       security:
       - BearerAuthElevated: []
       - {}
@@ -153,7 +153,7 @@ paths:
       description: Request a password reset for a user account. An email with a verification link will be sent to the user's email address to complete the password reset process.
       operationId: sendPasswordResetEmail
       tags:
-      - user
+      - User
       requestBody:
         description: Email address and optional redirect URL for password reset
         content:
@@ -176,6 +176,79 @@ paths:
           description: An error occurred while processing the request
 components:
   schemas:
+    OKResponse:
+      type: string
+      additionalProperties: false
+      enum:
+      - OK
+    ErrorResponse:
+      type: object
+      description: Standardized error response
+      additionalProperties: false
+      properties:
+        status:
+          description: HTTP status error code
+          type: integer
+          example: 400
+        message:
+          description: Human-friendly error message
+          type: string
+          example: Invalid email format
+        error:
+          description: Error code identifying the specific application error
+          type: string
+          enum:
+          - default-role-must-be-in-allowed-roles
+          - disabled-endpoint
+          - disabled-user
+          - email-already-in-use
+          - email-already-verified
+          - forbidden-anonymous
+          - internal-server-error
+          - invalid-email-password
+          - invalid-request
+          - locale-not-allowed
+          - password-too-short
+          - password-in-hibp-database
+          - redirectTo-not-allowed
+          - role-not-allowed
+          - signup-disabled
+          - unverified-user
+          - user-not-anonymous
+          - invalid-pat
+          - invalid-refresh-token
+          - invalid-ticket
+          - disabled-mfa-totp
+          - no-totp-secret
+          - invalid-totp
+          - mfa-type-not-found
+          - totp-already-active
+          - invalid-state
+          - oauth-token-echange-failed
+          - oauth-profile-fetch-failed
+          - oauth-provider-error
+          - invalid-otp
+          - cannot-send-sms
+      required:
+      - status
+      - message
+      - error
+    TotpGenerateResponse:
+      type: object
+      description: Response containing TOTP setup information for MFA
+      additionalProperties: false
+      properties:
+        imageUrl:
+          type: string
+          description: URL to QR code image for scanning with an authenticator app
+          example: data:image/png;base64,iVBORw0KGg...
+        totpSecret:
+          type: string
+          description: TOTP secret key for manual setup with an authenticator app
+          example: ABCDEFGHIJK23456
+      required:
+      - imageUrl
+      - totpSecret
     User:
       type: object
       description: User profile and account information
@@ -263,72 +336,7 @@ components:
       - metadata
       - phoneNumberVerified
       - roles
-    ErrorResponse:
-      type: object
-      description: Standardized error response
-      additionalProperties: false
-      properties:
-        status:
-          description: HTTP status error code
-          type: integer
-          example: 400
-        message:
-          description: Human-friendly error message
-          type: string
-          example: Invalid email format
-        error:
-          description: Error code identifying the specific application error
-          type: string
-          enum:
-          - default-role-must-be-in-allowed-roles
-          - disabled-endpoint
-          - disabled-user
-          - email-already-in-use
-          - email-already-verified
-          - forbidden-anonymous
-          - internal-server-error
-          - invalid-email-password
-          - invalid-request
-          - locale-not-allowed
-          - password-too-short
-          - password-in-hibp-database
-          - redirectTo-not-allowed
-          - role-not-allowed
-          - signup-disabled
-          - unverified-user
-          - user-not-anonymous
-          - invalid-pat
-          - invalid-refresh-token
-          - invalid-ticket
-          - disabled-mfa-totp
-          - no-totp-secret
-          - invalid-totp
-          - mfa-type-not-found
-          - totp-already-active
-          - invalid-state
-          - oauth-token-echange-failed
-          - oauth-profile-fetch-failed
-          - oauth-provider-error
-          - invalid-otp
-          - cannot-send-sms
-      required:
-      - status
-      - message
-      - error
     UserEmailSendVerificationEmailRequest:
-      type: object
-      additionalProperties: false
-      properties:
-        email:
-          description: A valid email
-          example: john.smith@nhost.io
-          format: email
-          type: string
-        options:
-          $ref: '#/components/schemas/OptionsRedirectTo'
-      required:
-      - email
-    UserPasswordResetRequest:
       type: object
       additionalProperties: false
       properties:
@@ -354,11 +362,27 @@ components:
           $ref: '#/components/schemas/OptionsRedirectTo'
       required:
       - newEmail
-    OKResponse:
-      type: string
+    UserPasswordResetRequest:
+      type: object
       additionalProperties: false
-      enum:
-      - OK
+      properties:
+        email:
+          description: A valid email
+          example: john.smith@nhost.io
+          format: email
+          type: string
+        options:
+          $ref: '#/components/schemas/OptionsRedirectTo'
+      required:
+      - email
+    OptionsRedirectTo:
+      type: object
+      additionalProperties: false
+      properties:
+        redirectTo:
+          type: string
+          format: uri
+          example: https://my-app.com/catch-redirection
     UserPasswordRequest:
       type: object
       additionalProperties: false
@@ -375,30 +399,6 @@ components:
           description: Ticket to reset the password, required if the user is not authenticated
       required:
       - newPassword
-    TotpGenerateResponse:
-      type: object
-      description: Response containing TOTP setup information for MFA
-      additionalProperties: false
-      properties:
-        imageUrl:
-          type: string
-          description: URL to QR code image for scanning with an authenticator app
-          example: data:image/png;base64,iVBORw0KGg...
-        totpSecret:
-          type: string
-          description: TOTP secret key for manual setup with an authenticator app
-          example: ABCDEFGHIJK23456
-      required:
-      - imageUrl
-      - totpSecret
-    OptionsRedirectTo:
-      type: object
-      additionalProperties: false
-      properties:
-        redirectTo:
-          type: string
-          format: uri
-          example: https://my-app.com/catch-redirection
   securitySchemes:
     BearerAuth:
       type: http

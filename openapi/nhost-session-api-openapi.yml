@@ -14,7 +14,7 @@ servers:
 - url: https://{subdomain}.auth.{region}.nhost.run/v1
   description: Nhost Authentication API Server
 tags:
-- name: session
+- name: Session
   description: Session management operations including token refresh, verification, and sign-out
 paths:
   /signout:
@@ -23,7 +23,7 @@ paths:
       description: End the current user session by invalidating refresh tokens. Optionally sign out from all devices.
       operationId: signOut
       tags:
-      - session
+      - Session
       security:
       - BearerAuth: []
       - {}
@@ -53,7 +53,7 @@ paths:
       description: Generate a new JWT access token using a valid refresh token. The refresh token used will be revoked and a new one will be issued.
       operationId: refreshToken
       tags:
-      - session
+      - Session
       requestBody:
         description: Refresh token to exchange for a new access token
         content:
@@ -80,7 +80,7 @@ paths:
       description: Verify the validity of a JWT access token. If no request body is provided, the Authorization header will be used for verification.
       operationId: verifyToken
       tags:
-      - session
+      - Session
       security:
       - BearerAuth: []
       - {}
@@ -106,6 +106,63 @@ paths:
           description: An error occurred while processing the request
 components:
   schemas:
+    OKResponse:
+      type: string
+      additionalProperties: false
+      enum:
+      - OK
+    ErrorResponse:
+      type: object
+      description: Standardized error response
+      additionalProperties: false
+      properties:
+        status:
+          description: HTTP status error code
+          type: integer
+          example: 400
+        message:
+          description: Human-friendly error message
+          type: string
+          example: Invalid email format
+        error:
+          description: Error code identifying the specific application error
+          type: string
+          enum:
+          - default-role-must-be-in-allowed-roles
+          - disabled-endpoint
+          - disabled-user
+          - email-already-in-use
+          - email-already-verified
+          - forbidden-anonymous
+          - internal-server-error
+          - invalid-email-password
+          - invalid-request
+          - locale-not-allowed
+          - password-too-short
+          - password-in-hibp-database
+          - redirectTo-not-allowed
+          - role-not-allowed
+          - signup-disabled
+          - unverified-user
+          - user-not-anonymous
+          - invalid-pat
+          - invalid-refresh-token
+          - invalid-ticket
+          - disabled-mfa-totp
+          - no-totp-secret
+          - invalid-totp
+          - mfa-type-not-found
+          - totp-already-active
+          - invalid-state
+          - oauth-token-echange-failed
+          - oauth-profile-fetch-failed
+          - oauth-provider-error
+          - invalid-otp
+          - cannot-send-sms
+      required:
+      - status
+      - message
+      - error
     User:
       type: object
       description: User profile and account information
@@ -200,58 +257,18 @@ components:
         token:
           type: string
           description: JWT token to verify
-    ErrorResponse:
+    RefreshTokenRequest:
       type: object
-      description: Standardized error response
+      description: Request to refresh an access token
       additionalProperties: false
       properties:
-        status:
-          description: HTTP status error code
-          type: integer
-          example: 400
-        message:
-          description: Human-friendly error message
+        refreshToken:
+          description: Refresh token used to generate a new access token
+          example: 2c35b6f3-c4b9-48e3-978a-d4d0f1d42e24
+          pattern: \b[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}\b
           type: string
-          example: Invalid email format
-        error:
-          description: Error code identifying the specific application error
-          type: string
-          enum:
-          - default-role-must-be-in-allowed-roles
-          - disabled-endpoint
-          - disabled-user
-          - email-already-in-use
-          - email-already-verified
-          - forbidden-anonymous
-          - internal-server-error
-          - invalid-email-password
-          - invalid-request
-          - locale-not-allowed
-          - password-too-short
-          - password-in-hibp-database
-          - redirectTo-not-allowed
-          - role-not-allowed
-          - signup-disabled
-          - unverified-user
-          - user-not-anonymous
-          - invalid-pat
-          - invalid-refresh-token
-          - invalid-ticket
-          - disabled-mfa-totp
-          - no-totp-secret
-          - invalid-totp
-          - mfa-type-not-found
-          - totp-already-active
-          - invalid-state
-          - oauth-token-echange-failed
-          - oauth-profile-fetch-failed
-          - oauth-provider-error
-          - invalid-otp
-          - cannot-send-sms
       required:
-      - status
-      - message
-      - error
+      - refreshToken
     Session:
       type: object
       description: User authentication session containing tokens and user information
@@ -283,23 +300,6 @@ components:
       - accessTokenExpiresIn
       - refreshToken
       - refreshTokenId
-    RefreshTokenRequest:
-      type: object
-      description: Request to refresh an access token
-      additionalProperties: false
-      properties:
-        refreshToken:
-          description: Refresh token used to generate a new access token
-          example: 2c35b6f3-c4b9-48e3-978a-d4d0f1d42e24
-          pattern: \b[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}\b
-          type: string
-      required:
-      - refreshToken
-    OKResponse:
-      type: string
-      additionalProperties: false
-      enum:
-      - OK
     SignOutRequest:
       type: object
       properties:

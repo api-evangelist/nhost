@@ -14,7 +14,7 @@ servers:
 - url: https://{subdomain}.storage.{region}.nhost.run/v1
   description: Nhost Storage API Server
 tags:
-- name: documentation
+- name: Documentation
   description: API documentation
 paths:
   /openapi.yaml:
@@ -23,7 +23,7 @@ paths:
       description: Returns the OpenAPI schema definition for this API, allowing clients to understand the available endpoints and models.
       operationId: getOpenAPISpec
       tags:
-      - documentation
+      - Documentation
       responses:
         '200':
           description: OpenAPI schema definition

@@ -14,7 +14,7 @@ servers:
 - url: https://{subdomain}.storage.{region}.nhost.run/v1
   description: Nhost Storage API Server
 tags:
-- name: operations
+- name: Operations
   description: Administrative operations
 paths:
   /ops/delete-broken-metadata:
@@ -23,7 +23,7 @@ paths:
       operationId: deleteBrokenMetadata
       description: Broken metadata is defined as metadata that has isUploaded = true but there is no file in the storage matching it. This is an admin operation that requires the Hasura admin secret.
       tags:
-      - operations
+      - Operations
       security:
       - X-Hasura-Admin-Secret: []
       responses:
@@ -50,7 +50,7 @@ paths:
       operationId: deleteOrphanedFiles
       description: Orphaned files are files that are present in the storage but have no associated metadata. This is an admin operation that requires the Hasura admin secret.
       tags:
-      - operations
+      - Operations
       security:
       - X-Hasura-Admin-Secret: []
       responses:
@@ -77,7 +77,7 @@ paths:
       operationId: listBrokenMetadata
       description: Broken metadata is defined as metadata that has isUploaded = true but there is no file in the storage matching it. This is an admin operation that requires the Hasura admin secret.
       tags:
-      - operations
+      - Operations
       security:
       - X-Hasura-Admin-Secret: []
       responses:
@@ -104,7 +104,7 @@ paths:
       operationId: listFilesNotUploaded
       description: That is, metadata that has isUploaded = false. This is an admin operation that requires the Hasura admin secret.
       tags:
-      - operations
+      - Operations
       security:
       - X-Hasura-Admin-Secret: []
       responses:
@@ -131,7 +131,7 @@ paths:
       operationId: listOrphanedFiles
       description: Orphaned files are files that are present in the storage but have no associated metadata. This is an admin operation that requires the Hasura admin secret.
       tags:
-      - operations
+      - Operations
       security:
       - X-Hasura-Admin-Secret: []
       responses:
@@ -154,6 +154,26 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
 components:
   schemas:
+    ErrorResponse:
+      type: object
+      description: Error information returned by the API.
+      properties:
+        error:
+          type: object
+          additionalProperties: false
+          description: Error details.
+          properties:
+            message:
+              type: string
+              description: Human-readable error message.
+              example: File not found
+            data:
+              type: object
+              additionalProperties: true
+              description: Additional data related to the error, if any.
+          required:
+          - message
+      additionalProperties: false
     FileSummary:
       type: object
       description: Basic information about a file in storage.
@@ -180,26 +200,6 @@ components:
       - name
       - bucketId
       - isUploaded
-    ErrorResponse:
-      type: object
-      description: Error information returned by the API.
-      properties:
-        error:
-          type: object
-          additionalProperties: false
-          description: Error details.
-          properties:
-            message:
-              type: string
-              description: Human-readable error message.
-              example: File not found
-            data:
-              type: object
-              additionalProperties: true
-              description: Additional data related to the error, if any.
-          required:
-          - message
-      additionalProperties: false
   securitySchemes:
     Authorization:
       type: http

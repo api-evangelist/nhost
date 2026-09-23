@@ -156,7 +156,6 @@ paths:
     get:
       summary: Retrieve contents of file
       operationId: getFileWithPresignedURL
-      description: Retrieve contents of file
       tags:
       - excludeme
       security:
@@ -472,12 +471,6 @@ components:
       - status
       - message
       - error
-    RFC2822Date:
-      type: string
-      description: Date in RFC 2822 format
-      pattern: ^(Mon|Tue|Wed|Thu|Fri|Sat|Sun), \d{1,2} (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) \d{4} \d{2}:\d{2}:\d{2} \w+$
-      example: Tue, 12 Aug 2025 12:03:50 GMT
-      x-go-type: Time
     OutputImageFormat:
       type: string
       description: Output format for image files. Use 'auto' for content negotiation based on Accept header
@@ -510,13 +503,12 @@ components:
           required:
           - message
       additionalProperties: false
-  headers:
-    RedirectLocation:
-      description: URL to redirect to
-      schema:
-        type: string
-        format: uri
-      required: true
+    RFC2822Date:
+      type: string
+      description: Date in RFC 2822 format
+      pattern: ^(Mon|Tue|Wed|Thu|Fri|Sat|Sun), \d{1,2} (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) \d{4} \d{2}:\d{2}:\d{2} \w+$
+      example: Tue, 12 Aug 2025 12:03:50 GMT
+      x-go-type: Time
   parameters:
     SignInProvider:
       in: path
@@ -543,6 +535,13 @@ components:
         - windowslive
         - twitter
       deprecated: true
+  headers:
+    RedirectLocation:
+      description: URL to redirect to
+      schema:
+        type: string
+        format: uri
+      required: true
   securitySchemes:
     BearerAuth:
       type: http

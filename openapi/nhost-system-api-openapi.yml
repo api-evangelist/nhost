@@ -13,7 +13,7 @@ servers:
 - url: https://{subdomain}.storage.{region}.nhost.run/v1
   description: Nhost Storage API Server
 tags:
-- name: system
+- name: System
   description: System operations including health checks, service version, and public key endpoints
 paths:
   /.well-known/jwks.json:
@@ -22,7 +22,7 @@ paths:
       description: Retrieve the JSON Web Key Set (JWKS) containing public keys used to verify JWT signatures. This endpoint is used by clients to validate access tokens.
       operationId: getJWKs
       tags:
-      - system
+      - System
       responses:
         '200':
           content:
@@ -45,7 +45,7 @@ paths:
       description: Verify if the authentication service is operational using GET method
       operationId: healthCheckGet
       tags:
-      - system
+      - System
       responses:
         '200':
           description: Service is healthy and operational
@@ -64,7 +64,7 @@ paths:
       description: Verify if the authentication service is operational using HEAD method
       operationId: healthCheckHead
       tags:
-      - system
+      - System
       responses:
         '200':
           description: Service is healthy and operational
@@ -83,7 +83,7 @@ paths:
       description: Retrieve version information about the authentication service
       operationId: getVersion
       tags:
-      - system
+      - System
       responses:
         '200':
           description: Version information successfully retrieved
@@ -146,18 +146,6 @@ components:
       - kty
       - n
       - use
-    JWKSet:
-      type: object
-      description: JSON Web Key Set for verifying JWT signatures
-      additionalProperties: false
-      properties:
-        keys:
-          type: array
-          description: Array of public keys
-          items:
-            $ref: '#/components/schemas/JWK'
-      required:
-      - keys
     ErrorResponse:
       type: object
       description: Standardized error response
@@ -215,6 +203,29 @@ components:
       additionalProperties: false
       enum:
       - OK
+    JWKSet:
+      type: object
+      description: JSON Web Key Set for verifying JWT signatures
+      additionalProperties: false
+      properties:
+        keys:
+          type: array
+          description: Array of public keys
+          items:
+            $ref: '#/components/schemas/JWK'
+      required:
+      - keys
+    VersionInformation:
+      type: object
+      description: Contains version information about the storage service.
+      additionalProperties: false
+      properties:
+        buildVersion:
+          type: string
+          description: The version number of the storage service build.
+          example: 1.2.3
+      required:
+      - buildVersion
     ErrorResponse_2:
       type: object
       description: Error information returned by the API.
@@ -235,17 +246,6 @@ components:
           required:
           - message
       additionalProperties: false
-    VersionInformation:
-      type: object
-      description: Contains version information about the storage service.
-      additionalProperties: false
-      properties:
-        buildVersion:
-          type: string
-          description: The version number of the storage service build.
-          example: 1.2.3
-      required:
-      - buildVersion
   securitySchemes:
     BearerAuth:
       type: http

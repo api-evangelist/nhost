@@ -25,7 +25,8 @@
     "nhost-authentication-openapi.yml: upgraded openapi 3.0.0 -> OpenAPI 3.2.0",
     "nhost-storage-openapi.yml: upgraded openapi 3.0.0 -> OpenAPI 3.2.0",
     "tag 'excludeme' spans 2 source specs (nhost-authentication-openapi.yml, nhost-storage-openapi.yml): per-path servers applied",
-    "tag 'system' spans 2 source specs (nhost-authentication-openapi.yml, nhost-storage-openapi.yml): per-path servers applied"
+    "tag 'system' spans 2 source specs (nhost-authentication-openapi.yml, nhost-storage-openapi.yml): per-path servers applied",
+    "apis.yml register: already-registered"
   ],
   "skipped": [
     "nhost-authentication-api-openapi.yml: previously refined output, superseded by openapi/_original/",
