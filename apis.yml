@@ -49,7 +49,7 @@ tags:
 - File Storage
 - Serverless Functions
 - Real-Time
-- Open-Source
+- Open Source
 - Firebase Alternative
 - Backend-as-a-Service
 tags_raw:
@@ -62,7 +62,7 @@ tags_raw:
 - Open Source
 - Firebase Alternative
 - Backend as a Service
-- BaaS
+- Open-Source
 apis:
 - name: Nhost GraphQL API
   description: >-
@@ -129,7 +129,7 @@ apis:
   - type: Documentation
     url: https://docs.nhost.io/products/ai/
 - aid: nhost:nhost-authentication-api
-  name: Nhost authentication API
+  name: Nhost Authentication API
   description: >-
     User authentication operations including sign-in, sign-up, and various authentication methods (email/password,
     passwordless, OAuth, WebAuthn, MFA)
@@ -147,7 +147,7 @@ apis:
   - type: Documentation
     url: https://docs.nhost.io/products/storage/
 - aid: nhost:nhost-documentation-api
-  name: Nhost documentation API
+  name: Nhost Documentation API
   description: API documentation
   humanURL: https://docs.nhost.io/products/graphql/
   baseURL: https://{subdomain}.nhost.run/v1/graphql
@@ -163,7 +163,7 @@ apis:
   - type: Documentation
     url: https://docs.nhost.io/products/storage/
 - aid: nhost:nhost-excludeme-api
-  name: Nhost excludeme API
+  name: Nhost Excludeme API
   description: >-
     These operations are not intended to be used directly by clients and should be excluded from client
     SDKs
@@ -179,7 +179,7 @@ apis:
   - type: Documentation
     url: https://docs.nhost.io/products/storage/
 - aid: nhost:nhost-files-api
-  name: Nhost files API
+  name: Nhost Files API
   description: File management operations
   humanURL: https://docs.nhost.io/products/graphql/
   baseURL: https://{subdomain}.nhost.run/v1/graphql
@@ -195,7 +195,7 @@ apis:
   - type: Documentation
     url: https://docs.nhost.io/products/storage/
 - aid: nhost:nhost-operations-api
-  name: Nhost operations API
+  name: Nhost Operations API
   description: Administrative operations
   humanURL: https://docs.nhost.io/products/graphql/
   baseURL: https://{subdomain}.nhost.run/v1/graphql
@@ -210,7 +210,7 @@ apis:
   - type: Documentation
     url: https://docs.nhost.io/products/storage/
 - aid: nhost:nhost-security-api
-  name: Nhost security API
+  name: Nhost Security API
   description: >-
     Security-related operations including Personal Access Tokens, WebAuthn management, account elevation,
     and account linking
@@ -228,7 +228,7 @@ apis:
   - type: Documentation
     url: https://docs.nhost.io/products/storage/
 - aid: nhost:nhost-session-api
-  name: Nhost session API
+  name: Nhost Session API
   description: Session management operations including token refresh, verification, and sign-out
   humanURL: https://docs.nhost.io/products/graphql/
   baseURL: https://{subdomain}.nhost.run/v1/graphql
@@ -244,7 +244,7 @@ apis:
   - type: Documentation
     url: https://docs.nhost.io/products/storage/
 - aid: nhost:nhost-storage-api
-  name: Nhost storage API
+  name: Nhost Storage API
   description: Storage operations and presigned URLs
   humanURL: https://docs.nhost.io/products/graphql/
   baseURL: https://{subdomain}.nhost.run/v1/graphql
@@ -260,7 +260,7 @@ apis:
   - type: Documentation
     url: https://docs.nhost.io/products/storage/
 - aid: nhost:nhost-system-api
-  name: Nhost system API
+  name: Nhost System API
   description: System operations including health checks, service version, and public key endpoints
   humanURL: https://docs.nhost.io/products/graphql/
   baseURL: https://{subdomain}.nhost.run/v1/graphql
@@ -276,7 +276,7 @@ apis:
   - type: Documentation
     url: https://docs.nhost.io/products/storage/
 - aid: nhost:nhost-user-api
-  name: Nhost user API
+  name: Nhost User API
   description: >-
     User profile and account management operations including email/password changes, MFA configuration,
     and profile updates
@@ -294,7 +294,7 @@ apis:
   - type: Documentation
     url: https://docs.nhost.io/products/storage/
 - aid: nhost:nhost-verification-api
-  name: Nhost verification API
+  name: Nhost Verification API
   description: Email and ticket verification operations for confirming user actions
   humanURL: https://docs.nhost.io/products/graphql/
   baseURL: https://{subdomain}.nhost.run/v1/graphql

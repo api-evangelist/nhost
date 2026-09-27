@@ -478,6 +478,99 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
 components:
   schemas:
+    ErrorResponseWithProcessedFiles:
+      type: object
+      description: Error information returned by the API.
+      properties:
+        processedFiles:
+          type: array
+          description: List of files that were successfully processed before the error occurred.
+          items:
+            $ref: '#/components/schemas/FileMetadata'
+        error:
+          type: object
+          additionalProperties: false
+          description: Error details.
+          properties:
+            message:
+              type: string
+              description: Human-readable error message.
+              example: File not found
+            data:
+              type: object
+              additionalProperties: true
+              description: Additional data related to the error, if any.
+          required:
+          - message
+      additionalProperties: false
+    UpdateFileMetadata:
+      type: object
+      description: Metadata that can be updated for an existing file.
+      properties:
+        name:
+          type: string
+          description: New name to assign to the file.
+          example: renamed-file.jpg
+        metadata:
+          type: object
+          additionalProperties: true
+          description: Updated custom metadata to associate with the file.
+          example:
+            alt: Updated image description
+            category: profile
+      additionalProperties: false
+    UploadFileMetadata:
+      type: object
+      description: Metadata provided when uploading a new file.
+      properties:
+        id:
+          type: string
+          description: Optional custom ID for the file. If not provided, a UUID will be generated.
+          example: custom-id-123
+        name:
+          type: string
+          description: Name to assign to the file. If not provided, the original filename will be used.
+          example: custom-filename.png
+        metadata:
+          type: object
+          additionalProperties: true
+          description: Custom metadata to associate with the file.
+          example:
+            alt: Custom image
+            category: document
+      additionalProperties: false
+    OutputImageFormat:
+      type: string
+      description: Output format for image files. Use 'auto' for content negotiation based on Accept header
+      default: same
+      enum:
+      - auto
+      - same
+      - jpeg
+      - webp
+      - png
+      - avif
+      example: same
+    ErrorResponse:
+      type: object
+      description: Error information returned by the API.
+      properties:
+        error:
+          type: object
+          additionalProperties: false
+          description: Error details.
+          properties:
+            message:
+              type: string
+              description: Human-readable error message.
+              example: File not found
+            data:
+              type: object
+              additionalProperties: true
+              description: Additional data related to the error, if any.
+          required:
+          - message
+      additionalProperties: false
     FileMetadata:
       type: object
       description: Comprehensive metadata information about a file in storage.
@@ -542,99 +635,6 @@ components:
       - updatedAt
       - isUploaded
       - mimeType
-      additionalProperties: false
-    ErrorResponse:
-      type: object
-      description: Error information returned by the API.
-      properties:
-        error:
-          type: object
-          additionalProperties: false
-          description: Error details.
-          properties:
-            message:
-              type: string
-              description: Human-readable error message.
-              example: File not found
-            data:
-              type: object
-              additionalProperties: true
-              description: Additional data related to the error, if any.
-          required:
-          - message
-      additionalProperties: false
-    ErrorResponseWithProcessedFiles:
-      type: object
-      description: Error information returned by the API.
-      properties:
-        processedFiles:
-          type: array
-          description: List of files that were successfully processed before the error occurred.
-          items:
-            $ref: '#/components/schemas/FileMetadata'
-        error:
-          type: object
-          additionalProperties: false
-          description: Error details.
-          properties:
-            message:
-              type: string
-              description: Human-readable error message.
-              example: File not found
-            data:
-              type: object
-              additionalProperties: true
-              description: Additional data related to the error, if any.
-          required:
-          - message
-      additionalProperties: false
-    UploadFileMetadata:
-      type: object
-      description: Metadata provided when uploading a new file.
-      properties:
-        id:
-          type: string
-          description: Optional custom ID for the file. If not provided, a UUID will be generated.
-          example: custom-id-123
-        name:
-          type: string
-          description: Name to assign to the file. If not provided, the original filename will be used.
-          example: custom-filename.png
-        metadata:
-          type: object
-          additionalProperties: true
-          description: Custom metadata to associate with the file.
-          example:
-            alt: Custom image
-            category: document
-      additionalProperties: false
-    OutputImageFormat:
-      type: string
-      description: Output format for image files. Use 'auto' for content negotiation based on Accept header
-      default: same
-      enum:
-      - auto
-      - same
-      - jpeg
-      - webp
-      - png
-      - avif
-      example: same
-    UpdateFileMetadata:
-      type: object
-      description: Metadata that can be updated for an existing file.
-      properties:
-        name:
-          type: string
-          description: New name to assign to the file.
-          example: renamed-file.jpg
-        metadata:
-          type: object
-          additionalProperties: true
-          description: Updated custom metadata to associate with the file.
-          example:
-            alt: Updated image description
-            category: profile
       additionalProperties: false
     RFC2822Date:
       type: string

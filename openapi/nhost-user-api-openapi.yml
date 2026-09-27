@@ -176,6 +176,56 @@ paths:
           description: An error occurred while processing the request
 components:
   schemas:
+    UserPasswordRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        newPassword:
+          description: A password of minimum 3 characters
+          example: Str0ngPassw#ord-94|%
+          minLength: 3
+          maxLength: 50
+          type: string
+        ticket:
+          type: string
+          pattern: ^passwordReset\:.*$
+          description: Ticket to reset the password, required if the user is not authenticated
+      required:
+      - newPassword
+    UserEmailChangeRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        newEmail:
+          description: A valid email
+          example: john.smith@nhost.io
+          format: email
+          type: string
+        options:
+          $ref: '#/components/schemas/OptionsRedirectTo'
+      required:
+      - newEmail
+    UserEmailSendVerificationEmailRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        email:
+          description: A valid email
+          example: john.smith@nhost.io
+          format: email
+          type: string
+        options:
+          $ref: '#/components/schemas/OptionsRedirectTo'
+      required:
+      - email
+    OptionsRedirectTo:
+      type: object
+      additionalProperties: false
+      properties:
+        redirectTo:
+          type: string
+          format: uri
+          example: https://my-app.com/catch-redirection
     OKResponse:
       type: string
       additionalProperties: false
@@ -233,22 +283,6 @@ components:
       - status
       - message
       - error
-    TotpGenerateResponse:
-      type: object
-      description: Response containing TOTP setup information for MFA
-      additionalProperties: false
-      properties:
-        imageUrl:
-          type: string
-          description: URL to QR code image for scanning with an authenticator app
-          example: data:image/png;base64,iVBORw0KGg...
-        totpSecret:
-          type: string
-          description: TOTP secret key for manual setup with an authenticator app
-          example: ABCDEFGHIJK23456
-      required:
-      - imageUrl
-      - totpSecret
     User:
       type: object
       description: User profile and account information
@@ -336,32 +370,22 @@ components:
       - metadata
       - phoneNumberVerified
       - roles
-    UserEmailSendVerificationEmailRequest:
+    TotpGenerateResponse:
       type: object
+      description: Response containing TOTP setup information for MFA
       additionalProperties: false
       properties:
-        email:
-          description: A valid email
-          example: john.smith@nhost.io
-          format: email
+        imageUrl:
           type: string
-        options:
-          $ref: '#/components/schemas/OptionsRedirectTo'
-      required:
-      - email
-    UserEmailChangeRequest:
-      type: object
-      additionalProperties: false
-      properties:
-        newEmail:
-          description: A valid email
-          example: john.smith@nhost.io
-          format: email
+          description: URL to QR code image for scanning with an authenticator app
+          example: data:image/png;base64,iVBORw0KGg...
+        totpSecret:
           type: string
-        options:
-          $ref: '#/components/schemas/OptionsRedirectTo'
+          description: TOTP secret key for manual setup with an authenticator app
+          example: ABCDEFGHIJK23456
       required:
-      - newEmail
+      - imageUrl
+      - totpSecret
     UserPasswordResetRequest:
       type: object
       additionalProperties: false
@@ -375,30 +399,6 @@ components:
           $ref: '#/components/schemas/OptionsRedirectTo'
       required:
       - email
-    OptionsRedirectTo:
-      type: object
-      additionalProperties: false
-      properties:
-        redirectTo:
-          type: string
-          format: uri
-          example: https://my-app.com/catch-redirection
-    UserPasswordRequest:
-      type: object
-      additionalProperties: false
-      properties:
-        newPassword:
-          description: A password of minimum 3 characters
-          example: Str0ngPassw#ord-94|%
-          minLength: 3
-          maxLength: 50
-          type: string
-        ticket:
-          type: string
-          pattern: ^passwordReset\:.*$
-          description: Ticket to reset the password, required if the user is not authenticated
-      required:
-      - newPassword
   securitySchemes:
     BearerAuth:
       type: http
