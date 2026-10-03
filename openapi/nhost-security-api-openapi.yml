@@ -208,6 +208,101 @@ paths:
           description: An error occurred while processing the request
 components:
   schemas:
+    AuthenticatorTransport:
+      type: string
+      enum:
+      - usb
+      - nfc
+      - ble
+      - smart-card
+      - hybrid
+      - internal
+      description: The authenticator transports that can be used
+    AuthenticationExtensions:
+      type: object
+      additionalProperties: true
+      description: Additional parameters requesting additional processing by the client and authenticator
+    SignInWebauthnVerifyRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        email:
+          description: A valid email. Deprecated, no longer used
+          example: john.smith@nhost.io
+          format: email
+          type: string
+          deprecated: true
+        credential:
+          $ref: '#/components/schemas/CredentialAssertionResponse'
+      required:
+      - credential
+    UserVerificationRequirement:
+      type: string
+      enum:
+      - required
+      - preferred
+      - discouraged
+      default: preferred
+      description: A requirement for user verification for the operation
+    VerifyAddSecurityKeyResponse:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: string
+          description: The ID of the newly added security key
+          example: 123e4567-e89b-12d3-a456-426614174000
+        nickname:
+          type: string
+          description: The nickname of the security key if provided
+      required:
+      - id
+    CreatePATRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        expiresAt:
+          description: Expiration date of the PAT
+          format: date-time
+          type: string
+        metadata:
+          type: object
+          additionalProperties: true
+          example:
+            name: my-pat
+            used-by: my-app-cli
+          properties: {}
+      required:
+      - expiresAt
+    AuthenticatorAttestationResponse:
+      type: object
+      additionalProperties: false
+      properties:
+        clientDataJSON:
+          $ref: '#/components/schemas/URLEncodedBase64'
+        transports:
+          type: array
+          items:
+            type: string
+          description: The authenticator transports
+        authenticatorData:
+          $ref: '#/components/schemas/URLEncodedBase64'
+        publicKey:
+          $ref: '#/components/schemas/URLEncodedBase64'
+        publicKeyAlgorithm:
+          type: integer
+          format: int64
+          description: The public key algorithm identifier
+        attestationObject:
+          $ref: '#/components/schemas/URLEncodedBase64'
+      required:
+      - clientDataJSON
+      - attestationObject
+    CredentialType:
+      type: string
+      enum:
+      - public-key
+      description: The valid credential types
     UserEntity:
       type: object
       additionalProperties: false
@@ -225,24 +320,19 @@ components:
       - name
       - displayName
       - id
-    VerifyAddSecurityKeyRequest:
+    AuthenticatorSelection:
       type: object
       additionalProperties: false
       properties:
-        credential:
-          $ref: '#/components/schemas/CredentialCreationResponse'
-        nickname:
-          type: string
-          description: Optional nickname for the security key
-      required:
-      - credential
-    PublicKeyCredentialHints:
-      type: string
-      enum:
-      - security-key
-      - client-device
-      - hybrid
-      description: Hints to help guide the user through the experience
+        authenticatorAttachment:
+          $ref: '#/components/schemas/AuthenticatorAttachment'
+        requireResidentKey:
+          type: boolean
+          description: Whether the authenticator must create a client-side-resident public key credential source
+        residentKey:
+          $ref: '#/components/schemas/ResidentKeyRequirement'
+        userVerification:
+          $ref: '#/components/schemas/UserVerificationRequirement'
     PublicKeyCredentialCreationOptions:
       type: object
       x-go-type-import:
@@ -291,64 +381,58 @@ components:
       - user
       - challenge
       - pubKeyCredParams
-    UserMfaRequest:
-      type: object
-      description: Request to activate or deactivate multi-factor authentication
-      additionalProperties: false
-      properties:
-        code:
-          type: string
-          description: Verification code from the authenticator app when activating MFA
-          example: '123456'
-        activeMfaType:
-          type: string
-          enum:
-          - totp
-          - ''
-          description: Type of MFA to activate. Use empty string to disable MFA.
-          example: totp
-      required:
-      - code
-    AuthenticatorAssertionResponse:
-      type: object
-      additionalProperties: false
-      properties:
-        clientDataJSON:
-          type: string
-          description: Base64url encoded client data JSON
-        authenticatorData:
-          type: string
-          description: Base64url encoded authenticator data
-        signature:
-          type: string
-          description: Base64url encoded assertion signature
-        userHandle:
-          type:
-          - string
-          - 'null'
-          description: Base64url encoded user handle
-      required:
-      - clientDataJSON
-      - authenticatorData
-      - signature
-    OKResponse:
+    PublicKeyCredentialHints:
+      type: string
+      enum:
+      - security-key
+      - client-device
+      - hybrid
+      description: Hints to help guide the user through the experience
+    IdTokenProvider:
       type: string
       additionalProperties: false
       enum:
-      - OK
-    AuthenticationExtensionsClientOutputs:
+      - apple
+      - google
+    AttestationFormat:
+      type: string
+      enum:
+      - packed
+      - tpm
+      - android-key
+      - android-safetynet
+      - fido-u2f
+      - apple
+      - none
+      description: The attestation statement format
+    CredentialCreationResponse:
       type: object
-      additionalProperties: true
-      description: Map of extension outputs from the client
+      additionalProperties: false
+      x-go-type-import:
+        name: protocol
+        path: github.com/go-webauthn/webauthn/protocol
+      x-go-type: protocol.CredentialCreationResponse
       properties:
-        appid:
-          type: boolean
-          description: Application identifier extension output
-        credProps:
-          $ref: '#/components/schemas/CredentialPropertiesOutput'
-        hmacCreateSecret:
-          type: boolean
-          description: HMAC secret extension output
+        id:
+          type: string
+          description: The credential's identifier
+        type:
+          type: string
+          description: The credential type represented by this object
+        rawId:
+          $ref: '#/components/schemas/URLEncodedBase64'
+        clientExtensionResults:
+          $ref: '#/components/schemas/AuthenticationExtensionsClientOutputs'
+        authenticatorAttachment:
+          type: string
+          description: The authenticator attachment
+        response:
+          $ref: '#/components/schemas/AuthenticatorAttestationResponse'
+      required:
+      - id
+      - type
+      - rawId
+      - response
     RelyingPartyEntity:
       type: object
       additionalProperties: false
@@ -362,6 +446,27 @@ components:
       required:
       - name
       - id
+    OKResponse:
+      type: string
+      additionalProperties: false
+      enum:
+      - OK
+    ResidentKeyRequirement:
+      type: string
+      enum:
+      - discouraged
+      - preferred
+      - required
+      default: discouraged
+      description: The resident key requirement
+    CredentialPropertiesOutput:
+      type: object
+      additionalProperties: false
+      description: Credential properties extension output
+      properties:
+        rk:
+          type: boolean
+          description: Indicates if the credential is a resident key
     User:
       type: object
       description: User profile and account information
@@ -449,168 +554,62 @@ components:
       - metadata
       - phoneNumberVerified
       - roles
-    Session:
+    LinkIdTokenRequest:
       type: object
-      description: User authentication session containing tokens and user information
       additionalProperties: false
       properties:
-        accessToken:
+        provider:
+          $ref: '#/components/schemas/IdTokenProvider'
+        idToken:
           type: string
-          description: JWT token for authenticating API requests
-          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-        accessTokenExpiresIn:
-          type: integer
-          format: int64
-          description: Expiration time of the access token in seconds
-          example: 900
-        refreshTokenId:
-          description: Identifier for the refresh token
-          example: 2c35b6f3-c4b9-48e3-978a-d4d0f1d42e24
-          pattern: \b[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}\b
+          description: Apple ID token
+        nonce:
           type: string
-        refreshToken:
-          description: Token used to refresh the access token
-          example: 2c35b6f3-c4b9-48e3-978a-d4d0f1d42e24
-          pattern: \b[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}\b
-          type: string
-        user:
-          $ref: '#/components/schemas/User'
+          description: Nonce used during sign in process
       required:
-      - accessToken
-      - accessTokenExpiresIn
-      - refreshToken
-      - refreshTokenId
-    ConveyancePreference:
-      type: string
-      enum:
-      - none
-      - indirect
-      - direct
-      - enterprise
-      default: none
-      description: The attestation conveyance preference
-    IdTokenProvider:
-      type: string
-      additionalProperties: false
-      enum:
-      - apple
-      - google
-    CredentialParameter:
-      type: object
-      additionalProperties: false
-      properties:
-        type:
-          $ref: '#/components/schemas/CredentialType'
-        alg:
-          type: integer
-          description: The cryptographic algorithm identifier
-      required:
-      - type
-      - alg
-    CredentialType:
-      type: string
-      enum:
-      - public-key
-      description: The valid credential types
-    SessionPayload:
-      type: object
-      description: Container for session information
-      additionalProperties: false
-      properties:
-        session:
-          $ref: '#/components/schemas/Session'
-    CredentialPropertiesOutput:
-      type: object
-      additionalProperties: false
-      description: Credential properties extension output
-      properties:
-        rk:
-          type: boolean
-          description: Indicates if the credential is a resident key
-    AuthenticatorAttestationResponse:
+      - provider
+      - idToken
+    AuthenticatorAssertionResponse:
       type: object
       additionalProperties: false
       properties:
         clientDataJSON:
-          $ref: '#/components/schemas/URLEncodedBase64'
-        transports:
-          type: array
-          items:
-            type: string
-          description: The authenticator transports
+          type: string
+          description: Base64url encoded client data JSON
         authenticatorData:
-          $ref: '#/components/schemas/URLEncodedBase64'
-        publicKey:
-          $ref: '#/components/schemas/URLEncodedBase64'
-        publicKeyAlgorithm:
-          type: integer
-          format: int64
-          description: The public key algorithm identifier
-        attestationObject:
-          $ref: '#/components/schemas/URLEncodedBase64'
+          type: string
+          description: Base64url encoded authenticator data
+        signature:
+          type: string
+          description: Base64url encoded assertion signature
+        userHandle:
+          type:
+          - string
+          - 'null'
+          description: Base64url encoded user handle
       required:
       - clientDataJSON
-      - attestationObject
-    CredentialAssertionResponse:
+      - authenticatorData
+      - signature
+    AuthenticationExtensionsClientOutputs:
       type: object
-      x-go-type-import:
-        name: protocol
-        path: github.com/go-webauthn/webauthn/protocol
-      x-go-type: protocol.CredentialAssertionResponse
-      additionalProperties: false
+      additionalProperties: true
+      description: Map of extension outputs from the client
       properties:
-        id:
-          type: string
-          description: The credential's identifier
-        type:
-          type: string
-          description: The credential type represented by this object
-        rawId:
-          $ref: '#/components/schemas/URLEncodedBase64'
-        clientExtensionResults:
-          $ref: '#/components/schemas/AuthenticationExtensionsClientOutputs'
-        authenticatorAttachment:
-          type: string
-          description: The authenticator attachment
-        response:
-          $ref: '#/components/schemas/AuthenticatorAssertionResponse'
-      required:
-      - id
-      - type
-      - rawId
-      - response
-    PublicKeyCredentialRequestOptions:
-      type: object
-      x-go-type-import:
-        name: protocol
-        path: github.com/go-webauthn/webauthn/protocol
-      x-go-type: protocol.PublicKeyCredentialRequestOptions
-      additionalProperties: false
-      properties:
-        challenge:
-          $ref: '#/components/schemas/URLEncodedBase64'
-        timeout:
-          type: integer
-          description: A time, in milliseconds, that the caller is willing to wait for the call to complete
-        rpId:
-          type: string
-          description: The RP ID the credential should be scoped to
-        allowCredentials:
-          type: array
-          items:
-            $ref: '#/components/schemas/PublicKeyCredentialDescriptor'
-          description: A list of CredentialDescriptor objects representing public key credentials acceptable to the caller
-        userVerification:
-          $ref: '#/components/schemas/UserVerificationRequirement'
-        hints:
-          type: array
-          items:
-            $ref: '#/components/schemas/PublicKeyCredentialHints'
-          description: Hints to help guide the user through the experience
-        extensions:
-          $ref: '#/components/schemas/AuthenticationExtensions'
-      required:
-      - challenge
+        appid:
+          type: boolean
+          description: Application identifier extension output
+        credProps:
+          $ref: '#/components/schemas/CredentialPropertiesOutput'
+        hmacCreateSecret:
+          type: boolean
+          description: HMAC secret extension output
+    AuthenticatorAttachment:
+      type: string
+      enum:
+      - platform
+      - cross-platform
+      description: The authenticator attachment modality
     PublicKeyCredentialDescriptor:
       type: object
       additionalProperties: false
@@ -627,91 +626,40 @@ components:
       required:
       - type
       - id
-    AuthenticatorSelection:
+    ConveyancePreference:
+      type: string
+      enum:
+      - none
+      - indirect
+      - direct
+      - enterprise
+      default: none
+      description: The attestation conveyance preference
+    SessionPayload:
       type: object
+      description: Container for session information
       additionalProperties: false
       properties:
-        authenticatorAttachment:
-          $ref: '#/components/schemas/AuthenticatorAttachment'
-        requireResidentKey:
-          type: boolean
-          description: Whether the authenticator must create a client-side-resident public key credential source
-        residentKey:
-          $ref: '#/components/schemas/ResidentKeyRequirement'
-        userVerification:
-          $ref: '#/components/schemas/UserVerificationRequirement'
-    SignInWebauthnVerifyRequest:
+        session:
+          $ref: '#/components/schemas/Session'
+    UserMfaRequest:
       type: object
+      description: Request to activate or deactivate multi-factor authentication
       additionalProperties: false
       properties:
-        email:
-          description: A valid email. Deprecated, no longer used
-          example: john.smith@nhost.io
-          format: email
+        code:
           type: string
-          deprecated: true
-        credential:
-          $ref: '#/components/schemas/CredentialAssertionResponse'
+          description: Verification code from the authenticator app when activating MFA
+          example: '123456'
+        activeMfaType:
+          type: string
+          enum:
+          - totp
+          - ''
+          description: Type of MFA to activate. Use empty string to disable MFA.
+          example: totp
       required:
-      - credential
-    CreatePATResponse:
-      type: object
-      additionalProperties: false
-      properties:
-        id:
-          description: ID of the PAT
-          example: 2c35b6f3-c4b9-48e3-978a-d4d0f1d42e24
-          pattern: \b[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}\b
-          type: string
-        personalAccessToken:
-          description: PAT
-          example: 2c35b6f3-c4b9-48e3-978a-d4d0f1d42e24
-          pattern: \b[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}\b
-          type: string
-      required:
-      - id
-      - personalAccessToken
-    VerifyAddSecurityKeyResponse:
-      type: object
-      additionalProperties: false
-      properties:
-        id:
-          type: string
-          description: The ID of the newly added security key
-          example: 123e4567-e89b-12d3-a456-426614174000
-        nickname:
-          type: string
-          description: The nickname of the security key if provided
-      required:
-      - id
-    CredentialCreationResponse:
-      type: object
-      additionalProperties: false
-      x-go-type-import:
-        name: protocol
-        path: github.com/go-webauthn/webauthn/protocol
-      x-go-type: protocol.CredentialCreationResponse
-      properties:
-        id:
-          type: string
-          description: The credential's identifier
-        type:
-          type: string
-          description: The credential type represented by this object
-        rawId:
-          $ref: '#/components/schemas/URLEncodedBase64'
-        clientExtensionResults:
-          $ref: '#/components/schemas/AuthenticationExtensionsClientOutputs'
-        authenticatorAttachment:
-          type: string
-          description: The authenticator attachment
-        response:
-          $ref: '#/components/schemas/AuthenticatorAttestationResponse'
-      required:
-      - id
-      - type
-      - rawId
-      - response
+      - code
     ErrorResponse:
       type: object
       description: Standardized error response
@@ -764,89 +712,141 @@ components:
       - status
       - message
       - error
-    AuthenticatorTransport:
-      type: string
-      enum:
-      - usb
-      - nfc
-      - ble
-      - smart-card
-      - hybrid
-      - internal
-      description: The authenticator transports that can be used
-    LinkIdTokenRequest:
+    CreatePATResponse:
       type: object
       additionalProperties: false
       properties:
-        provider:
-          $ref: '#/components/schemas/IdTokenProvider'
-        idToken:
+        id:
+          description: ID of the PAT
+          example: 2c35b6f3-c4b9-48e3-978a-d4d0f1d42e24
+          pattern: \b[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}\b
           type: string
-          description: Apple ID token
-        nonce:
+        personalAccessToken:
+          description: PAT
+          example: 2c35b6f3-c4b9-48e3-978a-d4d0f1d42e24
+          pattern: \b[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}\b
           type: string
-          description: Nonce used during sign in process
       required:
-      - provider
-      - idToken
-    AuthenticatorAttachment:
-      type: string
-      enum:
-      - platform
-      - cross-platform
-      description: The authenticator attachment modality
-    AuthenticationExtensions:
-      type: object
-      additionalProperties: true
-      description: Additional parameters requesting additional processing by the client and authenticator
-    CreatePATRequest:
-      type: object
-      additionalProperties: false
-      properties:
-        expiresAt:
-          description: Expiration date of the PAT
-          format: date-time
-          type: string
-        metadata:
-          type: object
-          additionalProperties: true
-          example:
-            name: my-pat
-            used-by: my-app-cli
-          properties: {}
-      required:
-      - expiresAt
+      - id
+      - personalAccessToken
     URLEncodedBase64:
       type: string
       format: byte
       description: Base64url-encoded binary data
-    ResidentKeyRequirement:
-      type: string
-      enum:
-      - discouraged
-      - preferred
-      - required
-      default: discouraged
-      description: The resident key requirement
-    AttestationFormat:
-      type: string
-      enum:
-      - packed
-      - tpm
-      - android-key
-      - android-safetynet
-      - fido-u2f
-      - apple
-      - none
-      description: The attestation statement format
-    UserVerificationRequirement:
-      type: string
-      enum:
-      - required
-      - preferred
-      - discouraged
-      default: preferred
-      description: A requirement for user verification for the operation
+    PublicKeyCredentialRequestOptions:
+      type: object
+      x-go-type-import:
+        name: protocol
+        path: github.com/go-webauthn/webauthn/protocol
+      x-go-type: protocol.PublicKeyCredentialRequestOptions
+      additionalProperties: false
+      properties:
+        challenge:
+          $ref: '#/components/schemas/URLEncodedBase64'
+        timeout:
+          type: integer
+          description: A time, in milliseconds, that the caller is willing to wait for the call to complete
+        rpId:
+          type: string
+          description: The RP ID the credential should be scoped to
+        allowCredentials:
+          type: array
+          items:
+            $ref: '#/components/schemas/PublicKeyCredentialDescriptor'
+          description: A list of CredentialDescriptor objects representing public key credentials acceptable to the caller
+        userVerification:
+          $ref: '#/components/schemas/UserVerificationRequirement'
+        hints:
+          type: array
+          items:
+            $ref: '#/components/schemas/PublicKeyCredentialHints'
+          description: Hints to help guide the user through the experience
+        extensions:
+          $ref: '#/components/schemas/AuthenticationExtensions'
+      required:
+      - challenge
+    Session:
+      type: object
+      description: User authentication session containing tokens and user information
+      additionalProperties: false
+      properties:
+        accessToken:
+          type: string
+          description: JWT token for authenticating API requests
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        accessTokenExpiresIn:
+          type: integer
+          format: int64
+          description: Expiration time of the access token in seconds
+          example: 900
+        refreshTokenId:
+          description: Identifier for the refresh token
+          example: 2c35b6f3-c4b9-48e3-978a-d4d0f1d42e24
+          pattern: \b[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}\b
+          type: string
+        refreshToken:
+          description: Token used to refresh the access token
+          example: 2c35b6f3-c4b9-48e3-978a-d4d0f1d42e24
+          pattern: \b[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}\b
+          type: string
+        user:
+          $ref: '#/components/schemas/User'
+      required:
+      - accessToken
+      - accessTokenExpiresIn
+      - refreshToken
+      - refreshTokenId
+    VerifyAddSecurityKeyRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        credential:
+          $ref: '#/components/schemas/CredentialCreationResponse'
+        nickname:
+          type: string
+          description: Optional nickname for the security key
+      required:
+      - credential
+    CredentialAssertionResponse:
+      type: object
+      x-go-type-import:
+        name: protocol
+        path: github.com/go-webauthn/webauthn/protocol
+      x-go-type: protocol.CredentialAssertionResponse
+      additionalProperties: false
+      properties:
+        id:
+          type: string
+          description: The credential's identifier
+        type:
+          type: string
+          description: The credential type represented by this object
+        rawId:
+          $ref: '#/components/schemas/URLEncodedBase64'
+        clientExtensionResults:
+          $ref: '#/components/schemas/AuthenticationExtensionsClientOutputs'
+        authenticatorAttachment:
+          type: string
+          description: The authenticator attachment
+        response:
+          $ref: '#/components/schemas/AuthenticatorAssertionResponse'
+      required:
+      - id
+      - type
+      - rawId
+      - response
+    CredentialParameter:
+      type: object
+      additionalProperties: false
+      properties:
+        type:
+          $ref: '#/components/schemas/CredentialType'
+        alg:
+          type: integer
+          description: The cryptographic algorithm identifier
+      required:
+      - type
+      - alg
   securitySchemes:
     BearerAuth:
       type: http

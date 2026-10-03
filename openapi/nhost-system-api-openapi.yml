@@ -162,6 +162,18 @@ components:
       - status
       - message
       - error
+    JWKSet:
+      type: object
+      description: JSON Web Key Set for verifying JWT signatures
+      additionalProperties: false
+      properties:
+        keys:
+          type: array
+          description: Array of public keys
+          items:
+            $ref: '#/components/schemas/JWK'
+      required:
+      - keys
     OKResponse:
       type: string
       additionalProperties: false
@@ -203,18 +215,6 @@ components:
       - kty
       - n
       - use
-    JWKSet:
-      type: object
-      description: JSON Web Key Set for verifying JWT signatures
-      additionalProperties: false
-      properties:
-        keys:
-          type: array
-          description: Array of public keys
-          items:
-            $ref: '#/components/schemas/JWK'
-      required:
-      - keys
     ErrorResponse_2:
       type: object
       description: Error information returned by the API.

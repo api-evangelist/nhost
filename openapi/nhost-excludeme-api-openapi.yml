@@ -471,18 +471,6 @@ components:
       - status
       - message
       - error
-    OutputImageFormat:
-      type: string
-      description: Output format for image files. Use 'auto' for content negotiation based on Accept header
-      default: same
-      enum:
-      - auto
-      - same
-      - jpeg
-      - webp
-      - png
-      - avif
-      example: same
     ErrorResponse_2:
       type: object
       description: Error information returned by the API.
@@ -503,6 +491,18 @@ components:
           required:
           - message
       additionalProperties: false
+    OutputImageFormat:
+      type: string
+      description: Output format for image files. Use 'auto' for content negotiation based on Accept header
+      default: same
+      enum:
+      - auto
+      - same
+      - jpeg
+      - webp
+      - png
+      - avif
+      example: same
     RFC2822Date:
       type: string
       description: Date in RFC 2822 format

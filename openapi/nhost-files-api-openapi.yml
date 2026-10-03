@@ -478,6 +478,26 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
 components:
   schemas:
+    ErrorResponse:
+      type: object
+      description: Error information returned by the API.
+      properties:
+        error:
+          type: object
+          additionalProperties: false
+          description: Error details.
+          properties:
+            message:
+              type: string
+              description: Human-readable error message.
+              example: File not found
+            data:
+              type: object
+              additionalProperties: true
+              description: Additional data related to the error, if any.
+          required:
+          - message
+      additionalProperties: false
     ErrorResponseWithProcessedFiles:
       type: object
       description: Error information returned by the API.
@@ -519,6 +539,12 @@ components:
             alt: Updated image description
             category: profile
       additionalProperties: false
+    RFC2822Date:
+      type: string
+      description: Date in RFC 2822 format
+      pattern: ^(Mon|Tue|Wed|Thu|Fri|Sat|Sun), \d{1,2} (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) \d{4} \d{2}:\d{2}:\d{2} \w+$
+      example: Tue, 12 Aug 2025 12:03:50 GMT
+      x-go-type: Time
     UploadFileMetadata:
       type: object
       description: Metadata provided when uploading a new file.
@@ -551,26 +577,6 @@ components:
       - png
       - avif
       example: same
-    ErrorResponse:
-      type: object
-      description: Error information returned by the API.
-      properties:
-        error:
-          type: object
-          additionalProperties: false
-          description: Error details.
-          properties:
-            message:
-              type: string
-              description: Human-readable error message.
-              example: File not found
-            data:
-              type: object
-              additionalProperties: true
-              description: Additional data related to the error, if any.
-          required:
-          - message
-      additionalProperties: false
     FileMetadata:
       type: object
       description: Comprehensive metadata information about a file in storage.
@@ -636,12 +642,6 @@ components:
       - isUploaded
       - mimeType
       additionalProperties: false
-    RFC2822Date:
-      type: string
-      description: Date in RFC 2822 format
-      pattern: ^(Mon|Tue|Wed|Thu|Fri|Sat|Sun), \d{1,2} (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) \d{4} \d{2}:\d{2}:\d{2} \w+$
-      example: Tue, 12 Aug 2025 12:03:50 GMT
-      x-go-type: Time
   securitySchemes:
     Authorization:
       type: http
