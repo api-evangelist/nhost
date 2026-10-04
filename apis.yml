@@ -52,6 +52,7 @@ tags:
 - Open Source
 - Firebase Alternative
 - Backend-as-a-Service
+- Passwordless
 tags_raw:
 - GraphQL
 - PostgreSQL
@@ -63,6 +64,7 @@ tags_raw:
 - Firebase Alternative
 - Backend as a Service
 - Open-Source
+- Passwordless
 apis:
 - name: Nhost GraphQL API
   description: >-
@@ -310,6 +312,9 @@ apis:
   - type: Documentation
     url: https://docs.nhost.io/products/storage/
 common:
+- type: CapabilityMap
+  url: capabilities/nhost-capability-edges.yml
+  name: Nhost Business Capability Map
 - type: AgenticAccess
   url: agentic-access/nhost-agentic-access.yml
 - type: TrustCenter

@@ -1,0 +1,59 @@
+slug: nhost
+provider: Nhost
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Software & Technology
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 4
+edges:
+- tag: Authentication
+  spec_file: nhost-authentication-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.88
+  evidence: POST /signin/email-password Sign in with email and password; POST /signin/mfa/totp Verify
+    TOTP for MFA; GET /signin/provider/{provider} Sign in with an OAuth2 provider
+  reason: 'The surface is end-user authentication: password, OAuth2 federation, magic link, OTP, WebAuthn,
+    MFA verification. That is Identity & Access Management (federation, authentication) realised as a
+    service, regardless of who buys it.'
+- tag: Security
+  spec_file: nhost-security-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.85
+  evidence: POST /pat createPAT Create a Personal Access Token (PAT); POST /user/webauthn/add Initialize
+    adding of a new webauthn security key; POST /user/mfa Manage multi-factor authentication
+  reason: Despite the generic 'Security' tag, the operations issue access credentials (PATs), register
+    WebAuthn authenticators, link identity providers and elevate an authenticated session — credential
+    and access lifecycle, i.e. Identity & Access Management.
+- tag: User
+  spec_file: nhost-user-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.8
+  evidence: POST /user/email/change changeUserEmail Change user email; POST /user/password Change user
+    password; GET /mfa/totp/generate Generate TOTP secret
+  reason: Manages the authenticated user's account credentials — email change with verification, password
+    change and reset, TOTP enrolment. This is user identity/credential administration (IAM), not customer
+    master-data management, since the record exists purely to authenticate access.
+- tag: Session
+  spec_file: nhost-session-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.7
+  evidence: POST /token refreshToken Refresh access token; POST /token/verify Verify JWT token; POST /signout
+    Sign out
+  reason: Session and token lifecycle (refresh, verify, sign out) for authenticated users is part of the
+    identity and access management surface. Confidence tempered because, taken alone, these three endpoints
+    are close to pure auth-token plumbing.
