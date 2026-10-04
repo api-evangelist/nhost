@@ -70,6 +70,19 @@ paths:
           description: An error occurred while processing the request
 components:
   schemas:
+    AuthenticationExtensionsClientOutputs:
+      type: object
+      additionalProperties: true
+      description: Map of extension outputs from the client
+      properties:
+        appid:
+          type: boolean
+          description: Application identifier extension output
+        credProps:
+          $ref: '#/components/schemas/CredentialPropertiesOutput'
+        hmacCreateSecret:
+          type: boolean
+          description: HMAC secret extension output
     ErrorResponse:
       type: object
       description: Standardized error response
@@ -122,10 +135,6 @@ components:
       - status
       - message
       - error
-    URLEncodedBase64:
-      type: string
-      format: byte
-      description: Base64url-encoded binary data
     AuthenticatorAttestationResponse:
       type: object
       additionalProperties: false
@@ -150,37 +159,42 @@ components:
       required:
       - clientDataJSON
       - attestationObject
-    Session:
+    SignUpOptions:
       type: object
-      description: User authentication session containing tokens and user information
       additionalProperties: false
       properties:
-        accessToken:
+        allowedRoles:
+          example:
+          - me
+          - user
+          type: array
+          items:
+            type: string
+        defaultRole:
+          example: user
           type: string
-          description: JWT token for authenticating API requests
-          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-        accessTokenExpiresIn:
-          type: integer
-          format: int64
-          description: Expiration time of the access token in seconds
-          example: 900
-        refreshTokenId:
-          description: Identifier for the refresh token
-          example: 2c35b6f3-c4b9-48e3-978a-d4d0f1d42e24
-          pattern: \b[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}\b
+        displayName:
+          example: John Smith
           type: string
-        refreshToken:
-          description: Token used to refresh the access token
-          example: 2c35b6f3-c4b9-48e3-978a-d4d0f1d42e24
-          pattern: \b[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}\b
+          pattern: ^[\p{L}\p{N}\p{S} ,.'-]+$
+          maxLength: 32
+        locale:
+          description: A two-characters locale
+          example: en
+          maxLength: 2
+          minLength: 2
           type: string
-        user:
-          $ref: '#/components/schemas/User'
-      required:
-      - accessToken
-      - accessTokenExpiresIn
-      - refreshToken
-      - refreshTokenId
+        metadata:
+          type: object
+          additionalProperties: true
+          example:
+            firstName: John
+            lastName: Smith
+          properties: {}
+        redirectTo:
+          type: string
+          format: uri
+          example: https://my-app.com/catch-redirection
     User:
       type: object
       description: User profile and account information
@@ -296,6 +310,17 @@ components:
       - type
       - rawId
       - response
+    URLEncodedBase64:
+      type: string
+      format: byte
+      description: Base64url-encoded binary data
+    SessionPayload:
+      type: object
+      description: Container for session information
+      additionalProperties: false
+      properties:
+        session:
+          $ref: '#/components/schemas/Session'
     CredentialPropertiesOutput:
       type: object
       additionalProperties: false
@@ -304,42 +329,37 @@ components:
         rk:
           type: boolean
           description: Indicates if the credential is a resident key
-    SignUpOptions:
+    Session:
       type: object
+      description: User authentication session containing tokens and user information
       additionalProperties: false
       properties:
-        allowedRoles:
-          example:
-          - me
-          - user
-          type: array
-          items:
-            type: string
-        defaultRole:
-          example: user
+        accessToken:
           type: string
-        displayName:
-          example: John Smith
+          description: JWT token for authenticating API requests
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        accessTokenExpiresIn:
+          type: integer
+          format: int64
+          description: Expiration time of the access token in seconds
+          example: 900
+        refreshTokenId:
+          description: Identifier for the refresh token
+          example: 2c35b6f3-c4b9-48e3-978a-d4d0f1d42e24
+          pattern: \b[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}\b
           type: string
-          pattern: ^[\p{L}\p{N}\p{S} ,.'-]+$
-          maxLength: 32
-        locale:
-          description: A two-characters locale
-          example: en
-          maxLength: 2
-          minLength: 2
+        refreshToken:
+          description: Token used to refresh the access token
+          example: 2c35b6f3-c4b9-48e3-978a-d4d0f1d42e24
+          pattern: \b[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}\b
           type: string
-        metadata:
-          type: object
-          additionalProperties: true
-          example:
-            firstName: John
-            lastName: Smith
-          properties: {}
-        redirectTo:
-          type: string
-          format: uri
-          example: https://my-app.com/catch-redirection
+        user:
+          $ref: '#/components/schemas/User'
+      required:
+      - accessToken
+      - accessTokenExpiresIn
+      - refreshToken
+      - refreshTokenId
     SignUpWebauthnVerifyRequest:
       type: object
       additionalProperties: false
@@ -353,37 +373,16 @@ components:
           type: string
       required:
       - credential
-    AuthenticationExtensionsClientOutputs:
-      type: object
-      additionalProperties: true
-      description: Map of extension outputs from the client
-      properties:
-        appid:
-          type: boolean
-          description: Application identifier extension output
-        credProps:
-          $ref: '#/components/schemas/CredentialPropertiesOutput'
-        hmacCreateSecret:
-          type: boolean
-          description: HMAC secret extension output
-    SessionPayload:
-      type: object
-      description: Container for session information
-      additionalProperties: false
-      properties:
-        session:
-          $ref: '#/components/schemas/Session'
   parameters:
-    RedirectToQuery:
+    TicketQuery:
       in: query
-      name: redirectTo
-      description: Target URL for the redirect
+      name: ticket
+      description: Ticket
       required: true
       schema:
-        description: Target URL for the redirect
         type: string
-        format: uri
-        example: https://my-app.com/catch-redirection
+        description: Ticket
+        example: verifyEmail:xxxxxxxx
     TicketTypeQuery:
       in: query
       name: type
@@ -399,15 +398,16 @@ components:
         description: Type of the ticket
         example: emailVerify
       deprecated: true
-    TicketQuery:
+    RedirectToQuery:
       in: query
-      name: ticket
-      description: Ticket
+      name: redirectTo
+      description: Target URL for the redirect
       required: true
       schema:
+        description: Target URL for the redirect
         type: string
-        description: Ticket
-        example: verifyEmail:xxxxxxxx
+        format: uri
+        example: https://my-app.com/catch-redirection
   headers:
     RedirectLocation:
       description: URL to redirect to

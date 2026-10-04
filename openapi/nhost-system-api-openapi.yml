@@ -110,6 +110,47 @@ paths:
       description: Nhost Authentication API Server
 components:
   schemas:
+    OKResponse:
+      type: string
+      additionalProperties: false
+      enum:
+      - OK
+    JWK:
+      type: object
+      description: JSON Web Key for JWT verification
+      additionalProperties: false
+      properties:
+        alg:
+          type: string
+          description: Algorithm used with this key
+          example: RS256
+        e:
+          type: string
+          description: RSA public exponent
+          example: AQAB
+        kid:
+          type: string
+          description: Key ID
+          example: key-id-1
+        kty:
+          type: string
+          description: Key type
+          example: RSA
+        n:
+          type: string
+          description: RSA modulus
+          example: abcd1234...
+        use:
+          type: string
+          description: Key usage
+          example: sig
+      required:
+      - alg
+      - e
+      - kid
+      - kty
+      - n
+      - use
     ErrorResponse:
       type: object
       description: Standardized error response
@@ -174,47 +215,6 @@ components:
             $ref: '#/components/schemas/JWK'
       required:
       - keys
-    OKResponse:
-      type: string
-      additionalProperties: false
-      enum:
-      - OK
-    JWK:
-      type: object
-      description: JSON Web Key for JWT verification
-      additionalProperties: false
-      properties:
-        alg:
-          type: string
-          description: Algorithm used with this key
-          example: RS256
-        e:
-          type: string
-          description: RSA public exponent
-          example: AQAB
-        kid:
-          type: string
-          description: Key ID
-          example: key-id-1
-        kty:
-          type: string
-          description: Key type
-          example: RSA
-        n:
-          type: string
-          description: RSA modulus
-          example: abcd1234...
-        use:
-          type: string
-          description: Key usage
-          example: sig
-      required:
-      - alg
-      - e
-      - kid
-      - kty
-      - n
-      - use
     ErrorResponse_2:
       type: object
       description: Error information returned by the API.

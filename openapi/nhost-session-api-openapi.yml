@@ -106,6 +106,13 @@ paths:
           description: An error occurred while processing the request
 components:
   schemas:
+    VerifyTokenRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        token:
+          type: string
+          description: JWT token to verify
     ErrorResponse:
       type: object
       description: Standardized error response
@@ -158,13 +165,6 @@ components:
       - status
       - message
       - error
-    VerifyTokenRequest:
-      type: object
-      additionalProperties: false
-      properties:
-        token:
-          type: string
-          description: JWT token to verify
     SignOutRequest:
       type: object
       properties:
@@ -175,49 +175,6 @@ components:
           type: boolean
           default: false
           description: Sign out from all connected devices
-    RefreshTokenRequest:
-      type: object
-      description: Request to refresh an access token
-      additionalProperties: false
-      properties:
-        refreshToken:
-          description: Refresh token used to generate a new access token
-          example: 2c35b6f3-c4b9-48e3-978a-d4d0f1d42e24
-          pattern: \b[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}\b
-          type: string
-      required:
-      - refreshToken
-    Session:
-      type: object
-      description: User authentication session containing tokens and user information
-      additionalProperties: false
-      properties:
-        accessToken:
-          type: string
-          description: JWT token for authenticating API requests
-          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-        accessTokenExpiresIn:
-          type: integer
-          format: int64
-          description: Expiration time of the access token in seconds
-          example: 900
-        refreshTokenId:
-          description: Identifier for the refresh token
-          example: 2c35b6f3-c4b9-48e3-978a-d4d0f1d42e24
-          pattern: \b[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}\b
-          type: string
-        refreshToken:
-          description: Token used to refresh the access token
-          example: 2c35b6f3-c4b9-48e3-978a-d4d0f1d42e24
-          pattern: \b[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}\b
-          type: string
-        user:
-          $ref: '#/components/schemas/User'
-      required:
-      - accessToken
-      - accessTokenExpiresIn
-      - refreshToken
-      - refreshTokenId
     User:
       type: object
       description: User profile and account information
@@ -305,11 +262,54 @@ components:
       - metadata
       - phoneNumberVerified
       - roles
+    RefreshTokenRequest:
+      type: object
+      description: Request to refresh an access token
+      additionalProperties: false
+      properties:
+        refreshToken:
+          description: Refresh token used to generate a new access token
+          example: 2c35b6f3-c4b9-48e3-978a-d4d0f1d42e24
+          pattern: \b[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}\b
+          type: string
+      required:
+      - refreshToken
     OKResponse:
       type: string
       additionalProperties: false
       enum:
       - OK
+    Session:
+      type: object
+      description: User authentication session containing tokens and user information
+      additionalProperties: false
+      properties:
+        accessToken:
+          type: string
+          description: JWT token for authenticating API requests
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        accessTokenExpiresIn:
+          type: integer
+          format: int64
+          description: Expiration time of the access token in seconds
+          example: 900
+        refreshTokenId:
+          description: Identifier for the refresh token
+          example: 2c35b6f3-c4b9-48e3-978a-d4d0f1d42e24
+          pattern: \b[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}\b
+          type: string
+        refreshToken:
+          description: Token used to refresh the access token
+          example: 2c35b6f3-c4b9-48e3-978a-d4d0f1d42e24
+          pattern: \b[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}\b
+          type: string
+        user:
+          $ref: '#/components/schemas/User'
+      required:
+      - accessToken
+      - accessTokenExpiresIn
+      - refreshToken
+      - refreshTokenId
   securitySchemes:
     BearerAuth:
       type: http
