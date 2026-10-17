@@ -106,75 +106,42 @@ paths:
           description: An error occurred while processing the request
 components:
   schemas:
-    VerifyTokenRequest:
+    OKResponse:
+      type: string
+      additionalProperties: false
+      enum:
+      - OK
+    Session:
       type: object
+      description: User authentication session containing tokens and user information
       additionalProperties: false
       properties:
-        token:
+        accessToken:
           type: string
-          description: JWT token to verify
-    ErrorResponse:
-      type: object
-      description: Standardized error response
-      additionalProperties: false
-      properties:
-        status:
-          description: HTTP status error code
+          description: JWT token for authenticating API requests
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        accessTokenExpiresIn:
           type: integer
-          example: 400
-        message:
-          description: Human-friendly error message
+          format: int64
+          description: Expiration time of the access token in seconds
+          example: 900
+        refreshTokenId:
+          description: Identifier for the refresh token
+          example: 2c35b6f3-c4b9-48e3-978a-d4d0f1d42e24
+          pattern: \b[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}\b
           type: string
-          example: Invalid email format
-        error:
-          description: Error code identifying the specific application error
-          type: string
-          enum:
-          - default-role-must-be-in-allowed-roles
-          - disabled-endpoint
-          - disabled-user
-          - email-already-in-use
-          - email-already-verified
-          - forbidden-anonymous
-          - internal-server-error
-          - invalid-email-password
-          - invalid-request
-          - locale-not-allowed
-          - password-too-short
-          - password-in-hibp-database
-          - redirectTo-not-allowed
-          - role-not-allowed
-          - signup-disabled
-          - unverified-user
-          - user-not-anonymous
-          - invalid-pat
-          - invalid-refresh-token
-          - invalid-ticket
-          - disabled-mfa-totp
-          - no-totp-secret
-          - invalid-totp
-          - mfa-type-not-found
-          - totp-already-active
-          - invalid-state
-          - oauth-token-echange-failed
-          - oauth-profile-fetch-failed
-          - oauth-provider-error
-          - invalid-otp
-          - cannot-send-sms
-      required:
-      - status
-      - message
-      - error
-    SignOutRequest:
-      type: object
-      properties:
         refreshToken:
+          description: Token used to refresh the access token
+          example: 2c35b6f3-c4b9-48e3-978a-d4d0f1d42e24
+          pattern: \b[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}\b
           type: string
-          description: Refresh token for the current session
-        all:
-          type: boolean
-          default: false
-          description: Sign out from all connected devices
+        user:
+          $ref: '#/components/schemas/User'
+      required:
+      - accessToken
+      - accessTokenExpiresIn
+      - refreshToken
+      - refreshTokenId
     User:
       type: object
       description: User profile and account information
@@ -262,6 +229,65 @@ components:
       - metadata
       - phoneNumberVerified
       - roles
+    ErrorResponse:
+      type: object
+      description: Standardized error response
+      additionalProperties: false
+      properties:
+        status:
+          description: HTTP status error code
+          type: integer
+          example: 400
+        message:
+          description: Human-friendly error message
+          type: string
+          example: Invalid email format
+        error:
+          description: Error code identifying the specific application error
+          type: string
+          enum:
+          - default-role-must-be-in-allowed-roles
+          - disabled-endpoint
+          - disabled-user
+          - email-already-in-use
+          - email-already-verified
+          - forbidden-anonymous
+          - internal-server-error
+          - invalid-email-password
+          - invalid-request
+          - locale-not-allowed
+          - password-too-short
+          - password-in-hibp-database
+          - redirectTo-not-allowed
+          - role-not-allowed
+          - signup-disabled
+          - unverified-user
+          - user-not-anonymous
+          - invalid-pat
+          - invalid-refresh-token
+          - invalid-ticket
+          - disabled-mfa-totp
+          - no-totp-secret
+          - invalid-totp
+          - mfa-type-not-found
+          - totp-already-active
+          - invalid-state
+          - oauth-token-echange-failed
+          - oauth-profile-fetch-failed
+          - oauth-provider-error
+          - invalid-otp
+          - cannot-send-sms
+      required:
+      - status
+      - message
+      - error
+    VerifyTokenRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        token:
+          type: string
+          description: JWT token to verify
     RefreshTokenRequest:
       type: object
       description: Request to refresh an access token
@@ -274,42 +300,16 @@ components:
           type: string
       required:
       - refreshToken
-    OKResponse:
-      type: string
-      additionalProperties: false
-      enum:
-      - OK
-    Session:
+    SignOutRequest:
       type: object
-      description: User authentication session containing tokens and user information
-      additionalProperties: false
       properties:
-        accessToken:
-          type: string
-          description: JWT token for authenticating API requests
-          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-        accessTokenExpiresIn:
-          type: integer
-          format: int64
-          description: Expiration time of the access token in seconds
-          example: 900
-        refreshTokenId:
-          description: Identifier for the refresh token
-          example: 2c35b6f3-c4b9-48e3-978a-d4d0f1d42e24
-          pattern: \b[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}\b
-          type: string
         refreshToken:
-          description: Token used to refresh the access token
-          example: 2c35b6f3-c4b9-48e3-978a-d4d0f1d42e24
-          pattern: \b[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}\b
           type: string
-        user:
-          $ref: '#/components/schemas/User'
-      required:
-      - accessToken
-      - accessTokenExpiresIn
-      - refreshToken
-      - refreshTokenId
+          description: Refresh token for the current session
+        all:
+          type: boolean
+          default: false
+          description: Sign out from all connected devices
   securitySchemes:
     BearerAuth:
       type: http

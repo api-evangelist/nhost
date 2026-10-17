@@ -672,6 +672,56 @@ paths:
           description: An error occurred while processing the request
 components:
   schemas:
+    OKResponse:
+      type: string
+      additionalProperties: false
+      enum:
+      - OK
+    SignInPasswordlessSmsOtpResponse:
+      type: object
+      additionalProperties: false
+      properties:
+        session:
+          $ref: '#/components/schemas/Session'
+        mfa:
+          $ref: '#/components/schemas/MFAChallengePayload'
+    UserVerificationRequirement:
+      type: string
+      enum:
+      - required
+      - preferred
+      - discouraged
+      default: preferred
+      description: A requirement for user verification for the operation
+    AttestationFormat:
+      type: string
+      enum:
+      - packed
+      - tpm
+      - android-key
+      - android-safetynet
+      - fido-u2f
+      - apple
+      - none
+      description: The attestation statement format
+    AuthenticationExtensionsClientOutputs:
+      type: object
+      additionalProperties: true
+      description: Map of extension outputs from the client
+      properties:
+        appid:
+          type: boolean
+          description: Application identifier extension output
+        credProps:
+          $ref: '#/components/schemas/CredentialPropertiesOutput'
+        hmacCreateSecret:
+          type: boolean
+          description: HMAC secret extension output
+    CredentialType:
+      type: string
+      enum:
+      - public-key
+      description: The valid credential types
     SignInWebauthnVerifyRequest:
       type: object
       additionalProperties: false
@@ -686,58 +736,34 @@ components:
           $ref: '#/components/schemas/CredentialAssertionResponse'
       required:
       - credential
-    ErrorResponse:
+    SignUpWebauthnVerifyRequest:
       type: object
-      description: Standardized error response
       additionalProperties: false
       properties:
-        status:
-          description: HTTP status error code
-          type: integer
-          example: 400
-        message:
-          description: Human-friendly error message
+        credential:
+          $ref: '#/components/schemas/CredentialCreationResponse'
+        options:
+          $ref: '#/components/schemas/SignUpOptions'
+        nickname:
+          description: Nickname for the security key
           type: string
-          example: Invalid email format
-        error:
-          description: Error code identifying the specific application error
-          type: string
-          enum:
-          - default-role-must-be-in-allowed-roles
-          - disabled-endpoint
-          - disabled-user
-          - email-already-in-use
-          - email-already-verified
-          - forbidden-anonymous
-          - internal-server-error
-          - invalid-email-password
-          - invalid-request
-          - locale-not-allowed
-          - password-too-short
-          - password-in-hibp-database
-          - redirectTo-not-allowed
-          - role-not-allowed
-          - signup-disabled
-          - unverified-user
-          - user-not-anonymous
-          - invalid-pat
-          - invalid-refresh-token
-          - invalid-ticket
-          - disabled-mfa-totp
-          - no-totp-secret
-          - invalid-totp
-          - mfa-type-not-found
-          - totp-already-active
-          - invalid-state
-          - oauth-token-echange-failed
-          - oauth-profile-fetch-failed
-          - oauth-provider-error
-          - invalid-otp
-          - cannot-send-sms
       required:
-      - status
-      - message
-      - error
+      - credential
+    SessionPayload:
+      type: object
+      description: Container for session information
+      additionalProperties: false
+      properties:
+        session:
+          $ref: '#/components/schemas/Session'
+    ResidentKeyRequirement:
+      type: string
+      enum:
+      - discouraged
+      - preferred
+      - required
+      default: discouraged
+      description: The resident key requirement
     SignUpOptions:
       type: object
       additionalProperties: false
@@ -774,55 +800,67 @@ components:
           type: string
           format: uri
           example: https://my-app.com/catch-redirection
-    PublicKeyCredentialHints:
-      type: string
-      enum:
-      - security-key
-      - client-device
-      - hybrid
-      description: Hints to help guide the user through the experience
-    ResidentKeyRequirement:
-      type: string
-      enum:
-      - discouraged
-      - preferred
-      - required
-      default: discouraged
-      description: The resident key requirement
-    URLEncodedBase64:
-      type: string
-      format: byte
-      description: Base64url-encoded binary data
-    CredentialType:
-      type: string
-      enum:
-      - public-key
-      description: The valid credential types
-    SignInOTPEmailVerifyRequest:
+    UserDeanonymizeRequest:
       type: object
       additionalProperties: false
       properties:
-        otp:
+        signInMethod:
+          description: Which sign-in method to use
           type: string
-          description: One time password
+          enum:
+          - email-password
+          - passwordless
         email:
           description: A valid email
           example: john.smith@nhost.io
           format: email
           type: string
+        password:
+          description: A password of minimum 3 characters
+          example: Str0ngPassw#ord-94|%
+          minLength: 3
+          maxLength: 50
+          type: string
+        connection:
+          deprecated: true
+          description: Deprecated, will be ignored
+          type: string
+        options:
+          $ref: '#/components/schemas/SignUpOptions'
       required:
-      - otp
+      - signInMethod
       - email
-    SignInWebauthnRequest:
+    AuthenticatorAttachment:
+      type: string
+      enum:
+      - platform
+      - cross-platform
+      description: The authenticator attachment modality
+    AuthenticatorAttestationResponse:
       type: object
       additionalProperties: false
       properties:
-        email:
-          description: A valid email
-          example: john.smith@nhost.io
-          format: email
-          type: string
-    SignInPasswordlessSmsRequest:
+        clientDataJSON:
+          $ref: '#/components/schemas/URLEncodedBase64'
+        transports:
+          type: array
+          items:
+            type: string
+          description: The authenticator transports
+        authenticatorData:
+          $ref: '#/components/schemas/URLEncodedBase64'
+        publicKey:
+          $ref: '#/components/schemas/URLEncodedBase64'
+        publicKeyAlgorithm:
+          type: integer
+          format: int64
+          description: The public key algorithm identifier
+        attestationObject:
+          $ref: '#/components/schemas/URLEncodedBase64'
+      required:
+      - clientDataJSON
+      - attestationObject
+    SignInPasswordlessSmsOtpRequest:
       type: object
       additionalProperties: false
       properties:
@@ -830,49 +868,40 @@ components:
           description: Phone number of the user
           example: '+123456789'
           type: string
-        options:
-          $ref: '#/components/schemas/SignUpOptions'
+        otp:
+          type: string
+          description: One-time password received by SMS
       required:
       - phoneNumber
-    SignInAnonymousRequest:
+      - otp
+    CredentialAssertionResponse:
       type: object
+      x-go-type-import:
+        name: protocol
+        path: github.com/go-webauthn/webauthn/protocol
+      x-go-type: protocol.CredentialAssertionResponse
       additionalProperties: false
       properties:
-        displayName:
-          example: John Smith
+        id:
           type: string
-        locale:
-          description: A two-characters locale
-          example: en
-          maxLength: 2
-          minLength: 2
+          description: The credential's identifier
+        type:
           type: string
-        metadata:
-          type: object
-          additionalProperties: true
-          example:
-            firstName: John
-            lastName: Smith
-          properties: {}
-    UserVerificationRequirement:
-      type: string
-      enum:
-      - required
-      - preferred
-      - discouraged
-      default: preferred
-      description: A requirement for user verification for the operation
-    SignInOTPEmailVerifyResponse:
-      type: object
-      additionalProperties: false
-      properties:
-        session:
-          $ref: '#/components/schemas/Session'
-    OKResponse:
-      type: string
-      additionalProperties: false
-      enum:
-      - OK
+          description: The credential type represented by this object
+        rawId:
+          $ref: '#/components/schemas/URLEncodedBase64'
+        clientExtensionResults:
+          $ref: '#/components/schemas/AuthenticationExtensionsClientOutputs'
+        authenticatorAttachment:
+          type: string
+          description: The authenticator attachment
+        response:
+          $ref: '#/components/schemas/AuthenticatorAssertionResponse'
+      required:
+      - id
+      - type
+      - rawId
+      - response
     PublicKeyCredentialCreationOptions:
       type: object
       x-go-type-import:
@@ -921,22 +950,297 @@ components:
       - user
       - challenge
       - pubKeyCredParams
-    SignInEmailPasswordRequest:
+    SignInMfaTotpRequest:
       type: object
-      description: Request to authenticate using email and password
+      additionalProperties: false
+      properties:
+        ticket:
+          type: string
+          description: Ticket
+          pattern: ^mfaTotp:.*$
+        otp:
+          type: string
+          description: One time password
+      required:
+      - ticket
+      - otp
+    CredentialCreationResponse:
+      type: object
+      additionalProperties: false
+      x-go-type-import:
+        name: protocol
+        path: github.com/go-webauthn/webauthn/protocol
+      x-go-type: protocol.CredentialCreationResponse
+      properties:
+        id:
+          type: string
+          description: The credential's identifier
+        type:
+          type: string
+          description: The credential type represented by this object
+        rawId:
+          $ref: '#/components/schemas/URLEncodedBase64'
+        clientExtensionResults:
+          $ref: '#/components/schemas/AuthenticationExtensionsClientOutputs'
+        authenticatorAttachment:
+          type: string
+          description: The authenticator attachment
+        response:
+          $ref: '#/components/schemas/AuthenticatorAttestationResponse'
+      required:
+      - id
+      - type
+      - rawId
+      - response
+    CredentialPropertiesOutput:
+      type: object
+      additionalProperties: false
+      description: Credential properties extension output
+      properties:
+        rk:
+          type: boolean
+          description: Indicates if the credential is a resident key
+    SignInOTPEmailVerifyRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        otp:
+          type: string
+          description: One time password
+        email:
+          description: A valid email
+          example: john.smith@nhost.io
+          format: email
+          type: string
+      required:
+      - otp
+      - email
+    RelyingPartyEntity:
+      type: object
+      additionalProperties: false
+      properties:
+        name:
+          type: string
+          description: A human-palatable name for the entity
+        id:
+          type: string
+          description: A unique identifier for the Relying Party entity, which sets the RP ID
+      required:
+      - name
+      - id
+    MFAChallengePayload:
+      type: object
+      description: Challenge payload for multi-factor authentication
+      additionalProperties: false
+      properties:
+        ticket:
+          type: string
+          description: Ticket to use when completing the MFA challenge
+          example: mfaTotp:abc123def456
+      required:
+      - ticket
+    SignInWebauthnRequest:
+      type: object
       additionalProperties: false
       properties:
         email:
-          description: User's email address
+          description: A valid email
+          example: john.smith@nhost.io
+          format: email
+          type: string
+    IdTokenProvider:
+      type: string
+      additionalProperties: false
+      enum:
+      - apple
+      - google
+    AuthenticatorSelection:
+      type: object
+      additionalProperties: false
+      properties:
+        authenticatorAttachment:
+          $ref: '#/components/schemas/AuthenticatorAttachment'
+        requireResidentKey:
+          type: boolean
+          description: Whether the authenticator must create a client-side-resident public key credential source
+        residentKey:
+          $ref: '#/components/schemas/ResidentKeyRequirement'
+        userVerification:
+          $ref: '#/components/schemas/UserVerificationRequirement'
+    UserEntity:
+      type: object
+      additionalProperties: false
+      properties:
+        name:
+          type: string
+          description: A human-palatable name for the entity
+        displayName:
+          type: string
+          description: A human-palatable name for the user account, intended only for display
+        id:
+          type: string
+          description: The user handle of the user account entity
+      required:
+      - name
+      - displayName
+      - id
+    SignInAnonymousRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        displayName:
+          example: John Smith
+          type: string
+        locale:
+          description: A two-characters locale
+          example: en
+          maxLength: 2
+          minLength: 2
+          type: string
+        metadata:
+          type: object
+          additionalProperties: true
+          example:
+            firstName: John
+            lastName: Smith
+          properties: {}
+    SignInOTPEmailVerifyResponse:
+      type: object
+      additionalProperties: false
+      properties:
+        session:
+          $ref: '#/components/schemas/Session'
+    SignInPATRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        personalAccessToken:
+          description: PAT
+          example: 2c35b6f3-c4b9-48e3-978a-d4d0f1d42e24
+          pattern: \b[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}\b
+          type: string
+      required:
+      - personalAccessToken
+    PublicKeyCredentialRequestOptions:
+      type: object
+      x-go-type-import:
+        name: protocol
+        path: github.com/go-webauthn/webauthn/protocol
+      x-go-type: protocol.PublicKeyCredentialRequestOptions
+      additionalProperties: false
+      properties:
+        challenge:
+          $ref: '#/components/schemas/URLEncodedBase64'
+        timeout:
+          type: integer
+          description: A time, in milliseconds, that the caller is willing to wait for the call to complete
+        rpId:
+          type: string
+          description: The RP ID the credential should be scoped to
+        allowCredentials:
+          type: array
+          items:
+            $ref: '#/components/schemas/PublicKeyCredentialDescriptor'
+          description: A list of CredentialDescriptor objects representing public key credentials acceptable to the caller
+        userVerification:
+          $ref: '#/components/schemas/UserVerificationRequirement'
+        hints:
+          type: array
+          items:
+            $ref: '#/components/schemas/PublicKeyCredentialHints'
+          description: Hints to help guide the user through the experience
+        extensions:
+          $ref: '#/components/schemas/AuthenticationExtensions'
+      required:
+      - challenge
+    SignInPasswordlessEmailRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        email:
+          description: A valid email
+          example: john.smith@nhost.io
+          format: email
+          type: string
+        options:
+          $ref: '#/components/schemas/SignUpOptions'
+      required:
+      - email
+    AuthenticatorAssertionResponse:
+      type: object
+      additionalProperties: false
+      properties:
+        clientDataJSON:
+          type: string
+          description: Base64url encoded client data JSON
+        authenticatorData:
+          type: string
+          description: Base64url encoded authenticator data
+        signature:
+          type: string
+          description: Base64url encoded assertion signature
+        userHandle:
+          type:
+          - string
+          - 'null'
+          description: Base64url encoded user handle
+      required:
+      - clientDataJSON
+      - authenticatorData
+      - signature
+    URLEncodedBase64:
+      type: string
+      format: byte
+      description: Base64url-encoded binary data
+    CredentialParameter:
+      type: object
+      additionalProperties: false
+      properties:
+        type:
+          $ref: '#/components/schemas/CredentialType'
+        alg:
+          type: integer
+          description: The cryptographic algorithm identifier
+      required:
+      - type
+      - alg
+    SignInPasswordlessSmsRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        phoneNumber:
+          description: Phone number of the user
+          example: '+123456789'
+          type: string
+        options:
+          $ref: '#/components/schemas/SignUpOptions'
+      required:
+      - phoneNumber
+    PublicKeyCredentialHints:
+      type: string
+      enum:
+      - security-key
+      - client-device
+      - hybrid
+      description: Hints to help guide the user through the experience
+    SignUpEmailPasswordRequest:
+      type: object
+      description: Request to register a new user with email and password
+      additionalProperties: false
+      properties:
+        email:
+          description: Email address for the new user account
           example: john.smith@nhost.io
           format: email
           type: string
         password:
-          description: User's password
+          description: Password for the new user account
           example: Str0ngPassw#ord-94|%
           minLength: 3
           maxLength: 50
           type: string
+        options:
+          $ref: '#/components/schemas/SignUpOptions'
       required:
       - email
       - password
@@ -971,81 +1275,29 @@ components:
       - accessTokenExpiresIn
       - refreshToken
       - refreshTokenId
-    IdTokenProvider:
+    ConveyancePreference:
       type: string
-      additionalProperties: false
       enum:
-      - apple
-      - google
-    SignUpWebauthnVerifyRequest:
+      - none
+      - indirect
+      - direct
+      - enterprise
+      default: none
+      description: The attestation conveyance preference
+    AuthenticatorTransport:
+      type: string
+      enum:
+      - usb
+      - nfc
+      - ble
+      - smart-card
+      - hybrid
+      - internal
+      description: The authenticator transports that can be used
+    AuthenticationExtensions:
       type: object
-      additionalProperties: false
-      properties:
-        credential:
-          $ref: '#/components/schemas/CredentialCreationResponse'
-        options:
-          $ref: '#/components/schemas/SignUpOptions'
-        nickname:
-          description: Nickname for the security key
-          type: string
-      required:
-      - credential
-    CredentialAssertionResponse:
-      type: object
-      x-go-type-import:
-        name: protocol
-        path: github.com/go-webauthn/webauthn/protocol
-      x-go-type: protocol.CredentialAssertionResponse
-      additionalProperties: false
-      properties:
-        id:
-          type: string
-          description: The credential's identifier
-        type:
-          type: string
-          description: The credential type represented by this object
-        rawId:
-          $ref: '#/components/schemas/URLEncodedBase64'
-        clientExtensionResults:
-          $ref: '#/components/schemas/AuthenticationExtensionsClientOutputs'
-        authenticatorAttachment:
-          type: string
-          description: The authenticator attachment
-        response:
-          $ref: '#/components/schemas/AuthenticatorAssertionResponse'
-      required:
-      - id
-      - type
-      - rawId
-      - response
-    SignInPasswordlessSmsOtpRequest:
-      type: object
-      additionalProperties: false
-      properties:
-        phoneNumber:
-          description: Phone number of the user
-          example: '+123456789'
-          type: string
-        otp:
-          type: string
-          description: One-time password received by SMS
-      required:
-      - phoneNumber
-      - otp
-    SignInMfaTotpRequest:
-      type: object
-      additionalProperties: false
-      properties:
-        ticket:
-          type: string
-          description: Ticket
-          pattern: ^mfaTotp:.*$
-        otp:
-          type: string
-          description: One time password
-      required:
-      - ticket
-      - otp
+      additionalProperties: true
+      description: Additional parameters requesting additional processing by the client and authenticator
     User:
       type: object
       description: User profile and account information
@@ -1133,92 +1385,58 @@ components:
       - metadata
       - phoneNumberVerified
       - roles
-    SignInOTPEmailRequest:
+    ErrorResponse:
       type: object
+      description: Standardized error response
       additionalProperties: false
       properties:
-        email:
-          description: A valid email
-          example: john.smith@nhost.io
-          format: email
-          type: string
-        options:
-          $ref: '#/components/schemas/SignUpOptions'
-      required:
-      - email
-    PublicKeyCredentialRequestOptions:
-      type: object
-      x-go-type-import:
-        name: protocol
-        path: github.com/go-webauthn/webauthn/protocol
-      x-go-type: protocol.PublicKeyCredentialRequestOptions
-      additionalProperties: false
-      properties:
-        challenge:
-          $ref: '#/components/schemas/URLEncodedBase64'
-        timeout:
+        status:
+          description: HTTP status error code
           type: integer
-          description: A time, in milliseconds, that the caller is willing to wait for the call to complete
-        rpId:
+          example: 400
+        message:
+          description: Human-friendly error message
           type: string
-          description: The RP ID the credential should be scoped to
-        allowCredentials:
-          type: array
-          items:
-            $ref: '#/components/schemas/PublicKeyCredentialDescriptor'
-          description: A list of CredentialDescriptor objects representing public key credentials acceptable to the caller
-        userVerification:
-          $ref: '#/components/schemas/UserVerificationRequirement'
-        hints:
-          type: array
-          items:
-            $ref: '#/components/schemas/PublicKeyCredentialHints'
-          description: Hints to help guide the user through the experience
-        extensions:
-          $ref: '#/components/schemas/AuthenticationExtensions'
+          example: Invalid email format
+        error:
+          description: Error code identifying the specific application error
+          type: string
+          enum:
+          - default-role-must-be-in-allowed-roles
+          - disabled-endpoint
+          - disabled-user
+          - email-already-in-use
+          - email-already-verified
+          - forbidden-anonymous
+          - internal-server-error
+          - invalid-email-password
+          - invalid-request
+          - locale-not-allowed
+          - password-too-short
+          - password-in-hibp-database
+          - redirectTo-not-allowed
+          - role-not-allowed
+          - signup-disabled
+          - unverified-user
+          - user-not-anonymous
+          - invalid-pat
+          - invalid-refresh-token
+          - invalid-ticket
+          - disabled-mfa-totp
+          - no-totp-secret
+          - invalid-totp
+          - mfa-type-not-found
+          - totp-already-active
+          - invalid-state
+          - oauth-token-echange-failed
+          - oauth-profile-fetch-failed
+          - oauth-provider-error
+          - invalid-otp
+          - cannot-send-sms
       required:
-      - challenge
-    SessionPayload:
-      type: object
-      description: Container for session information
-      additionalProperties: false
-      properties:
-        session:
-          $ref: '#/components/schemas/Session'
-    AuthenticationExtensions:
-      type: object
-      additionalProperties: true
-      description: Additional parameters requesting additional processing by the client and authenticator
-    RelyingPartyEntity:
-      type: object
-      additionalProperties: false
-      properties:
-        name:
-          type: string
-          description: A human-palatable name for the entity
-        id:
-          type: string
-          description: A unique identifier for the Relying Party entity, which sets the RP ID
-      required:
-      - name
-      - id
-    ConveyancePreference:
-      type: string
-      enum:
-      - none
-      - indirect
-      - direct
-      - enterprise
-      default: none
-      description: The attestation conveyance preference
-    CredentialPropertiesOutput:
-      type: object
-      additionalProperties: false
-      description: Credential properties extension output
-      properties:
-        rk:
-          type: boolean
-          description: Indicates if the credential is a resident key
+      - status
+      - message
+      - error
     SignInIdTokenRequest:
       type: object
       additionalProperties: false
@@ -1236,45 +1454,6 @@ components:
       required:
       - provider
       - idToken
-    SignInEmailPasswordResponse:
-      type: object
-      description: Response for email-password authentication that may include a session or MFA challenge
-      additionalProperties: false
-      properties:
-        session:
-          $ref: '#/components/schemas/Session'
-        mfa:
-          $ref: '#/components/schemas/MFAChallengePayload'
-    UserDeanonymizeRequest:
-      type: object
-      additionalProperties: false
-      properties:
-        signInMethod:
-          description: Which sign-in method to use
-          type: string
-          enum:
-          - email-password
-          - passwordless
-        email:
-          description: A valid email
-          example: john.smith@nhost.io
-          format: email
-          type: string
-        password:
-          description: A password of minimum 3 characters
-          example: Str0ngPassw#ord-94|%
-          minLength: 3
-          maxLength: 50
-          type: string
-        connection:
-          deprecated: true
-          description: Deprecated, will be ignored
-          type: string
-        options:
-          $ref: '#/components/schemas/SignUpOptions'
-      required:
-      - signInMethod
-      - email
     SignUpWebauthnRequest:
       type: object
       additionalProperties: false
@@ -1288,126 +1467,6 @@ components:
           $ref: '#/components/schemas/SignUpOptions'
       required:
       - email
-    SignUpEmailPasswordRequest:
-      type: object
-      description: Request to register a new user with email and password
-      additionalProperties: false
-      properties:
-        email:
-          description: Email address for the new user account
-          example: john.smith@nhost.io
-          format: email
-          type: string
-        password:
-          description: Password for the new user account
-          example: Str0ngPassw#ord-94|%
-          minLength: 3
-          maxLength: 50
-          type: string
-        options:
-          $ref: '#/components/schemas/SignUpOptions'
-      required:
-      - email
-      - password
-    AuthenticatorTransport:
-      type: string
-      enum:
-      - usb
-      - nfc
-      - ble
-      - smart-card
-      - hybrid
-      - internal
-      description: The authenticator transports that can be used
-    AttestationFormat:
-      type: string
-      enum:
-      - packed
-      - tpm
-      - android-key
-      - android-safetynet
-      - fido-u2f
-      - apple
-      - none
-      description: The attestation statement format
-    AuthenticatorAttachment:
-      type: string
-      enum:
-      - platform
-      - cross-platform
-      description: The authenticator attachment modality
-    AuthenticationExtensionsClientOutputs:
-      type: object
-      additionalProperties: true
-      description: Map of extension outputs from the client
-      properties:
-        appid:
-          type: boolean
-          description: Application identifier extension output
-        credProps:
-          $ref: '#/components/schemas/CredentialPropertiesOutput'
-        hmacCreateSecret:
-          type: boolean
-          description: HMAC secret extension output
-    AuthenticatorAssertionResponse:
-      type: object
-      additionalProperties: false
-      properties:
-        clientDataJSON:
-          type: string
-          description: Base64url encoded client data JSON
-        authenticatorData:
-          type: string
-          description: Base64url encoded authenticator data
-        signature:
-          type: string
-          description: Base64url encoded assertion signature
-        userHandle:
-          type:
-          - string
-          - 'null'
-          description: Base64url encoded user handle
-      required:
-      - clientDataJSON
-      - authenticatorData
-      - signature
-    AuthenticatorSelection:
-      type: object
-      additionalProperties: false
-      properties:
-        authenticatorAttachment:
-          $ref: '#/components/schemas/AuthenticatorAttachment'
-        requireResidentKey:
-          type: boolean
-          description: Whether the authenticator must create a client-side-resident public key credential source
-        residentKey:
-          $ref: '#/components/schemas/ResidentKeyRequirement'
-        userVerification:
-          $ref: '#/components/schemas/UserVerificationRequirement'
-    AuthenticatorAttestationResponse:
-      type: object
-      additionalProperties: false
-      properties:
-        clientDataJSON:
-          $ref: '#/components/schemas/URLEncodedBase64'
-        transports:
-          type: array
-          items:
-            type: string
-          description: The authenticator transports
-        authenticatorData:
-          $ref: '#/components/schemas/URLEncodedBase64'
-        publicKey:
-          $ref: '#/components/schemas/URLEncodedBase64'
-        publicKeyAlgorithm:
-          type: integer
-          format: int64
-          description: The public key algorithm identifier
-        attestationObject:
-          $ref: '#/components/schemas/URLEncodedBase64'
-      required:
-      - clientDataJSON
-      - attestationObject
     PublicKeyCredentialDescriptor:
       type: object
       additionalProperties: false
@@ -1424,83 +1483,35 @@ components:
       required:
       - type
       - id
-    SignInPasswordlessSmsOtpResponse:
+    SignInEmailPasswordResponse:
       type: object
+      description: Response for email-password authentication that may include a session or MFA challenge
       additionalProperties: false
       properties:
         session:
           $ref: '#/components/schemas/Session'
         mfa:
           $ref: '#/components/schemas/MFAChallengePayload'
-    UserEntity:
+    SignInEmailPasswordRequest:
       type: object
+      description: Request to authenticate using email and password
       additionalProperties: false
       properties:
-        name:
+        email:
+          description: User's email address
+          example: john.smith@nhost.io
+          format: email
           type: string
-          description: A human-palatable name for the entity
-        displayName:
-          type: string
-          description: A human-palatable name for the user account, intended only for display
-        id:
-          type: string
-          description: The user handle of the user account entity
-      required:
-      - name
-      - displayName
-      - id
-    CredentialCreationResponse:
-      type: object
-      additionalProperties: false
-      x-go-type-import:
-        name: protocol
-        path: github.com/go-webauthn/webauthn/protocol
-      x-go-type: protocol.CredentialCreationResponse
-      properties:
-        id:
-          type: string
-          description: The credential's identifier
-        type:
-          type: string
-          description: The credential type represented by this object
-        rawId:
-          $ref: '#/components/schemas/URLEncodedBase64'
-        clientExtensionResults:
-          $ref: '#/components/schemas/AuthenticationExtensionsClientOutputs'
-        authenticatorAttachment:
-          type: string
-          description: The authenticator attachment
-        response:
-          $ref: '#/components/schemas/AuthenticatorAttestationResponse'
-      required:
-      - id
-      - type
-      - rawId
-      - response
-    CredentialParameter:
-      type: object
-      additionalProperties: false
-      properties:
-        type:
-          $ref: '#/components/schemas/CredentialType'
-        alg:
-          type: integer
-          description: The cryptographic algorithm identifier
-      required:
-      - type
-      - alg
-    SignInPATRequest:
-      type: object
-      additionalProperties: false
-      properties:
-        personalAccessToken:
-          description: PAT
-          example: 2c35b6f3-c4b9-48e3-978a-d4d0f1d42e24
-          pattern: \b[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}\b
+        password:
+          description: User's password
+          example: Str0ngPassw#ord-94|%
+          minLength: 3
+          maxLength: 50
           type: string
       required:
-      - personalAccessToken
-    SignInPasswordlessEmailRequest:
+      - email
+      - password
+    SignInOTPEmailRequest:
       type: object
       additionalProperties: false
       properties:
@@ -1513,17 +1524,6 @@ components:
           $ref: '#/components/schemas/SignUpOptions'
       required:
       - email
-    MFAChallengePayload:
-      type: object
-      description: Challenge payload for multi-factor authentication
-      additionalProperties: false
-      properties:
-        ticket:
-          type: string
-          description: Ticket to use when completing the MFA challenge
-          example: mfaTotp:abc123def456
-      required:
-      - ticket
   headers:
     RedirectLocation:
       description: URL to redirect to
